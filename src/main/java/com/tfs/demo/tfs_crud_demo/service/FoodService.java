@@ -11,4 +11,9 @@ public interface FoodService {
 
     public Food getFoodById(int id);
 
+    public void saveFood(Food theFood);
+
+    public void disableFood(int id);
+
+    public void enableFood(int id);
 }
