@@ -59,8 +59,6 @@ public class CategoryServiceImplementation implements CategoryService{
 
     @Override
     public boolean CheckDuplicateId(String categoryId){
-        boolean check = false;
-
         Optional<Category> result = categoryRepository.findById(categoryId);
 
         Category theCategory = null;
