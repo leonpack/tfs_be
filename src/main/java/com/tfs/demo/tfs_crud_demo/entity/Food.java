@@ -35,11 +35,14 @@ public class Food {
     @Column(name = "status")
     private boolean status;
 
+    @Column(name = "purchase_num")
+    private Integer purchaseNum;
+
     public Food(){
 
     }
 
-    public Food(String foodName, String description, double price, String imgUrl, String category_id, String region_id, String event_id, boolean status) {
+    public Food(String foodName, String description, double price, String imgUrl, String category_id, String region_id, String event_id, boolean status, Integer purchaseNum) {
         this.foodName = foodName;
         this.description = description;
         this.price = price;
@@ -48,6 +51,7 @@ public class Food {
         this.region_id = region_id;
         this.event_id = event_id;
         this.status = status;
+        this.purchaseNum = purchaseNum;
     }
 
     public int getId() {
@@ -122,6 +126,14 @@ public class Food {
         this.status = status;
     }
 
+    public Integer getPurchaseNum() {
+        return purchaseNum;
+    }
+
+    public void setPurchaseNum(Integer purchaseNum) {
+        this.purchaseNum = purchaseNum;
+    }
+
     @Override
     public String toString() {
         return "Food{" +
@@ -134,6 +146,7 @@ public class Food {
                 ", region_id='" + region_id + '\'' +
                 ", event_id='" + event_id + '\'' +
                 ", status=" + status +
+                ", purchaseNum=" + purchaseNum +
                 '}';
     }
 }

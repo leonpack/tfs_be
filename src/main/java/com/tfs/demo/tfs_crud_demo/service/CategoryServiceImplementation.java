@@ -61,6 +61,7 @@ public class CategoryServiceImplementation implements CategoryService{
     public boolean CheckDuplicateId(String categoryId){
         Optional<Category> result = categoryRepository.findById(categoryId);
 
+
         Category theCategory = null;
         if(result.isPresent()){
             throw new RuntimeException("Category with id - " +categoryId+ " already exist, please try again!");
