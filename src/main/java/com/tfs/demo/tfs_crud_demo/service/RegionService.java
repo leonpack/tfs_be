@@ -10,4 +10,6 @@ public interface RegionService {
 
     public Region getRegionById(String regionId);
 
+    public void saveRegion(Region region);
+
 }

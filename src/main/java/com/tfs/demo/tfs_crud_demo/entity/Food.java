@@ -1,6 +1,10 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "food")
@@ -23,14 +27,15 @@ public class Food {
     @Column(name = "image_url")
     private String imgUrl;
 
-    @Column(name = "category_id")
-    private String category_id;
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @JoinColumn(name = "category_id",referencedColumnName = "category_id")
+    @JsonBackReference
+    private Category theCategory;
 
-    @Column(name = "region_id")
-    private String region_id;
-
-    @Column(name = "event_id")
-    private String event_id;
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @JoinColumn(name = "region_id",referencedColumnName = "region_id")
+    @JsonBackReference
+    private Region theRegion;
 
     @Column(name = "status")
     private boolean status;
@@ -38,20 +43,24 @@ public class Food {
     @Column(name = "purchase_num")
     private Integer purchaseNum;
 
+    @ManyToMany(mappedBy = "foodList",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @JsonBackReference
+    private List<Event> eventList;
+
     public Food(){
 
     }
 
-    public Food(String foodName, String description, double price, String imgUrl, String category_id, String region_id, String event_id, boolean status, Integer purchaseNum) {
+    public Food(String foodName, String description, double price, String imgUrl, Category theCategory, Region theRegion, boolean status, Integer purchaseNum, List<Event> eventList) {
         this.foodName = foodName;
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
-        this.category_id = category_id;
-        this.region_id = region_id;
-        this.event_id = event_id;
+        this.theCategory = theCategory;
+        this.theRegion = theRegion;
         this.status = status;
         this.purchaseNum = purchaseNum;
+        this.eventList = eventList;
     }
 
     public int getId() {
@@ -94,28 +103,28 @@ public class Food {
         this.imgUrl = imgUrl;
     }
 
-    public String getCategory_id() {
-        return category_id;
+    public Category getTheCategory() {
+        return theCategory;
     }
 
-    public void setCategory_id(String category_id) {
-        this.category_id = category_id;
+    public void setTheCategory(Category theCategory) {
+        this.theCategory = theCategory;
     }
 
-    public String getRegion_id() {
-        return region_id;
+    public Region getTheRegion() {
+        return theRegion;
     }
 
-    public void setRegion_id(String region_id) {
-        this.region_id = region_id;
+    public void setTheRegion(Region theRegion) {
+        this.theRegion = theRegion;
     }
 
-    public String getEvent_id() {
-        return event_id;
+    public List<Event> getEventList() {
+        return eventList;
     }
 
-    public void setEvent_id(String event_id) {
-        this.event_id = event_id;
+    public void setEventList(List<Event> eventList) {
+        this.eventList = eventList;
     }
 
     public boolean isStatus() {
@@ -142,11 +151,18 @@ public class Food {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", imgUrl='" + imgUrl + '\'' +
-                ", category_id='" + category_id + '\'' +
-                ", region_id='" + region_id + '\'' +
-                ", event_id='" + event_id + '\'' +
+                ", theCategory=" + theCategory +
+                ", theRegion=" + theRegion +
                 ", status=" + status +
                 ", purchaseNum=" + purchaseNum +
+                ", eventList=" + eventList +
                 '}';
+    }
+
+    public void addEvent(Event theEvent){
+        if(eventList == null){
+            eventList = new ArrayList<>();
+        }
+        eventList.add(theEvent);
     }
 }

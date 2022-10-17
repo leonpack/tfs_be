@@ -1,9 +1,10 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "region")
@@ -16,13 +17,18 @@ public class Region {
     @Column(name = "region_name")
     private String region_name;
 
+    @OneToMany(mappedBy = "theRegion",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @JsonManagedReference
+    private List<Food> foodList;
+
     public Region(){
 
     }
 
-    public Region(String id, String region_name) {
+    public Region(String id, String region_name, List<Food> foodList) {
         this.id = id;
         this.region_name = region_name;
+        this.foodList = foodList;
     }
 
     public String getId() {
@@ -41,11 +47,28 @@ public class Region {
         this.region_name = region_name;
     }
 
+    public List<Food> getFoodList() {
+        return foodList;
+    }
+
+    public void setFoodList(List<Food> foodList) {
+        this.foodList = foodList;
+    }
+
     @Override
     public String toString() {
         return "Region{" +
                 "id='" + id + '\'' +
                 ", region_name='" + region_name + '\'' +
+                ", foodList=" + foodList +
                 '}';
     }
+
+    public void addFood(Food theFood){
+        if(foodList == null){
+            foodList = new ArrayList<>();
+        }
+        foodList.add(theFood);
+    }
+
 }

@@ -37,4 +37,9 @@ public class RegionServiceImplementation implements RegionService{
         }
         return theRegion;
     }
+
+    @Override
+    public void saveRegion(Region region) {
+        regionRepository.save(region);
+    }
 }
