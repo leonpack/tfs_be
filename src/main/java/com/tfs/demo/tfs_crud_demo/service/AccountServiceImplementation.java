@@ -75,7 +75,7 @@ public class AccountServiceImplementation implements AccountService{
         Query theQuery = entityManager.createQuery("select phoneNumber from Account");
         theQuery.getResultList();
         for(int i = 0; i<theQuery.getResultList().size();i++){
-            if (phoneCheckNum == theQuery.getResultList().get(i)){
+            if (phoneCheckNum.equals(theQuery.getResultList().get(i))){
                 throw new RuntimeException("This account has already linked with another account, please try another number!");
             }
         }

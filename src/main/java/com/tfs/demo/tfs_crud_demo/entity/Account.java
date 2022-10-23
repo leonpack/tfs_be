@@ -1,6 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 
@@ -20,7 +21,7 @@ public class Account {
 
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
-    @JsonBackReference
+    @JsonBackReference(value = "acc_role")
     private Role theRole;
 
     @Column(name = "status")
@@ -88,4 +89,5 @@ public class Account {
                 ", status=" + status +
                 '}';
     }
+
 }

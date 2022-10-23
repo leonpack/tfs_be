@@ -19,7 +19,7 @@ public class Role {
     private String roleName;
 
     @OneToMany(mappedBy = "theRole", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JsonManagedReference
+    @JsonManagedReference(value = "acc_role")
     private List<Account> accountList;
 
     public Role(){
@@ -29,6 +29,14 @@ public class Role {
     public Role(String roleName, List<Account> accountList) {
         this.roleName = roleName;
         this.accountList = accountList;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public int getRoleId() {
