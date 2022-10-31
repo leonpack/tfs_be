@@ -19,23 +19,30 @@ public class Account {
     @Column(name = "password")
     private String password;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
-    @JsonBackReference(value = "acc_role")
-    private Role theRole;
+//    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+//    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+//    @JsonBackReference(value = "acc_role")
+//    private Role theRole;
+
+    @Column(name = "role_id")
+    private Integer roleId;
 
     @Column(name = "status")
     private boolean status;
+
+    @OneToOne(mappedBy = "theAccount",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @JsonBackReference
+    private Customer theCustomer;
 
     public Account(){
 
     }
 
-    public Account(String accountId, String phoneNumber, String password, Role theRole, boolean status) {
+    public Account(String accountId, String phoneNumber, String password, Integer roleId, boolean status) {
         this.accountId = accountId;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.theRole = theRole;
+        this.roleId = roleId;
         this.status = status;
     }
 
@@ -63,12 +70,20 @@ public class Account {
         this.password = password;
     }
 
-    public Role getTheRole() {
-        return theRole;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setTheRole(Role theRole) {
-        this.theRole = theRole;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public Customer getTheCustomer() {
+        return theCustomer;
+    }
+
+    public void setTheCustomer(Customer theCustomer) {
+        this.theCustomer = theCustomer;
     }
 
     public boolean isStatus() {
@@ -85,9 +100,10 @@ public class Account {
                 "accountId='" + accountId + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", password='" + password + '\'' +
-                ", theRole=" + theRole +
+                ", roleId=" + roleId +
                 ", status=" + status +
                 '}';
     }
+
 
 }

@@ -13,7 +13,8 @@ public class Food {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "food_id")
-    private int id;
+//    private int id;
+    private Integer id;
 
     @Column(name = "food_name")
     private String foodName;
@@ -63,11 +64,19 @@ public class Food {
         this.eventList = eventList;
     }
 
-    public int getId() {
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -17,18 +17,17 @@ public class Role {
 
     @Column(name = "role_name")
     private String roleName;
-
-    @OneToMany(mappedBy = "theRole", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JsonManagedReference(value = "acc_role")
-    private List<Account> accountList;
+//
+//    @OneToMany(mappedBy = "theRole", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+//    @JsonManagedReference(value = "acc_role")
+//    private List<Account> accountList;
 
     public Role(){
 
     }
 
-    public Role(String roleName, List<Account> accountList) {
+    public Role(String roleName) {
         this.roleName = roleName;
-        this.accountList = accountList;
     }
 
     public void setRoleId(int roleId) {
@@ -46,27 +45,19 @@ public class Role {
     public String getRoleName() {
         return roleName;
     }
-    public List<Account> getAccountList() {
-        return accountList;
-    }
-
-    public void setAccountList(List<Account> accountList) {
-        this.accountList = accountList;
-    }
 
     @Override
     public String toString() {
         return "Role{" +
                 "roleId=" + roleId +
                 ", roleName='" + roleName + '\'' +
-                ", accountList=" + accountList +
                 '}';
     }
 
-    public void addAccount(Account theAccount){
-        if(accountList==null){
-            accountList = new ArrayList<>();
-        }
-        accountList.add(theAccount);
-    }
+    //    public void addAccount(Account theAccount){
+//        if(accountList==null){
+//            accountList = new ArrayList<>();
+//        }
+//        accountList.add(theAccount);
+//    }
 }
