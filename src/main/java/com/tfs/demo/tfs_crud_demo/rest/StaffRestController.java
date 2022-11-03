@@ -1,6 +1,8 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
+import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
+import com.tfs.demo.tfs_crud_demo.service.AccountService;
 import com.tfs.demo.tfs_crud_demo.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +14,12 @@ import java.util.List;
 public class StaffRestController {
 
     private StaffService staffService;
+    private AccountService accountService;
 
     @Autowired
-    public StaffRestController(StaffService theStaffService){
+    public StaffRestController(StaffService theStaffService, AccountService theAccountService){
         staffService = theStaffService;
+        accountService = theAccountService;
     }
 
     @GetMapping("/staffs")
@@ -29,11 +33,13 @@ public class StaffRestController {
         return theStaff;
     }
 
-    @PostMapping("/staffs")
-    public String addNewStaff(@RequestBody Staff theStaff){
+    @PostMapping("/staffs/{accountId}")
+    public String addNewStaff(@RequestBody Staff theStaff,@PathVariable String accountId){
         if(!staffService.checkDuplicateStaffId(theStaff.getStaffId())){
             return "Staff with this id - " +theStaff + " already exist, please try again!";
         }
+        Account theAccount = accountService.getAccountById(accountId);
+        theStaff.setTheAccountForStaff(theAccount);
         staffService.saveStaff(theStaff);
         return "Saved " +theStaff;
     }
