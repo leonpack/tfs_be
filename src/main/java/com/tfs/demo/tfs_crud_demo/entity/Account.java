@@ -34,6 +34,11 @@ public class Account {
     @JsonBackReference
     private Customer theCustomer;
 
+
+    @OneToOne(mappedBy = "theAccountForStaff", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @JsonBackReference
+    private Staff theStaff;
+
     public Account(){
 
     }

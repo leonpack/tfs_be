@@ -1,7 +1,9 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.entity.Restaurant;
+import com.tfs.demo.tfs_crud_demo.entity.Staff;
 import com.tfs.demo.tfs_crud_demo.service.RestaurantService;
+import com.tfs.demo.tfs_crud_demo.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +14,12 @@ import java.util.List;
 public class RestaurantRestController {
 
     private RestaurantService restaurantService;
+    private StaffService staffService;
 
     @Autowired
-    public RestaurantRestController(RestaurantService theRestaurantService){
+    public RestaurantRestController(RestaurantService theRestaurantService, StaffService theStaffService){
         restaurantService = theRestaurantService;
+        staffService = theStaffService;
     }
 
     @GetMapping("/restaurants")
@@ -58,6 +62,17 @@ public class RestaurantRestController {
     public String DisableRestaurant(@PathVariable String restaurantId){
         restaurantService.disableRestaurant(restaurantId);
         return "Disable restaurant with id - "+restaurantId + " completed!";
+    }
+
+    @PostMapping("/restaurants/{staffId}TO{restaurantId}")
+    public String addStaffToRestaurant(@PathVariable String staffId, @PathVariable String restaurantId){
+        Staff theStaff = staffService.getStaffById(staffId);
+        Restaurant theRestaurant = restaurantService.getRestaurantById(restaurantId);
+        if(theStaff == null || theRestaurant == null){
+            return "Staff or restaurant doesn't exist, please try again";
+        }
+        theRestaurant.addStaff(theStaff);
+        return "Add " +theStaff + " to " +theRestaurant + " successfully";
     }
 
 }

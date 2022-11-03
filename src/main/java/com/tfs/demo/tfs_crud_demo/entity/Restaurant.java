@@ -1,9 +1,10 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "restaurant")
@@ -22,6 +23,10 @@ public class Restaurant {
     @Column(name = "restaurant_phone_number")
     private String restaurantNumber;
 
+    @OneToMany(mappedBy = "theRestaurant",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @JsonManagedReference
+    private List<Staff> staffList;
+
     @Column(name = "status")
     private boolean status;
 
@@ -29,11 +34,12 @@ public class Restaurant {
 
     }
 
-    public Restaurant(String restaurantId, String restaurantLocation, String restaurantName, String restaurantNumber, boolean status) {
+    public Restaurant(String restaurantId, String restaurantLocation, String restaurantName, String restaurantNumber, List<Staff> staffList, boolean status) {
         this.restaurantId = restaurantId;
         this.restaurantLocation = restaurantLocation;
         this.restaurantName = restaurantName;
         this.restaurantNumber = restaurantNumber;
+        this.staffList = staffList;
         this.status = status;
     }
 
@@ -69,6 +75,14 @@ public class Restaurant {
         this.restaurantNumber = restaurantNumber;
     }
 
+    public List<Staff> getStaffList() {
+        return staffList;
+    }
+
+    public void setStaffList(List<Staff> staffList) {
+        this.staffList = staffList;
+    }
+
     public boolean isStatus() {
         return status;
     }
@@ -86,6 +100,13 @@ public class Restaurant {
                 ", restaurantNumber='" + restaurantNumber + '\'' +
                 ", status=" + status +
                 '}';
+    }
+
+    public void addStaff(Staff theStaff){
+        if(staffList == null){
+            staffList = new ArrayList<>();
+        }
+        staffList.add(theStaff);
     }
 
 }
