@@ -4,6 +4,7 @@ import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
 import com.tfs.demo.tfs_crud_demo.service.CustomerService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,16 +24,21 @@ public class CustomerRestController {
     }
 
     @GetMapping("/customers")
+    @ApiOperation("Return list of all customers")
     public List<Customer> getALlCustomers(){
         return customerService.getAllCustomers();
     }
 
     @GetMapping("/customers/{customerId}")
+    @ApiOperation("Return customer based on customerId")
     public Customer getCustomerById(@PathVariable String customerId){
         return customerService.getCustomerById(customerId);
     }
 
     @PostMapping("/customers/{accountId}")
+    @ApiOperation("Add new Customer (Need to create Account first, " +
+            "then put accountId from that created Account to PathVariable {accountId} to link between account and customer)" +
+            "(need full Customer's Json and accountID(this accountId must not linked with any other specific role such as other staff, other customer, etc...))")
     public String addNewCustomer(@RequestBody Customer theCustomer,@PathVariable String accountId){
         if(!customerService.checkDuplicateCustomerId(theCustomer.getCustomerId())){
             return "Duplicate customer with id " +theCustomer.getCustomerId() + " has been found, please try again";
@@ -44,12 +50,14 @@ public class CustomerRestController {
     }
 
     @PutMapping("/customers")
+    @ApiOperation("Edit existing account(need full Customer's JSON)")
     public Customer updateCustomer(@RequestBody Customer theCustomer){
         customerService.saveCustomer(theCustomer);
         return theCustomer;
     }
 
     @DeleteMapping("/customers/{customerId}")
+    @ApiOperation("Disable existing customer based on customerId")
     public String disableCustomer(@PathVariable String customerId){
         customerService.disableCustomer(customerId);
         return "Disable customer with id " +customerId + " completed";
