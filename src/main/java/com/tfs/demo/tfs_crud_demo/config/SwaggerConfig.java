@@ -21,7 +21,8 @@ public class SwaggerConfig {
                         .title("TFS APi Documentation")
                         .description("Swagger API Documentation for TFS System")
                         .contact(new Contact("Nam Nguyen Hoang","https://www.facebook.com/summerless14","nguyennam279.cl@gmail.com"))
-                        .version("1.0").build())
+                        .version("1.0")
+                        .build())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.tfs"))
                 .paths(PathSelectors.any()).build();
