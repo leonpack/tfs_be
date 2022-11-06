@@ -10,26 +10,25 @@ import java.util.List;
 @Entity
 @Table(name = "event")
 public class Event {
-
     @Id
     @Column(name = "event_id")
     private String eventId;
-
     @Column(name = "event_name")
     private String eventName;
 
     @Column(name = "description")
     private String description;
 
+    @Column(name = "image_url")
+    private String image_url;
+
     @Column(name = "from_date")
     private Date fromDate;
 
     @Column(name = "to_date")
     private Date toDate;
-
     @Column(name = "status")
     private boolean status;
-
     @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name = "eventdetail", joinColumns = @JoinColumn(name = "event_id"),inverseJoinColumns = @JoinColumn(name = "food_id"))
     @JsonManagedReference
@@ -39,10 +38,11 @@ public class Event {
 
     }
 
-    public Event(String eventId, String eventName, String description, Date fromDate, Date toDate, boolean status, List<Food> foodList) {
+    public Event(String eventId, String eventName, String description, String image_url, Date fromDate, Date toDate, boolean status, List<Food> foodList) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.description = description;
+        this.image_url = image_url;
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.status = status;
@@ -71,6 +71,14 @@ public class Event {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     public Date getFromDate() {
@@ -111,6 +119,7 @@ public class Event {
                 "eventId='" + eventId + '\'' +
                 ", eventName='" + eventName + '\'' +
                 ", description='" + description + '\'' +
+                ", image_url='" + image_url + '\'' +
                 ", fromDate=" + fromDate +
                 ", toDate=" + toDate +
                 ", status=" + status +
