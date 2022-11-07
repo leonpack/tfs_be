@@ -64,4 +64,11 @@ public class StaffRestController {
         return "Disable staff with id - " +staffId + " completed!";
     }
 
+    @PostMapping("/staff/{staffId}SET{imageUrl}")
+    public String updateStaffAvatar(@PathVariable String staffId, @PathVariable String imageUrl){
+        Staff theStaff = staffService.getStaffById(staffId);
+        theStaff.setStaffAvatarUrl(imageUrl);
+        return "Set avatar for staff " +theStaff+ " successfully!";
+    }
+
 }

@@ -63,4 +63,11 @@ public class CustomerRestController {
         return "Disable customer with id " +customerId + " completed";
     }
 
+    @PostMapping("/customers/{customerId}SET{imageURL}")
+    public String updateCustomerAvatar(@PathVariable String customerId, @PathVariable String imageURL){
+        Customer theCustomer = customerService.getCustomerById(customerId);
+        theCustomer.setAvatarURL(imageURL);
+        return "Update customer " +theCustomer +" avatar successfully!";
+    }
+
 }

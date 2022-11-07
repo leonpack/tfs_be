@@ -27,6 +27,10 @@ public class Customer {
     @JsonManagedReference
     private Account theAccount;
 
+    @OneToOne(mappedBy = "theCustomerCart",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Cart theCart;
+
     @Column(name = "address")
     private String address;
 
@@ -34,12 +38,13 @@ public class Customer {
 
     }
 
-    public Customer(String customerId, String customerName, String email, String avatarURL, Account theAccount, String address) {
+    public Customer(String customerId, String customerName, String email, String avatarURL, Account theAccount, Cart theCart, String address) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.email = email;
         this.avatarURL = avatarURL;
         this.theAccount = theAccount;
+        this.theCart = theCart;
         this.address = address;
     }
 
@@ -91,6 +96,14 @@ public class Customer {
         this.address = address;
     }
 
+    public Cart getTheCart() {
+        return theCart;
+    }
+
+    public void setTheCart(Cart theCart) {
+        this.theCart = theCart;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
@@ -99,6 +112,7 @@ public class Customer {
                 ", email='" + email + '\'' +
                 ", avatarURL='" + avatarURL + '\'' +
                 ", theAccount=" + theAccount +
+                ", theCart=" + theCart +
                 ", address='" + address + '\'' +
                 '}';
     }
