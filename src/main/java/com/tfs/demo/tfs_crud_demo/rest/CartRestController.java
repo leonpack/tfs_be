@@ -2,10 +2,10 @@ package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.entity.Cart;
 import com.tfs.demo.tfs_crud_demo.entity.Customer;
+import com.tfs.demo.tfs_crud_demo.entity.Food;
 import com.tfs.demo.tfs_crud_demo.service.CartService;
 import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 import com.tfs.demo.tfs_crud_demo.service.FoodService;
-import com.tfs.demo.tfs_crud_demo.utils.GlobalExceptionHandler;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,11 +16,13 @@ public class CartRestController {
 
     private CartService cartService;
     private CustomerService customerService;
+    private FoodService foodService;
 
 
-    public CartRestController(CartService theCartService, CustomerService theCustomerService){
+    public CartRestController(CartService theCartService, CustomerService theCustomerService, FoodService theFoodService){
         cartService = theCartService;
         customerService = theCustomerService;
+        foodService = theFoodService;
     }
 
     @GetMapping("/carts")
@@ -59,4 +61,22 @@ public class CartRestController {
         return "Delete cart " +cartId + " successful!";
     }
 
+    //this function is still WIP
+    @PostMapping("/addToCart/{foodId}TO{cartId}")
+    public String addFoodToCart(@PathVariable int foodId, @PathVariable int cartId){
+        Food theFood = foodService.getFoodById(foodId);
+        if(theFood == null){
+            throw new RuntimeException("Food not found");
+        }
+        Cart theCart = cartService.getCartById(cartId);
+        if(theCart == null){
+            throw new RuntimeException("Cart not found");
+        }
+        theCart.addFood(theFood);
+        theFood.addCart(theCart);
+
+        foodService.saveFood(theFood);
+        cartService.saveCart(theCart);
+        return "added";
+    }
 }

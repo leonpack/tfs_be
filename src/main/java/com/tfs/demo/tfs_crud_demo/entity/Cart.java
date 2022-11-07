@@ -21,6 +21,10 @@ public class Cart {
     @JsonManagedReference
     private Customer theCustomerCart;
 
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "cartdetail", joinColumns = @JoinColumn(name = "cart_id"),inverseJoinColumns = @JoinColumn(name = "food_id"))
+    @JsonManagedReference
+    private List<Food> foodInCartList;
 
     public Cart(){
 
@@ -30,6 +34,9 @@ public class Cart {
         this.theCustomerCart = theCustomerCart;
     }
 
+    public Cart(List<Food> foodInCartList) {
+        this.foodInCartList = foodInCartList;
+    }
 
     public int getCartId() {
         return cartId;
@@ -47,11 +54,28 @@ public class Cart {
         this.theCustomerCart = theCustomerCart;
     }
 
+    public List<Food> getFoodInCartList() {
+        return foodInCartList;
+    }
+
+    public void setFoodInCartList(List<Food> foodInCartList) {
+        this.foodInCartList = foodInCartList;
+    }
+
     @Override
     public String toString() {
         return "Cart{" +
                 "cartId=" + cartId +
                 ", theCustomerCart=" + theCustomerCart +
+                ", foodInCartList=" + foodInCartList +
                 '}';
     }
+
+    public void addFood(Food theFood){
+        if(foodInCartList==null){
+            foodInCartList = new ArrayList<>();
+        }
+        foodInCartList.add(theFood);
+    }
+
 }

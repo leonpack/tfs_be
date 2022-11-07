@@ -48,11 +48,15 @@ public class Food {
     @JsonBackReference
     private List<Event> eventList;
 
+    @ManyToMany(mappedBy = "foodInCartList",cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Cart> cartList;
+
     public Food(){
 
     }
 
-    public Food(String foodName, String description, double price, String imgUrl, Category theCategory, Region theRegion, boolean status, Integer purchaseNum, List<Event> eventList) {
+    public Food(String foodName, String description, double price, String imgUrl, Category theCategory, Region theRegion, boolean status, Integer purchaseNum, List<Event> eventList, List<Cart> cartList) {
         this.foodName = foodName;
         this.description = description;
         this.price = price;
@@ -62,6 +66,7 @@ public class Food {
         this.status = status;
         this.purchaseNum = purchaseNum;
         this.eventList = eventList;
+        this.cartList = cartList;
     }
 
     //    public int getId() {
@@ -152,6 +157,14 @@ public class Food {
         this.purchaseNum = purchaseNum;
     }
 
+    public List<Cart> getCartList() {
+        return cartList;
+    }
+
+    public void setCartList(List<Cart> cartList) {
+        this.cartList = cartList;
+    }
+
     @Override
     public String toString() {
         return "Food{" +
@@ -165,6 +178,7 @@ public class Food {
                 ", status=" + status +
                 ", purchaseNum=" + purchaseNum +
                 ", eventList=" + eventList +
+                ", cartList=" + cartList +
                 '}';
     }
 
@@ -173,6 +187,13 @@ public class Food {
             eventList = new ArrayList<>();
         }
         eventList.add(theEvent);
+    }
+
+    public void addCart(Cart theCart){
+        if(cartList == null){
+            cartList = new ArrayList<>();
+        }
+        cartList.add(theCart);
     }
 
 }
