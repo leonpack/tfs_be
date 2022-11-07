@@ -78,4 +78,8 @@ public class Cart {
         foodInCartList.add(theFood);
     }
 
+    public void removeFood(Food theFood){
+        foodInCartList.remove(theFood);
+    }
+
 }

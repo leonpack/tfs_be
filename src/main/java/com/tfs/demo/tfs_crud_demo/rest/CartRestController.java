@@ -79,4 +79,19 @@ public class CartRestController {
         cartService.saveCart(theCart);
         return "added";
     }
+
+    @DeleteMapping("/deleteFromCart/{foodId}TO{cartId}")
+    public String deleteFromCart(@PathVariable int foodId, @PathVariable int cartId){
+        Food theFood = foodService.getFoodById(foodId);
+        if(theFood == null){
+            throw new RuntimeException("Food not found");
+        }
+        Cart theCart = cartService.getCartById(cartId);
+        if(theCart == null){
+            throw new RuntimeException("Cart not found");
+        }
+        theCart.removeFood(theFood);
+        cartService.saveCart(theCart);
+        return "removed";
+    }
 }
