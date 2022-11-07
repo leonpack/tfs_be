@@ -5,6 +5,7 @@ import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.service.CartService;
 import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 import com.tfs.demo.tfs_crud_demo.service.FoodService;
+import com.tfs.demo.tfs_crud_demo.utils.GlobalExceptionHandler;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,9 @@ public class CartRestController {
         Customer theCustomer = customerService.getCustomerById(customerId);
         if(theCustomer==null){
             throw new RuntimeException("Customer with id " +customerId + " not found, please try again!");
+        }
+        if(!cartService.checkDuplicateCustomerId(customerId)){
+            return "Duplicate customerId";
         }
         Cart theCart = new Cart(theCustomer);
         cartService.saveCart(theCart);

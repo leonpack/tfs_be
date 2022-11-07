@@ -15,4 +15,6 @@ public interface CartService {
 
     public void deleteCart(int cartId);
 
+    public boolean checkDuplicateCustomerId(String customerId);
+
 }

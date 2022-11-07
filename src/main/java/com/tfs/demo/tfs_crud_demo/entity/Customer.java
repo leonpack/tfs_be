@@ -28,7 +28,7 @@ public class Customer {
     private Account theAccount;
 
     @OneToOne(mappedBy = "theCustomerCart",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonBackReference
     private Cart theCart;
 
     @Column(name = "address")
@@ -37,7 +37,6 @@ public class Customer {
     public Customer(){
 
     }
-
     public Customer(String customerId, String customerName, String email, String avatarURL, Account theAccount, Cart theCart, String address) {
         this.customerId = customerId;
         this.customerName = customerName;

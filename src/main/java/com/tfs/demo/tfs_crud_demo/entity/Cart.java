@@ -18,7 +18,7 @@ public class Cart {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
-    @JsonBackReference
+    @JsonManagedReference
     private Customer theCustomerCart;
 
 
