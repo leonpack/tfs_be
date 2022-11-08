@@ -24,12 +24,12 @@ public class Staff {
 
     @OneToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name = "account_id")
-    @JsonManagedReference
+    @JsonManagedReference(value = "account-staff")
     private Account theAccountForStaff;
 
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
-    @JsonBackReference
+    @JsonBackReference(value = "restaurant-staff")
     private Restaurant theRestaurant;
 
     @Column(name = "activity_status")

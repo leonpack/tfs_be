@@ -1,6 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -18,12 +19,12 @@ public class Cart {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
-    @JsonManagedReference
+    @JsonManagedReference(value = "cart-customer")
     private Customer theCustomerCart;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "cartdetail", joinColumns = @JoinColumn(name = "cart_id"),inverseJoinColumns = @JoinColumn(name = "food_id"))
-    @JsonManagedReference
+//    @JsonManagedReference(value = "cart-food")
     private List<Food> foodInCartList;
 
     public Cart(){

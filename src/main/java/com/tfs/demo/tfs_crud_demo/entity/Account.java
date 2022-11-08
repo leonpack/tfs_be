@@ -31,12 +31,12 @@ public class Account {
     private boolean status;
 
     @OneToOne(mappedBy = "theAccount",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JsonBackReference
+    @JsonBackReference(value = "account-customer")
     private Customer theCustomer;
 
 
     @OneToOne(mappedBy = "theAccountForStaff", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JsonBackReference
+    @JsonBackReference(value = "account-staff")
     private Staff theStaff;
 
     public Account(){

@@ -30,7 +30,7 @@ public class CustomerRestController {
 
     @GetMapping("/customers/{customerId}")
     @ApiOperation("Return customer based on customerId")
-    public Customer getCustomerById(@PathVariable String customerId){
+    public Customer getCustomerById(@PathVariable int customerId){
         return customerService.getCustomerById(customerId);
     }
 
@@ -39,11 +39,12 @@ public class CustomerRestController {
             "then put accountId from that created Account to PathVariable {accountId} to link between account and customer)" +
             "(need full Customer's Json and accountID(this accountId must not linked with any other specific role such as other staff, other customer, etc...))")
     public String addNewCustomer(@RequestBody Customer theCustomer,@PathVariable String accountId){
-        if(!customerService.checkDuplicateCustomerId(theCustomer.getCustomerId())){
-            return "Duplicate customer with id " +theCustomer.getCustomerId() + " has been found, please try again";
-        }
+//        if(!customerService.checkDuplicateCustomerId(theCustomer.getCustomerId())){
+//            return "Duplicate customer with id " +theCustomer.getCustomerId() + " has been found, please try again";
+//        }
         Account theAccount = accountService.getAccountById(accountId);
         theCustomer.setTheAccount(theAccount);
+        theCustomer.setCustomerId(0);
         customerService.saveCustomer(theCustomer);
         return "Saved " +theCustomer;
     }
@@ -57,13 +58,13 @@ public class CustomerRestController {
 
     @DeleteMapping("/customers/{customerId}")
     @ApiOperation("Disable existing customer based on customerId")
-    public String disableCustomer(@PathVariable String customerId){
+    public String disableCustomer(@PathVariable int customerId){
         customerService.disableCustomer(customerId);
         return "Disable customer with id " +customerId + " completed";
     }
 
     @PostMapping("/customers/{customerId}SET{imageURL}")
-    public String updateCustomerAvatar(@PathVariable String customerId, @PathVariable String imageURL){
+    public String updateCustomerAvatar(@PathVariable int customerId, @PathVariable String imageURL){
         Customer theCustomer = customerService.getCustomerById(customerId);
         theCustomer.setAvatarURL(imageURL);
         return "Update customer " +theCustomer +" avatar successfully!";

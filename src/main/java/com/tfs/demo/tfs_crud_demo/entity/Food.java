@@ -1,6 +1,9 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,7 +17,7 @@ public class Food {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "food_id")
 //    private int id;
-    private Integer id;
+    private int id;
 
     @Column(name = "food_name")
     private String foodName;
@@ -30,12 +33,12 @@ public class Food {
 
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name = "category_id",referencedColumnName = "category_id")
-    @JsonBackReference
+    @JsonBackReference(value = "category-food")
     private Category theCategory;
 
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name = "region_id",referencedColumnName = "region_id")
-    @JsonBackReference
+    @JsonBackReference(value = "region-food")
     private Region theRegion;
 
     @Column(name = "status")
@@ -44,12 +47,16 @@ public class Food {
     @Column(name = "purchase_num")
     private Integer purchaseNum;
 
-    @ManyToMany(mappedBy = "foodList",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JsonBackReference
+    @ManyToMany(mappedBy = "foodListFromEvent",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+//    @JsonBackReference(value = "event-food")
+    @JsonIgnoreProperties("foodListFromEvent")
+    @JsonIgnore
     private List<Event> eventList;
 
     @ManyToMany(mappedBy = "foodInCartList",cascade = CascadeType.ALL)
-    @JsonBackReference
+//    @JsonBackReference(value = "cart-food")
+    @JsonIgnoreProperties("foodInCartList")
+    @JsonIgnore
     private List<Cart> cartList;
 
     public Food(){
@@ -69,19 +76,11 @@ public class Food {
         this.cartList = cartList;
     }
 
-    //    public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -24,13 +24,13 @@ public class CustomerServiceImplementation implements CustomerService{
     }
 
     @Override
-    public Customer getCustomerById(String customerId) {
+    public Customer getCustomerById(int customerId) {
         Optional<Customer> result = customerRepository.findById(customerId);
         Customer theCustomer = null;
         if(result.isPresent()){
             theCustomer = result.get();
         } else {
-            throw new RuntimeException("Customer with id - " +customerId + " not found");
+            throw new RuntimeException("Customer not found");
         }
         return theCustomer;
     }
@@ -41,24 +41,25 @@ public class CustomerServiceImplementation implements CustomerService{
     }
 
     @Override
-    public void disableCustomer(String customerId) {
+    public void disableCustomer(int customerId) {
         Optional<Customer> result = customerRepository.findById(customerId);
         Customer theCustomer = null;
         if(result.isPresent()){
             theCustomer = result.get();
         } else {
-            throw  new RuntimeException("Customer with id - " +customerId+ " not found");
+            throw new RuntimeException("Customer not found");
         }
         theCustomer.getTheAccount().setStatus(false);
+
     }
 
-    @Override
-    public boolean checkDuplicateCustomerId(String customerId) {
-        Optional<Customer> result = customerRepository.findById(customerId);
-        if(result.isPresent()){
-            throw new RuntimeException("Customer with id - " +customerId + " is already exist, please try again");
-        }
-        return true;
-    }
+//    @Override
+//    public boolean checkDuplicateCustomerId(String customerId) {
+//        Optional<Customer> result = customerRepository.findById(customerId);
+//        if(result.isPresent()){
+//            throw new RuntimeException("Customer with id - " +customerId + " is already exist, please try again");
+//        }
+//        return true;
+//    }
 
 }

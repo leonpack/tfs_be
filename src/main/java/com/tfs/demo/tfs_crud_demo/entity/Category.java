@@ -1,5 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class Category {
     private String categoryName;
 
     @OneToMany(mappedBy = "theCategory",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JsonManagedReference
+    @JsonManagedReference(value = "category-food")
     private List<Food> foodList;
 
     @Column(name = "status")

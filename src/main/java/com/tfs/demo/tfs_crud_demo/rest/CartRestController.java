@@ -37,7 +37,7 @@ public class CartRestController {
     }
 
     @PostMapping("/carts/{customerId}")
-    public String addCartToCustomer(@PathVariable String customerId){
+    public String addCartToCustomer(@PathVariable int customerId){
         Customer theCustomer = customerService.getCustomerById(customerId);
         if(theCustomer==null){
             throw new RuntimeException("Customer with id " +customerId + " not found, please try again!");

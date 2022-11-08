@@ -8,12 +8,12 @@ public interface CustomerService {
 
     public List<Customer> getAllCustomers();
 
-    public Customer getCustomerById(String customerId);
+    public Customer getCustomerById(int customerId);
 
     public void saveCustomer(Customer theCustomer);
 
-    public void disableCustomer(String customerId);
+    public void disableCustomer(int customerId);
 
-    public boolean checkDuplicateCustomerId(String customerId);
+//    public boolean checkDuplicateCustomerId(String customerId);
 
 }

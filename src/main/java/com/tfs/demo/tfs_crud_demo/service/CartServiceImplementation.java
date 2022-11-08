@@ -50,11 +50,11 @@ public class CartServiceImplementation implements CartService{
     }
 
     @Override
-    public boolean checkDuplicateCustomerId(String customerId) {
+    public boolean checkDuplicateCustomerId(int customerId) {
         Query theQuery = entityManager.createQuery("select theCustomerCart.customerId from Cart");
         for(int i = 0; i < theQuery.getResultList().size();i++){
-            if(customerId.equals(theQuery.getResultList().get(i))){
-                throw new RuntimeException("Duplicate customerID has been found, please try again");
+            if(String.valueOf(customerId).equals(theQuery.getResultList().get(i))){
+                throw new RuntimeException("Duplicate customer ID: " +customerId);
             }
         }
         return true;

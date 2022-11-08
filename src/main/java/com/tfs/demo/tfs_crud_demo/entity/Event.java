@@ -1,5 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -31,14 +33,14 @@ public class Event {
     private boolean status;
     @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name = "eventdetail", joinColumns = @JoinColumn(name = "event_id"),inverseJoinColumns = @JoinColumn(name = "food_id"))
-    @JsonManagedReference
-    private List<Food> foodList;
+//    @JsonManagedReference(value = "event-food")
+    private List<Food> foodListFromEvent;
 
     public Event(){
 
     }
 
-    public Event(String eventId, String eventName, String description, String image_url, Date fromDate, Date toDate, boolean status, List<Food> foodList) {
+    public Event(String eventId, String eventName, String description, String image_url, Date fromDate, Date toDate, boolean status, List<Food> foodListFromEvent) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.description = description;
@@ -46,7 +48,7 @@ public class Event {
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.status = status;
-        this.foodList = foodList;
+        this.foodListFromEvent = foodListFromEvent;
     }
 
     public String getEventId() {
@@ -105,12 +107,12 @@ public class Event {
         this.status = status;
     }
 
-    public List<Food> getFoodList() {
-        return foodList;
+    public List<Food> getFoodListFromEvent() {
+        return foodListFromEvent;
     }
 
-    public void setFoodList(List<Food> foodList) {
-        this.foodList = foodList;
+    public void setFoodListFromEvent(List<Food> foodListFromEvent) {
+        this.foodListFromEvent = foodListFromEvent;
     }
 
     @Override
@@ -123,14 +125,14 @@ public class Event {
                 ", fromDate=" + fromDate +
                 ", toDate=" + toDate +
                 ", status=" + status +
-                ", foodList=" + foodList +
+                ", foodListFromEvent=" + foodListFromEvent +
                 '}';
     }
 
     public void addFood(Food theFood){
-        if(foodList==null){
-            foodList = new ArrayList<>();
+        if(foodListFromEvent==null){
+            foodListFromEvent = new ArrayList<>();
         }
-        foodList.add(theFood);
+        foodListFromEvent.add(theFood);
     }
 }

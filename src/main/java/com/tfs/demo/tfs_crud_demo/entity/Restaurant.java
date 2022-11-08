@@ -24,7 +24,7 @@ public class Restaurant {
     private String restaurantNumber;
 
     @OneToMany(mappedBy = "theRestaurant",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JsonManagedReference
+    @JsonManagedReference(value = "restaurant-staff")
     private List<Staff> staffList;
 
     @Column(name = "status")

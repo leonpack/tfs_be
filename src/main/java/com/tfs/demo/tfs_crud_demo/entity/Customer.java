@@ -10,8 +10,9 @@ import javax.persistence.*;
 public class Customer {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
-    private String customerId;
+    private int customerId;
 
     @Column(name = "customer_full_name")
     private String customerName;
@@ -24,11 +25,11 @@ public class Customer {
 
     @OneToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name = "account_id")
-    @JsonManagedReference
+    @JsonManagedReference(value = "account-customer")
     private Account theAccount;
 
     @OneToOne(mappedBy = "theCustomerCart",cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonBackReference(value = "cart-customer")
     private Cart theCart;
 
     @Column(name = "address")
@@ -37,8 +38,8 @@ public class Customer {
     public Customer(){
 
     }
-    public Customer(String customerId, String customerName, String email, String avatarURL, Account theAccount, Cart theCart, String address) {
-        this.customerId = customerId;
+
+    public Customer(String customerName, String email, String avatarURL, Account theAccount, Cart theCart, String address) {
         this.customerName = customerName;
         this.email = email;
         this.avatarURL = avatarURL;
@@ -47,11 +48,11 @@ public class Customer {
         this.address = address;
     }
 
-    public String getCustomerId() {
+    public int getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
@@ -106,7 +107,7 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer{" +
-                "customerId='" + customerId + '\'' +
+                "customerId=" + customerId +
                 ", customerName='" + customerName + '\'' +
                 ", email='" + email + '\'' +
                 ", avatarURL='" + avatarURL + '\'' +

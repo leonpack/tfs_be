@@ -1,5 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class Region {
     private String region_name;
 
     @OneToMany(mappedBy = "theRegion",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JsonManagedReference
+    @JsonManagedReference(value = "region-food")
     private List<Food> foodList;
 
     public Region(){
