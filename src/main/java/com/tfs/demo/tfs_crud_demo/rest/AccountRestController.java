@@ -1,7 +1,9 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.entity.Account;
+import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
+import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +15,12 @@ import java.util.List;
 public class AccountRestController {
 
     private AccountService accountService;
+    private CustomerService customerService;
 
     @Autowired
-    public AccountRestController(AccountService theAccountService){
+    public AccountRestController(AccountService theAccountService, CustomerService theCustomerService){
         accountService = theAccountService;
+        customerService = theCustomerService;
     }
 
     @GetMapping("/accounts")
@@ -25,14 +29,26 @@ public class AccountRestController {
         return accountService.getAllAccounts();
     }
 
-    @GetMapping("/accounts/{accountId}")
-    @ApiOperation("Return account based on accountId")
-    public Account getAccountByAccountId(@PathVariable String accountId){
+//    @GetMapping("/accounts/{accountId}")
+//    @ApiOperation("Return account based on accountId")
+//    public Account getAccountByAccountId(@PathVariable String accountId){
+//        Account theAccount = accountService.getAccountById(accountId);
+//        if(theAccount==null){
+//            throw new RuntimeException("Account with id - " +accountId+ " not found!");
+//        }
+//        return theAccount;
+//    }
+
+    @GetMapping("/accounts/{accountId}&{password}")
+    public Customer checkLogin(@PathVariable String accountId, @PathVariable String password){
         Account theAccount = accountService.getAccountById(accountId);
         if(theAccount==null){
-            throw new RuntimeException("Account with id - " +accountId+ " not found!");
+            return null;
         }
-        return theAccount;
+        if(!password.equals(theAccount.getPassword())){
+            throw new RuntimeException("Wrong password");
+        }
+        return theAccount.getTheCustomer();
     }
 
     @PostMapping("/accounts")

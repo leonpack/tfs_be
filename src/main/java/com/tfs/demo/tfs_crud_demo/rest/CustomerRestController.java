@@ -1,8 +1,10 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.entity.Account;
+import com.tfs.demo.tfs_crud_demo.entity.Cart;
 import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
+import com.tfs.demo.tfs_crud_demo.service.CartService;
 import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,8 @@ public class CustomerRestController {
         theCustomer.setTheAccount(theAccount);
         theCustomer.setCustomerId(0);
         customerService.saveCustomer(theCustomer);
+//        Cart theCart = new Cart(theCustomer);
+//        cartService.saveCart(theCart);
         return "Saved " +theCustomer;
     }
 
