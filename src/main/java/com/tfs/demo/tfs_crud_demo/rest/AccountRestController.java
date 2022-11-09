@@ -39,7 +39,7 @@ public class AccountRestController {
 //        return theAccount;
 //    }
 
-    @GetMapping("/accounts/{accountId}&{password}")
+    @PostMapping ("/accountsByUsername/{accountId}&{password}")
     public Customer checkLogin(@PathVariable String accountId, @PathVariable String password){
         Account theAccount = accountService.getAccountById(accountId);
         if(theAccount==null){
@@ -51,7 +51,7 @@ public class AccountRestController {
         return theAccount.getTheCustomer();
     }
 
-    @GetMapping("/accountsByPhone/{phoneNumber}&{password}")
+    @PostMapping("/accountsByPhone/{phoneNumber}&{password}")
     public Customer checkLoginByPhone(@PathVariable String phoneNumber,@PathVariable String password){
         Account theAccount = accountService.checkLoginByPhone(phoneNumber);
         if(theAccount == null){
