@@ -18,4 +18,5 @@ public interface AccountService {
 
     public boolean checkDuplicatePhoneNumber(String phoneNumber);
 
+    public Account checkLoginByPhone(String phoneNumber);
 }

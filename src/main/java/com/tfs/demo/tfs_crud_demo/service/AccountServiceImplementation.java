@@ -82,5 +82,10 @@ public class AccountServiceImplementation implements AccountService{
         return true;
     }
 
+    @Override
+    public Account checkLoginByPhone(String phoneNumber) {
+        return accountRepository.findAccountByPhoneNumber(phoneNumber);
+    }
+
 
 }

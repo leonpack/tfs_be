@@ -51,6 +51,18 @@ public class AccountRestController {
         return theAccount.getTheCustomer();
     }
 
+    @GetMapping("/accountsByPhone/{phoneNumber}&{password}")
+    public Customer checkLoginByPhone(@PathVariable String phoneNumber,@PathVariable String password){
+        Account theAccount = accountService.checkLoginByPhone(phoneNumber);
+        if(theAccount == null){
+            throw new RuntimeException("Account not found!");
+        }
+        if(!theAccount.getPassword().equals(password)){
+            throw new RuntimeException("Wrong password");
+        }
+        return theAccount.getTheCustomer();
+    }
+
     @PostMapping("/accounts")
     @ApiOperation("Add new account (need full Account's JSON)")
     public String addNewAccount(@RequestBody Account theAccount){
