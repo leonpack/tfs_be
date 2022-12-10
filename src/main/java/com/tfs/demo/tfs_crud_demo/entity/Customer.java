@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -28,9 +30,13 @@ public class Customer {
     @JsonManagedReference(value = "account-customer")
     private Account theAccount;
 
-    @OneToOne(mappedBy = "theCustomerCart",cascade = CascadeType.ALL)
-    @JsonBackReference(value = "cart-customer")
-    private Cart theCart;
+//    @OneToMany(mappedBy = "theCustomerOrder",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+//    @JsonManagedReference(value = "customer-order")
+//    private List<Order> orderList;
+
+//    @OneToOne(mappedBy = "theCustomerCart",cascade = CascadeType.ALL)
+//    @JsonBackReference(value = "cart-customer")
+//    private Cart theCart;
 
     @Column(name = "address")
     private String address;
@@ -39,12 +45,11 @@ public class Customer {
 
     }
 
-    public Customer(String customerName, String email, String avatarURL, Account theAccount, Cart theCart, String address) {
+    public Customer(String customerName, String email, String avatarURL, Account theAccount, String address) {
         this.customerName = customerName;
         this.email = email;
         this.avatarURL = avatarURL;
         this.theAccount = theAccount;
-        this.theCart = theCart;
         this.address = address;
     }
 
@@ -96,14 +101,6 @@ public class Customer {
         this.address = address;
     }
 
-    public Cart getTheCart() {
-        return theCart;
-    }
-
-    public void setTheCart(Cart theCart) {
-        this.theCart = theCart;
-    }
-
     @Override
     public String toString() {
         return "Customer{" +
@@ -112,9 +109,14 @@ public class Customer {
                 ", email='" + email + '\'' +
                 ", avatarURL='" + avatarURL + '\'' +
                 ", theAccount=" + theAccount +
-                ", theCart=" + theCart +
                 ", address='" + address + '\'' +
                 '}';
     }
 
+//    public void addOrder(Order theOrder){
+//        if(orderList == null){
+//            orderList = new ArrayList<>();
+//        }
+//        orderList.add(theOrder);
+//    }
 }

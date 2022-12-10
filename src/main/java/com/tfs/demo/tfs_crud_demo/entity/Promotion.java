@@ -1,9 +1,8 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Promotion")
@@ -15,6 +14,10 @@ public class Promotion {
 
     @Column(name = "promotion_quantity")
     private int promotionQuantity;
+
+//    @OneToOne(mappedBy = "thePromotion",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+//    @JsonBackReference(value = "order-promotion")
+//    private Order theOrder;
 
     @Column(name = "discount_percent")
     private int discountPercent;

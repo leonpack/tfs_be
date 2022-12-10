@@ -1,6 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,6 +27,11 @@ public class Restaurant {
     @OneToMany(mappedBy = "theRestaurant",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JsonManagedReference(value = "restaurant-staff")
     private List<Staff> staffList;
+
+    //TODO need fixes
+//    @OneToMany(mappedBy = "theRestaurantOrder",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+//    @JsonManagedReference(value = "restaurant-order")
+//    private List<Order> orderList;
 
     @Column(name = "status")
     private boolean status;
@@ -98,6 +104,8 @@ public class Restaurant {
                 ", restaurantLocation='" + restaurantLocation + '\'' +
                 ", restaurantName='" + restaurantName + '\'' +
                 ", restaurantNumber='" + restaurantNumber + '\'' +
+                ", staffList=" + staffList +
+//                ", orderList=" + orderList +
                 ", status=" + status +
                 '}';
     }
@@ -108,5 +116,12 @@ public class Restaurant {
         }
         staffList.add(theStaff);
     }
+
+//    public void addOrder(Order theOrder){
+//        if(orderList == null){
+//            orderList = new ArrayList<>();
+//        }
+//        orderList.add(theOrder);
+//    }
 
 }

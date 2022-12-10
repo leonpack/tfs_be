@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "staff")
@@ -32,6 +34,12 @@ public class Staff {
     @JsonBackReference(value = "restaurant-staff")
     private Restaurant theRestaurant;
 
+    //TODO fix this issues with Order
+//    @OneToMany(mappedBy = "theStaffOrder",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+//    @JsonManagedReference(value = "staff-order")
+//    private List<Order> orderList;
+
+
     @Column(name = "activity_status")
     private String staffActivityStatus;
 
@@ -42,7 +50,7 @@ public class Staff {
 
     }
 
-    public Staff(String staffId, String staffFullName, String staffEmail, String staffAvatarUrl, Account theAccountForStaff, Restaurant theRestaurant, String staffActivityStatus, boolean staffStatus) {
+    public Staff(String staffId, String staffFullName, String staffEmail, String staffAvatarUrl, Account theAccountForStaff, Restaurant theRestaurants, String staffActivityStatus, boolean staffStatus) {
         this.staffId = staffId;
         this.staffFullName = staffFullName;
         this.staffEmail = staffEmail;
@@ -117,6 +125,14 @@ public class Staff {
         this.staffStatus = staffStatus;
     }
 
+//    public List<Order> getOrderList() {
+//        return orderList;
+//    }
+//
+//    public void setOrderList(List<Order> orderList) {
+//        this.orderList = orderList;
+//    }
+
     @Override
     public String toString() {
         return "Staff{" +
@@ -126,9 +142,16 @@ public class Staff {
                 ", staffAvatarUrl='" + staffAvatarUrl + '\'' +
                 ", theAccountForStaff=" + theAccountForStaff +
                 ", theRestaurant=" + theRestaurant +
+//                ", orderList=" + orderList +
                 ", staffActivityStatus='" + staffActivityStatus + '\'' +
                 ", staffStatus=" + staffStatus +
                 '}';
     }
 
+//    public void addOrder(Order theOrder){
+//        if(orderList == null){
+//            orderList = new ArrayList<>();
+//        }
+//        orderList.add(theOrder);
+//    }
 }
