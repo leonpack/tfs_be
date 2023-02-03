@@ -1,11 +1,14 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "staff")
@@ -33,12 +36,6 @@ public class Staff {
     @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
     @JsonBackReference(value = "restaurant-staff")
     private Restaurant theRestaurant;
-
-    //TODO fix this issues with Order
-//    @OneToMany(mappedBy = "theStaffOrder",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-//    @JsonManagedReference(value = "staff-order")
-//    private List<Order> orderList;
-
 
     @Column(name = "activity_status")
     private String staffActivityStatus;
@@ -148,10 +145,4 @@ public class Staff {
                 '}';
     }
 
-//    public void addOrder(Order theOrder){
-//        if(orderList == null){
-//            orderList = new ArrayList<>();
-//        }
-//        orderList.add(theOrder);
-//    }
 }

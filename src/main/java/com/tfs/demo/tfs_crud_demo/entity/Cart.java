@@ -1,12 +1,11 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "cart")
@@ -15,72 +14,67 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
-    private int cartId;
+    private int id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @Column(name = "total_price")
+    private Double totalPrice;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "customer_id")
-    @JsonManagedReference(value = "cart-customer")
-    private Customer theCustomerCart;
+    @JsonIgnore
+    private Customer customer;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "cartdetail", joinColumns = @JoinColumn(name = "cart_id"),inverseJoinColumns = @JoinColumn(name = "food_id"))
-//    @JsonManagedReference(value = "cart-food")
-    private List<Food> foodInCartList;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "cart-detail")
+    private Set<CartDetail> cartItems = new HashSet<>();
 
     public Cart(){
 
     }
 
-    public Cart(Customer theCustomerCart) {
-        this.theCustomerCart = theCustomerCart;
+    public Cart(Double totalPrice, Customer customer) {
+        this.totalPrice = totalPrice;
+        this.customer = customer;
     }
 
-    public Cart(List<Food> foodInCartList) {
-        this.foodInCartList = foodInCartList;
+    public int getId() {
+        return id;
     }
 
-    public int getCartId() {
-        return cartId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
+    public Double getTotalPrice() {
+        return totalPrice;
     }
 
-    public Customer getTheCustomerCart() {
-        return theCustomerCart;
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public void setTheCustomerCart(Customer theCustomerCart) {
-        this.theCustomerCart = theCustomerCart;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public List<Food> getFoodInCartList() {
-        return foodInCartList;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public void setFoodInCartList(List<Food> foodInCartList) {
-        this.foodInCartList = foodInCartList;
+    public Set<CartDetail> getCartItems() {
+        return cartItems;
     }
 
-    @Override
-    public String toString() {
-        return "Cart{" +
-                "cartId=" + cartId +
-                ", theCustomerCart=" + theCustomerCart +
-                ", foodInCartList=" + foodInCartList +
-                '}';
+    public void setCartItems(Set<CartDetail> cartItems) {
+        this.cartItems = cartItems;
     }
 
-    public void addFood(Food theFood){
-        if(foodInCartList==null){
-            foodInCartList = new ArrayList<>();
+    public void add(CartDetail item){
+        if(cartItems == null){
+            cartItems = new HashSet<>();
         }
-        foodInCartList.add(theFood);
-    }
-
-    public void removeFood(Food theFood){
-        foodInCartList.remove(theFood);
+        cartItems.add(item);
+        item.setCart(this);
     }
 
 }

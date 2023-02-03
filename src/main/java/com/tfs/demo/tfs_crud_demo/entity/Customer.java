@@ -1,11 +1,11 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -28,15 +28,11 @@ public class Customer {
     @OneToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name = "account_id")
     @JsonManagedReference(value = "account-customer")
+    @JsonIgnore
     private Account theAccount;
 
-//    @OneToMany(mappedBy = "theCustomerOrder",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-//    @JsonManagedReference(value = "customer-order")
-//    private List<Order> orderList;
-
-//    @OneToOne(mappedBy = "theCustomerCart",cascade = CascadeType.ALL)
-//    @JsonBackReference(value = "cart-customer")
-//    private Cart theCart;
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Cart cart;
 
     @Column(name = "address")
     private String address;
@@ -45,11 +41,12 @@ public class Customer {
 
     }
 
-    public Customer(String customerName, String email, String avatarURL, Account theAccount, String address) {
+    public Customer(String customerName, String email, String avatarURL, Account theAccount, Cart cart, String address) {
         this.customerName = customerName;
         this.email = email;
         this.avatarURL = avatarURL;
         this.theAccount = theAccount;
+        this.cart = cart;
         this.address = address;
     }
 
@@ -101,22 +98,11 @@ public class Customer {
         this.address = address;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "customerId=" + customerId +
-                ", customerName='" + customerName + '\'' +
-                ", email='" + email + '\'' +
-                ", avatarURL='" + avatarURL + '\'' +
-                ", theAccount=" + theAccount +
-                ", address='" + address + '\'' +
-                '}';
+    public Cart getCart() {
+        return cart;
     }
 
-//    public void addOrder(Order theOrder){
-//        if(orderList == null){
-//            orderList = new ArrayList<>();
-//        }
-//        orderList.add(theOrder);
-//    }
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 }

@@ -15,7 +15,6 @@ public class AccountServiceImplementation implements AccountService{
 
     private AccountRepository accountRepository;
     private EntityManager entityManager;
-
     @Autowired
     public AccountServiceImplementation(AccountRepository theAccountRepository, EntityManager theEntityManager){
         accountRepository = theAccountRepository;

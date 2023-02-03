@@ -1,11 +1,14 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "restaurant")
@@ -18,6 +21,12 @@ public class Restaurant {
     @Column(name = "restaurant_location")
     private String restaurantLocation;
 
+    @Column(name = "latitude")
+    private String latitude;
+
+    @Column(name = "longitude")
+    private String longitude;
+
     @Column(name = "restaurant_name")
     private String restaurantName;
 
@@ -28,11 +37,6 @@ public class Restaurant {
     @JsonManagedReference(value = "restaurant-staff")
     private List<Staff> staffList;
 
-    //TODO need fixes
-//    @OneToMany(mappedBy = "theRestaurantOrder",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-//    @JsonManagedReference(value = "restaurant-order")
-//    private List<Order> orderList;
-
     @Column(name = "status")
     private boolean status;
 
@@ -40,12 +44,13 @@ public class Restaurant {
 
     }
 
-    public Restaurant(String restaurantId, String restaurantLocation, String restaurantName, String restaurantNumber, List<Staff> staffList, boolean status) {
+    public Restaurant(String restaurantId, String restaurantLocation, String latitude, String longitude, String restaurantName, String restaurantNumber, boolean status) {
         this.restaurantId = restaurantId;
         this.restaurantLocation = restaurantLocation;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.restaurantName = restaurantName;
         this.restaurantNumber = restaurantNumber;
-        this.staffList = staffList;
         this.status = status;
     }
 
@@ -63,6 +68,22 @@ public class Restaurant {
 
     public void setRestaurantLocation(String restaurantLocation) {
         this.restaurantLocation = restaurantLocation;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getRestaurantName() {
@@ -97,6 +118,7 @@ public class Restaurant {
         this.status = status;
     }
 
+
     @Override
     public String toString() {
         return "Restaurant{" +
@@ -116,12 +138,5 @@ public class Restaurant {
         }
         staffList.add(theStaff);
     }
-
-//    public void addOrder(Order theOrder){
-//        if(orderList == null){
-//            orderList = new ArrayList<>();
-//        }
-//        orderList.add(theOrder);
-//    }
 
 }

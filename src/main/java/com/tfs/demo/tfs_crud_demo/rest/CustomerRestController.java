@@ -13,15 +13,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api")
 public class CustomerRestController {
     private CustomerService customerService;
     private AccountService accountService;
 
+    private CartService cartService;
+
     @Autowired
-    public CustomerRestController(CustomerService theCustomerService, AccountService theAccountService){
+    public CustomerRestController(CustomerService theCustomerService, AccountService theAccountService, CartService theCartService){
         customerService = theCustomerService;
         accountService = theAccountService;
+        cartService = theCartService;
     }
 
     @GetMapping("/customers")
@@ -48,6 +52,8 @@ public class CustomerRestController {
         theCustomer.setTheAccount(theAccount);
         theCustomer.setCustomerId(0);
         customerService.saveCustomer(theCustomer);
+        Cart theCart = new Cart((double) 0, theCustomer);
+        cartService.saveCart(theCart);
 //        Cart theCart = new Cart(theCustomer);
 //        cartService.saveCart(theCart);
         return "Saved " +theCustomer;

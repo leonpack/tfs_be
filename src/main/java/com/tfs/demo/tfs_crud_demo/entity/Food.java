@@ -31,12 +31,12 @@ public class Food {
     @Column(name = "image_url")
     private String imgUrl;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "category_id",referencedColumnName = "category_id")
     @JsonBackReference(value = "category-food")
     private Category theCategory;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "region_id",referencedColumnName = "region_id")
     @JsonBackReference(value = "region-food")
     private Region theRegion;
@@ -53,10 +53,6 @@ public class Food {
     @JsonIgnore
     private List<Event> eventList;
 
-//    @ManyToMany(mappedBy = "foodInCartList",cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties("foodInCartList")
-//    @JsonIgnore
-//    private List<Cart> cartList;
 
     public Food(){
 
@@ -154,21 +150,6 @@ public class Food {
         this.purchaseNum = purchaseNum;
     }
 
-    @Override
-    public String toString() {
-        return "Food{" +
-                "id=" + id +
-                ", foodName='" + foodName + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", imgUrl='" + imgUrl + '\'' +
-                ", theCategory=" + theCategory +
-                ", theRegion=" + theRegion +
-                ", status=" + status +
-                ", purchaseNum=" + purchaseNum +
-                ", eventList=" + eventList +
-                '}';
-    }
 
     public void addEvent(Event theEvent){
         if(eventList == null){
@@ -176,12 +157,5 @@ public class Food {
         }
         eventList.add(theEvent);
     }
-
-//    public void addCart(Cart theCart){
-//        if(cartList == null){
-//            cartList = new ArrayList<>();
-//        }
-//        cartList.add(theCart);
-//    }
 
 }
