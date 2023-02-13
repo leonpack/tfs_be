@@ -12,21 +12,27 @@ public class CartDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private int cart_item_id;
 
     @Column(name = "food_id")
-    private int foodId;
+    private int id;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "image")
+    private String image;
+
     @Column(name = "current_price")
-    private Double current_price;
+    private Double price;
 
     @Column(name = "sub_total")
     private Double subTotal;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne()
     @JoinColumn(name = "cart_id")
     @JsonBackReference(value = "cart-detail")
     private Cart cart;
@@ -35,11 +41,21 @@ public class CartDetail {
 
     }
 
-    public CartDetail(int foodId, int quantity, Double current_price, Double subTotal) {
-        this.foodId = foodId;
+    public CartDetail(int id, String name, int quantity, String image, Double price, Double subTotal) {
+        this.id = id;
+        this.name = name;
         this.quantity = quantity;
-        this.current_price = current_price;
+        this.image = image;
+        this.price = price;
         this.subTotal = subTotal;
+    }
+
+    public int getCart_item_id() {
+        return cart_item_id;
+    }
+
+    public void setCart_item_id(int cart_item_id) {
+        this.cart_item_id = cart_item_id;
     }
 
     public int getId() {
@@ -50,14 +66,6 @@ public class CartDetail {
         this.id = id;
     }
 
-    public int getFoodId() {
-        return foodId;
-    }
-
-    public void setFoodId(int foodId) {
-        this.foodId = foodId;
-    }
-
     public int getQuantity() {
         return quantity;
     }
@@ -66,12 +74,12 @@ public class CartDetail {
         this.quantity = quantity;
     }
 
-    public Double getCurrent_price() {
-        return current_price;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setCurrent_price(Double current_price) {
-        this.current_price = current_price;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public Cart getCart() {
@@ -88,5 +96,21 @@ public class CartDetail {
 
     public void setSubTotal(Double subTotal) {
         this.subTotal = subTotal;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

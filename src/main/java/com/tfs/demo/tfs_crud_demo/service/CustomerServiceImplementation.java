@@ -1,6 +1,8 @@
 package com.tfs.demo.tfs_crud_demo.service;
 
+import com.tfs.demo.tfs_crud_demo.dao.AccountRepository;
 import com.tfs.demo.tfs_crud_demo.dao.CustomerRepository;
+import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,13 @@ import java.util.Optional;
 public class CustomerServiceImplementation implements CustomerService{
 
     private CustomerRepository customerRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public CustomerServiceImplementation(CustomerRepository theCustomerRepository){
+    public CustomerServiceImplementation(CustomerRepository theCustomerRepository,
+                                         AccountRepository accountRepository){
         customerRepository = theCustomerRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -51,6 +56,11 @@ public class CustomerServiceImplementation implements CustomerService{
         }
         theCustomer.getTheAccount().setStatus(false);
 
+    }
+
+    @Override
+    public Customer getCustomerByTheAccount(Account theAccount) {
+        return customerRepository.getCustomerByTheAccount(theAccount);
     }
 
 //    @Override

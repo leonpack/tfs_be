@@ -33,7 +33,7 @@ public class Restaurant {
     @Column(name = "restaurant_phone_number")
     private String restaurantNumber;
 
-    @OneToMany(mappedBy = "theRestaurant",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "theRestaurant")
     @JsonManagedReference(value = "restaurant-staff")
     private List<Staff> staffList;
 
@@ -116,20 +116,6 @@ public class Restaurant {
 
     public void setStatus(boolean status) {
         this.status = status;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Restaurant{" +
-                "restaurantId='" + restaurantId + '\'' +
-                ", restaurantLocation='" + restaurantLocation + '\'' +
-                ", restaurantName='" + restaurantName + '\'' +
-                ", restaurantNumber='" + restaurantNumber + '\'' +
-                ", staffList=" + staffList +
-//                ", orderList=" + orderList +
-                ", status=" + status +
-                '}';
     }
 
     public void addStaff(Staff theStaff){

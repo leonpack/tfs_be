@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,13 +27,13 @@ public class Customer {
     @Column(name = "avatar_url")
     private String avatarURL;
 
-    @OneToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToOne()
     @JoinColumn(name = "account_id")
     @JsonManagedReference(value = "account-customer")
     @JsonIgnore
     private Account theAccount;
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "customer")
     private Cart cart;
 
     @Column(name = "address")
@@ -105,4 +107,5 @@ public class Customer {
     public void setCart(Cart cart) {
         this.cart = cart;
     }
+
 }

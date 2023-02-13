@@ -4,7 +4,6 @@ import com.tfs.demo.tfs_crud_demo.entity.Restaurant;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
 import com.tfs.demo.tfs_crud_demo.service.RestaurantService;
 import com.tfs.demo.tfs_crud_demo.service.StaffService;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +24,11 @@ public class RestaurantRestController {
     }
 
     @GetMapping("/restaurants")
-    @ApiOperation("Return list of all TFS's restaurant")
     public List<Restaurant> getAllRestaurant(){
         return restaurantService.getAllRestaurants();
     }
 
     @GetMapping("/restaurants/{restaurantId}")
-    @ApiOperation("Return TFS restaurant based on restaurantId")
     public Restaurant getRestaurantById(@PathVariable String restaurantId){
         Restaurant theRestaurant = restaurantService.getRestaurantById(restaurantId);
 
@@ -42,7 +39,6 @@ public class RestaurantRestController {
     }
 
     @PostMapping("/restaurants")
-    @ApiOperation("Add new TFS restaurant (need full Restaurant's Json)")
     public String AddNewRestaurant(@RequestBody Restaurant theRestaurant){
         if(!restaurantService.checkDuplicateId(theRestaurant.getRestaurantId())){
             return "Duplicate with id -" +theRestaurant.getRestaurantId() + " has been found!, please try again";
@@ -58,21 +54,18 @@ public class RestaurantRestController {
     }
 
     @PutMapping("/restaurants")
-    @ApiOperation("update existing TFS's Restaurant information (need full Restaurant's Json)")
     public Restaurant updateRestaurant(@RequestBody Restaurant theRestaurant){
         restaurantService.saveRestaurant(theRestaurant);
         return theRestaurant;
     }
 
     @DeleteMapping("/restaurants/{restaurantId}")
-    @ApiOperation("Disable existing TFS's Restaurant based on restaurantId")
     public String DisableRestaurant(@PathVariable String restaurantId){
         restaurantService.disableRestaurant(restaurantId);
         return "Disable restaurant with id - "+restaurantId + " completed!";
     }
 
     @PostMapping("/restaurants/{staffId}TO{restaurantId}")
-    @ApiOperation("Add staff to restaurant(need 2 path variable: staffId & restaurantId)")
     public String addStaffToRestaurant(@PathVariable String staffId, @PathVariable String restaurantId){
         Staff theStaff = staffService.getStaffById(staffId);
         Restaurant theRestaurant = restaurantService.getRestaurantById(restaurantId);

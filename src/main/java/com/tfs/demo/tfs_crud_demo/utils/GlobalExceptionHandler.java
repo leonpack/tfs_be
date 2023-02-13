@@ -12,6 +12,7 @@ public class GlobalExceptionHandler{
     public ResponseEntity<GlobalExceptionResponse> handleException(Exception ex){
         //create a GlobalExceptionResponse
         GlobalExceptionResponse error = new GlobalExceptionResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), System.currentTimeMillis());
+        ex.printStackTrace();
         //return ResponseEntity
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }

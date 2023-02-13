@@ -2,6 +2,7 @@ package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 
@@ -30,7 +31,7 @@ public class Account {
     @Column(name = "status")
     private boolean status;
 
-    @OneToOne(mappedBy = "theAccount",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToOne(mappedBy = "theAccount",cascade = CascadeType.ALL)
     @JsonBackReference(value = "account-customer")
     private Customer theCustomer;
 

@@ -27,12 +27,12 @@ public class Staff {
     @Column(name = "staff_avatar_url")
     private String staffAvatarUrl;
 
-    @OneToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToOne()
     @JoinColumn(name = "account_id")
     @JsonManagedReference(value = "account-staff")
     private Account theAccountForStaff;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToOne()
     @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
     @JsonBackReference(value = "restaurant-staff")
     private Restaurant theRestaurant;
@@ -120,29 +120,6 @@ public class Staff {
 
     public void setStaffStatus(boolean staffStatus) {
         this.staffStatus = staffStatus;
-    }
-
-//    public List<Order> getOrderList() {
-//        return orderList;
-//    }
-//
-//    public void setOrderList(List<Order> orderList) {
-//        this.orderList = orderList;
-//    }
-
-    @Override
-    public String toString() {
-        return "Staff{" +
-                "staffId='" + staffId + '\'' +
-                ", staffFullName='" + staffFullName + '\'' +
-                ", staffEmail='" + staffEmail + '\'' +
-                ", staffAvatarUrl='" + staffAvatarUrl + '\'' +
-                ", theAccountForStaff=" + theAccountForStaff +
-                ", theRestaurant=" + theRestaurant +
-//                ", orderList=" + orderList +
-                ", staffActivityStatus='" + staffActivityStatus + '\'' +
-                ", staffStatus=" + staffStatus +
-                '}';
     }
 
 }

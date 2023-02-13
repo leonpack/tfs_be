@@ -1,0 +1,1 @@
+web: java -Xms256m -jar tfs_crud_demo-0.0.1-SNAPSHOT.jar
