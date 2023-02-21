@@ -78,6 +78,18 @@ public class CustomerRestController {
         if(theCustomer.getCart()==null){
             theCustomer.setCart(customer.getCart());
         }
+        if(theCustomer.getCustomerName()==null){
+            theCustomer.setCustomerName(customer.getCustomerName());
+        }
+        if(theCustomer.getAddress()==null){
+            theCustomer.setAddress(customer.getAddress());
+        }
+        if(theCustomer.getEmail()==null){
+            theCustomer.setAddress(customer.getEmail());
+        }
+        if(theCustomer.getAvatarURL()==null){
+            theCustomer.setAvatarURL(customer.getAvatarURL());
+        }
         customerService.saveCustomer(theCustomer);
         return theCustomer;
     }
@@ -86,13 +98,6 @@ public class CustomerRestController {
     public String disableCustomer(@PathVariable int customerId){
         customerService.disableCustomer(customerId);
         return "Disable customer with id " +customerId + " completed";
-    }
-
-    @PostMapping("/customers/{customerId}SET{imageURL}")
-    public String updateCustomerAvatar(@PathVariable int customerId, @PathVariable String imageURL){
-        Customer theCustomer = customerService.getCustomerById(customerId);
-        theCustomer.setAvatarURL(imageURL);
-        return "Update customer " +theCustomer +" avatar successfully!";
     }
 
 }

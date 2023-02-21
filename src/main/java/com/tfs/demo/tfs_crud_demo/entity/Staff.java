@@ -27,7 +27,7 @@ public class Staff {
     @Column(name = "staff_avatar_url")
     private String staffAvatarUrl;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "account_id")
     @JsonManagedReference(value = "account-staff")
     private Account theAccountForStaff;

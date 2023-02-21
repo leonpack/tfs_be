@@ -11,6 +11,8 @@ public interface FoodService {
 
     public Food getFoodById(int id);
 
+    public List<Object[]> getFoodDetail(int id);
+
     public void saveFood(Food theFood);
 
     public void disableFood(int id);

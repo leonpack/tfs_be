@@ -6,6 +6,8 @@ import com.tfs.demo.tfs_crud_demo.service.AccountService;
 import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 //import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,7 +40,7 @@ public class AccountRestController {
         return theAccount;
     }
 
-    @PostMapping ("/accountsByUsername/{accountId}&{password}")
+    @GetMapping ("/accountsByUsername/{accountId}&{password}")
     public Customer checkLogin(@PathVariable String accountId, @PathVariable String password){
         Account theAccount = accountService.getAccountById(accountId);
         if(theAccount==null){
@@ -50,7 +52,7 @@ public class AccountRestController {
         return theAccount.getTheCustomer();
     }
 
-    @PostMapping("/accountsByPhone/{phoneNumber}&{password}")
+    @GetMapping("/accountsByPhone/{phoneNumber}&{password}")
     public Customer checkLoginByPhone(@PathVariable String phoneNumber,@PathVariable String password){
         Account theAccount = accountService.checkLoginByPhone(phoneNumber);
         if(theAccount == null){
@@ -73,20 +75,20 @@ public class AccountRestController {
         accountService.saveAccount(theAccount);
         return "Saved account: "+theAccount;
     }
-
-    @PutMapping("/accounts")
-    public Account updateAccount(@RequestBody Account theAccount){
-        accountService.saveAccount(theAccount);
-        return theAccount;
-    }
-
-    @DeleteMapping("/accounts/{accountId}")
-    public String disableAccount(@PathVariable String accountId){
-        Account theAccount = accountService.getAccountById(accountId);
-        if(theAccount==null){
-            throw new RuntimeException("Account with id - "+accountId+ " not found!");
-        }
-        accountService.disableAccount(accountId);
-        return "Disable account with id - " +accountId+ " completed!";
-    }
+//
+//    @PutMapping("/accounts")
+//    public Account updateAccount(@RequestBody Account theAccount){
+//        accountService.saveAccount(theAccount);
+//        return theAccount;
+//    }
+//
+//    @DeleteMapping("/accounts/{accountId}")
+//    public String disableAccount(@PathVariable String accountId){
+//        Account theAccount = accountService.getAccountById(accountId);
+//        if(theAccount==null){
+//            throw new RuntimeException("Account with id - "+accountId+ " not found!");
+//        }
+//        accountService.disableAccount(accountId);
+//        return "Disable account with id - " +accountId+ " completed!";
+//    }
 }

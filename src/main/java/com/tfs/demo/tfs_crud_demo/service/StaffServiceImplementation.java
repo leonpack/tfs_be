@@ -1,10 +1,13 @@
 package com.tfs.demo.tfs_crud_demo.service;
 
+import com.tfs.demo.tfs_crud_demo.dao.AccountRepository;
 import com.tfs.demo.tfs_crud_demo.dao.StaffRepository;
+import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,10 +15,13 @@ import java.util.Optional;
 public class StaffServiceImplementation implements StaffService{
 
     private StaffRepository staffRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public StaffServiceImplementation(StaffRepository theStaffRepository){
+    public StaffServiceImplementation(StaffRepository theStaffRepository,
+                                      AccountRepository accountRepository){
         staffRepository = theStaffRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -33,6 +39,11 @@ public class StaffServiceImplementation implements StaffService{
             throw new RuntimeException("Staff with id - " +staffId+ " not found!");
         }
         return theStaff;
+    }
+
+    @Override
+    public Staff getStaffByTheAccount(Account theAccount) {
+        return staffRepository.getStaffByTheAccountForStaff(theAccount);
     }
 
 
@@ -57,6 +68,15 @@ public class StaffServiceImplementation implements StaffService{
         Optional<Staff> result = staffRepository.findById(staffId);
         if(result.isPresent()){
             throw new RuntimeException("Duplicate staff id - " +staffId+ " has been found, please try again");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkDuplicateAccountId(String accountId) {
+        Optional<Account> result = accountRepository.findById(accountId);
+        if(result.isPresent()){
+            throw new RuntimeException("Account with id - " +accountId+ " has been found, please try again");
         }
         return true;
     }

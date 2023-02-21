@@ -29,6 +29,21 @@ public class OrderRestController {
         return order;
     }
 
+    @GetMapping("/orders/customer/{cusId}")
+    public List<Order> getAllOrderByCustomer(@PathVariable int cusId){
+        return orderService.getAllOrderByCustomerId(cusId);
+    }
+
+    @GetMapping("/orders/staff/{staffId}")
+    public List<Order> getAllOrderByStaff(@PathVariable String staffId){
+        return orderService.getAllOrderByStaffId(staffId);
+    }
+
+    @GetMapping("/orders/restaurant/{resId}")
+    public List<Order> getAllOrderByRestaurant(@PathVariable String resId){
+        return orderService.getAllOrderByRestaurantId(resId);
+    }
+
     @PostMapping("/orders")
     public Order addNewOrder(@RequestBody Order order){
         orderService.saveOrder(order);
@@ -87,5 +102,12 @@ public class OrderRestController {
         orderService.saveOrder(order);
         return order;
     }
+
+    @DeleteMapping("/orders/{orderId}")
+    public String deleteOrder(@PathVariable int orderId){
+        orderService.deleteOrder(orderId);
+        return "Deleted order " + orderId;
+    }
+
 
 }

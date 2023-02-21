@@ -34,6 +34,11 @@ public class FoodRestController {
         return theFood;
     }
 
+    @GetMapping("/foods/detail/{foodId}")
+    public List<Object[]> getFoodDetail(@PathVariable int foodId){
+        return foodService.getFoodDetail(foodId);
+    }
+
     @PostMapping("/foods")
     public Food addNewFood(@RequestBody Food food){
         food.setId(0);
@@ -43,6 +48,32 @@ public class FoodRestController {
 
     @PutMapping("/foods")
     public Food updateTheFood(@RequestBody Food food){
+        Food theFood1 = foodService.getFoodById(food.getId());
+
+        if(food.getFoodName()==null){
+            food.setFoodName(theFood1.getFoodName());
+        }
+        if(food.getDescription()==null){
+            food.setFoodName(theFood1.getDescription());
+        }
+        if(food.getEventList()==null){
+            food.setEventList(theFood1.getEventList());
+        }
+        if(food.getImgUrl()==null){
+            food.setImgUrl(theFood1.getImgUrl());
+        }
+        if(String.valueOf(food.getPrice())==null){
+            food.setPrice(theFood1.getPrice());
+        }
+        if(food.getPurchaseNum()==null){
+            food.setPurchaseNum(theFood1.getPurchaseNum());
+        }
+        if(food.getTheCategory()==null){
+            food.setTheCategory(theFood1.getTheCategory());
+        }
+        if(food.getTheRegion()==null){
+            food.setTheRegion(theFood1.getTheRegion());
+        }
         foodService.saveFood(food);
         return food;
     }

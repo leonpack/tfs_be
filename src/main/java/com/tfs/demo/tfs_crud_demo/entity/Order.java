@@ -53,7 +53,7 @@ public class Order {
     @JoinColumn(name = "staff_id")
     private String staffId;
 
-    @OneToMany(mappedBy = "theOrder",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "theOrder",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     @JsonManagedReference
     private List<OrderDetail> itemList = new ArrayList<>();
 

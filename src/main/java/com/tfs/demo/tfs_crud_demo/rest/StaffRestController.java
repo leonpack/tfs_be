@@ -1,5 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
+import com.tfs.demo.tfs_crud_demo.dto.StaffLoginDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
@@ -35,15 +36,41 @@ public class StaffRestController {
         return theStaff;
     }
 
-    @PostMapping("/staffs/{accountId}")
-    public String addNewStaff(@RequestBody Staff theStaff,@PathVariable String accountId){
-        if(!staffService.checkDuplicateStaffId(theStaff.getStaffId())){
-            return "Staff with this id - " +theStaff + " already exist, please try again!";
+    @GetMapping("/staffs/login")
+    public Staff loginForStaff(@RequestBody StaffLoginDTO loginDTO){
+        Account theAccount = accountService.getAccountById(loginDTO.getUsername());
+        if(theAccount==null){
+            throw new RuntimeException("username not found!");
         }
-        Account theAccount = accountService.getAccountById(accountId);
-        theStaff.setTheAccountForStaff(theAccount);
+        if(!theAccount.getPassword().equals(loginDTO.getPassword())){
+            throw new RuntimeException("Wrong password!");
+        }
+        Staff theStaff = staffService.getStaffByTheAccount(theAccount);
+        return theStaff;
+    }
+
+//    @PostMapping("/staffs/{accountId}")
+//    public String addNewStaff(@RequestBody Staff theStaff,@PathVariable String accountId){
+//        if(!staffService.checkDuplicateStaffId(theStaff.getStaffId())){
+//            return "Staff with this id - " +theStaff + " already exist, please try again!";
+//        }
+//        Account theAccount = accountService.getAccountById(accountId);
+//        theStaff.setTheAccountForStaff(theAccount);
+//        staffService.saveStaff(theStaff);
+//        return "Saved " +theStaff;
+//    }
+
+    @PostMapping("/staffs")
+    public Staff addNewStaff(@RequestBody Staff theStaff){
+        if(!staffService.checkDuplicateStaffId(theStaff.getStaffId())){
+            throw new RuntimeException("Staff with id " +theStaff.getStaffId()+ " already exist");
+        }
+        if(!staffService.checkDuplicateAccountId(theStaff.getTheAccountForStaff().getAccountId())){
+            throw new RuntimeException("Account with id" +theStaff.getTheAccountForStaff().getAccountId() + " already exist!");
+        }
+        accountService.saveAccount(theStaff.getTheAccountForStaff());
         staffService.saveStaff(theStaff);
-        return "Saved " +theStaff;
+        return theStaff;
     }
 
     @PutMapping("/staffs")
@@ -55,6 +82,18 @@ public class StaffRestController {
         if(theStaff.getTheRestaurant()==null){
             theStaff.setTheRestaurant(theStaffFix.getTheRestaurant());
         }
+        if(theStaff.getStaffEmail()==null){
+            theStaff.setStaffEmail(theStaffFix.getStaffEmail());
+        }
+        if(theStaff.getStaffActivityStatus()==null){
+            theStaff.setStaffActivityStatus(theStaffFix.getStaffActivityStatus());
+        }
+        if(theStaff.getStaffAvatarUrl()==null){
+            theStaff.setStaffAvatarUrl(theStaffFix.getStaffAvatarUrl());
+        }
+        if(theStaff.getStaffFullName()==null){
+            theStaff.setStaffFullName(theStaffFix.getStaffFullName());
+        }
         staffService.saveStaff(theStaff);
         return theStaff;
     }
@@ -63,13 +102,6 @@ public class StaffRestController {
     public String disableStaff(@PathVariable String staffId){
         staffService.disableStaff(staffId);
         return "Disable staff with id - " +staffId + " completed!";
-    }
-
-    @PostMapping("/staff/{staffId}SET{imageUrl}")
-    public String updateStaffAvatar(@PathVariable String staffId, @PathVariable String imageUrl){
-        Staff theStaff = staffService.getStaffById(staffId);
-        theStaff.setStaffAvatarUrl(imageUrl);
-        return "Set avatar for staff " +theStaff+ " successfully!";
     }
 
 }

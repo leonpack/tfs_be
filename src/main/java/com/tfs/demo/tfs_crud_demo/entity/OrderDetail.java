@@ -13,22 +13,25 @@ public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private int order_item_id;
 
     @Column(name = "food_id")
-    private Integer food_id;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "current_price")
-    private Double currentPrice;
+    private Double price;
 
     @Column(name = "quantity")
     private Integer quantity;
 
     @Column(name = "sub_total")
     private Double subTotal;
+
+    @Column(name = "image_url")
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -39,26 +42,21 @@ public class OrderDetail {
 
     }
 
-    public OrderDetail(int id, Integer food_id, String name, Double currentPrice, Integer quantity, Double subTotal, Order theOrder) {
+    public OrderDetail(Integer id, String name, Double price, Integer quantity, Double subTotal, String image) {
         this.id = id;
-        this.food_id = food_id;
         this.name = name;
-        this.currentPrice = currentPrice;
+        this.price = price;
         this.quantity = quantity;
         this.subTotal = subTotal;
-        this.theOrder = theOrder;
+        this.image = image;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getOrder_item_id() {
+        return order_item_id;
     }
 
-    public Integer getFood_id() {
-        return food_id;
-    }
-
-    public void setFood_id(Integer food_id) {
-        this.food_id = food_id;
+    public void setOrder_item_id(int order_item_id) {
+        this.order_item_id = order_item_id;
     }
 
     public Integer getId() {
@@ -77,12 +75,12 @@ public class OrderDetail {
         this.name = name;
     }
 
-    public Double getCurrentPrice() {
-        return currentPrice;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setCurrentPrice(Double currentPrice) {
-        this.currentPrice = currentPrice;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public Integer getQuantity() {
@@ -99,6 +97,14 @@ public class OrderDetail {
 
     public void setSubTotal(Double subTotal) {
         this.subTotal = subTotal;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Order getTheOrder() {

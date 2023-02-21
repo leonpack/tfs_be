@@ -40,6 +40,12 @@ public class FoodServiceImplementation implements FoodService{
     }
 
     @Override
+    public List<Object[]> getFoodDetail(int id) {
+        return foodRepository.getFoodDetail(id);
+    }
+
+
+    @Override
     public void saveFood(Food theFood) {
         foodRepository.save(theFood);
     }

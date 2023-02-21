@@ -55,6 +55,8 @@ public class CustomerServiceImplementation implements CustomerService{
             throw new RuntimeException("Customer not found");
         }
         theCustomer.getTheAccount().setStatus(false);
+        accountRepository.save(theCustomer.getTheAccount());
+        System.out.println(theCustomer.getTheAccount());
 
     }
 
