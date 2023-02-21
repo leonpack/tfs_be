@@ -94,6 +94,7 @@ public class StaffRestController {
         if(theStaff.getStaffFullName()==null){
             theStaff.setStaffFullName(theStaffFix.getStaffFullName());
         }
+        accountService.saveAccount(theStaff.getTheAccountForStaff());
         staffService.saveStaff(theStaff);
         return theStaff;
     }
