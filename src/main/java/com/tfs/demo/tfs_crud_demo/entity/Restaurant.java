@@ -118,11 +118,4 @@ public class Restaurant {
         this.status = status;
     }
 
-    public void addStaff(Staff theStaff){
-        if(staffList == null){
-            staffList = new ArrayList<>();
-        }
-        staffList.add(theStaff);
-    }
-
 }

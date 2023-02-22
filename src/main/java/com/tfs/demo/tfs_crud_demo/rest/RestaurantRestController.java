@@ -55,6 +55,27 @@ public class RestaurantRestController {
 
     @PutMapping("/restaurants")
     public Restaurant updateRestaurant(@RequestBody Restaurant theRestaurant){
+        Restaurant restaurant = restaurantService.getRestaurantById(theRestaurant.getRestaurantId());
+
+        if(theRestaurant.getRestaurantLocation()==null){
+            theRestaurant.setRestaurantLocation(restaurant.getRestaurantName());
+        }
+        if(theRestaurant.getRestaurantName()==null){
+            theRestaurant.setRestaurantName(restaurant.getRestaurantName());
+        }
+        if(theRestaurant.getRestaurantNumber()==null){
+            theRestaurant.setRestaurantNumber(restaurant.getRestaurantNumber());
+        }
+        if(theRestaurant.getLatitude()==null){
+            theRestaurant.setLatitude(restaurant.getLatitude());
+        }
+        if(theRestaurant.getLongitude()==null){
+            theRestaurant.setLongitude(restaurant.getLongitude());
+        }
+        if(theRestaurant.getStaffList()==null){
+            theRestaurant.setStaffList(restaurant.getStaffList());
+        }
+        theRestaurant.setStaffList(theRestaurant.getStaffList());
         restaurantService.saveRestaurant(theRestaurant);
         return theRestaurant;
     }
@@ -65,15 +86,15 @@ public class RestaurantRestController {
         return "Disable restaurant with id - "+restaurantId + " completed!";
     }
 
-    @PostMapping("/restaurants/{staffId}TO{restaurantId}")
-    public String addStaffToRestaurant(@PathVariable String staffId, @PathVariable String restaurantId){
-        Staff theStaff = staffService.getStaffById(staffId);
-        Restaurant theRestaurant = restaurantService.getRestaurantById(restaurantId);
-        if(theStaff == null || theRestaurant == null){
-            return "Staff or restaurant doesn't exist, please try again";
-        }
-        theRestaurant.addStaff(theStaff);
-        return "Add " +theStaff + " to " +theRestaurant + " successfully";
-    }
+//    @PostMapping("/restaurants/{staffId}TO{restaurantId}")
+//    public String addStaffToRestaurant(@PathVariable String staffId, @PathVariable String restaurantId){
+//        Staff theStaff = staffService.getStaffById(staffId);
+//        Restaurant theRestaurant = restaurantService.getRestaurantById(restaurantId);
+//        if(theStaff == null || theRestaurant == null){
+//            return "Staff or restaurant doesn't exist, please try again";
+//        }
+//        theRestaurant.addStaff(theStaff);
+//        return "Add " +theStaff + " to " +theRestaurant + " successfully";
+//    }
 
 }

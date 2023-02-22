@@ -1,5 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
+import com.tfs.demo.tfs_crud_demo.dto.RefundDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Order;
 import com.tfs.demo.tfs_crud_demo.library.vn.zalopay.crypto.HMACUtil;
 import com.tfs.demo.tfs_crud_demo.service.OrderService;
@@ -35,6 +36,8 @@ public class OrderRestController {
         put("key2", "uUfsWgfLkRLzq6W2uNXTCxrfxs51auny");
         put("endpoint", "https://sandbox.zalopay.com.vn/v001/tpe/createorder");
         put("endpointstatus","https://sandbox.zalopay.com.vn/v001/tpe/getstatusbyapptransid");
+        put("refundendpoint","https://sandbox.zalopay.com.vn/v001/tpe/partialrefund");
+        put("refundstatusendpoint","https://sandbox.zalopay.com.vn/v001/tpe/getpartialrefundstatus");
     }};
 
     //get current time in GMT+7 to sync ordertime with ZaloServer
@@ -148,7 +151,7 @@ public class OrderRestController {
             }
             System.out.println(order.get("apptransid"));
 
-            return "apptransid: " + order.get("apptransid")+ " - zaloUrl: " + result.get("orderurl").toString() ;
+            return "apptransid: " + order.get("apptransid")+ " - zptranstoken: " +order.get("ztranstoken") + " - zaloUrl: " + result.get("orderurl").toString() ;
         }
         else
             return "Tạo đơn hàng thành công";
@@ -256,5 +259,112 @@ public class OrderRestController {
         return "Checking";
 
     }
+
+    @GetMapping("/orders/refund")
+    public String refundOrder(@RequestBody RefundDTO refundDTO) throws IOException {
+        String appid = config.get("appid");
+        Random rand = new Random();
+        long timestamp = System.currentTimeMillis(); // miliseconds
+        String uid = timestamp + "" + (111 + rand.nextInt(888)); // unique id
+
+        Map<String, Object> order = new HashMap<String, Object>(){{
+            put("appid", appid);
+            put("zptransid", refundDTO.getZptransid());
+            put("mrefundid", getCurrentTimeString("yyMMdd") +"_"+ appid +"_"+uid);
+            put("timestamp", timestamp);
+            put("amount", refundDTO.getAmount());
+            put("description", "ZaloPay Intergration Demo");
+        }};
+
+        // appid|zptransid|amount|description|timestamp
+        String data = order.get("appid") +"|"+ order.get("zptransid") +"|"+ order.get("amount")
+                +"|"+ order.get("description") +"|"+ order.get("timestamp");
+        order.put("mac", HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, config.get("key1"), data));
+
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost post = new HttpPost(config.get("refundendpoint"));
+
+        List<NameValuePair> params = new ArrayList<>();
+        for (Map.Entry<String, Object> e : order.entrySet()) {
+            params.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
+        }
+
+        post.setEntity(new UrlEncodedFormEntity(params));
+
+        CloseableHttpResponse res = client.execute(post);
+        BufferedReader rd = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
+        StringBuilder resultJsonStr = new StringBuilder();
+        String line;
+
+        while ((line = rd.readLine()) != null) {
+            resultJsonStr.append(line);
+        }
+
+        JSONObject result = new JSONObject(resultJsonStr.toString());
+        for (String key : result.keySet()) {
+            System.out.format("%s = %s\n", key, result.get(key));
+        }
+
+        if(result.get("returncode").toString().equals("1")){
+            return "Hoàn tiền giao dịch THÀNH CÔNG với mrefundid là " + result.get("mrefundid");
+        }
+
+        if (((int) result.get("returncode"))<1){
+            return "Hoàn tiền giao dịch THẤT BẠI, vui lòng thực hiện lại. Mã mrefundid là " +result.get("mrefundid");
+        }
+        else
+            return "Đang thực hiện hoàn tiền, vui lòng gọi refundStatus api để lấy trạng thái cuối cùng. Mã mrefundid là " +result.get("mrefundid");
+    }
+
+    @GetMapping("/orders/refundStatus/{id}")
+    public String getRefundStatus(@PathVariable String id) throws URISyntaxException, IOException {
+        String mrefundid = id;
+        String timestamp = Long.toString(System.currentTimeMillis()); // miliseconds
+        String data = config.get("appid") +"|"+ mrefundid  +"|"+ timestamp; // appid|mrefundid|timestamp
+        String mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, config.get("key1"), data);
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("appid", config.get("appid")));
+        params.add(new BasicNameValuePair("mrefundid", mrefundid));
+        params.add(new BasicNameValuePair("timestamp", timestamp));
+        params.add(new BasicNameValuePair("mac", mac));
+
+        URIBuilder uri = new URIBuilder(config.get("refundstatusendpoint"));
+        uri.addParameters(params);
+
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpGet get = new HttpGet(uri.build());
+
+        CloseableHttpResponse res = client.execute(get);
+        BufferedReader rd = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
+        StringBuilder resultJsonStr = new StringBuilder();
+        String line;
+
+        while ((line = rd.readLine()) != null) {
+            resultJsonStr.append(line);
+        }
+
+        JSONObject result = new JSONObject(resultJsonStr.toString());
+        for (String key : result.keySet()) {
+            System.out.format("%s = %s\n", key, result.get(key));
+        }
+
+        if(result.get("returncode").toString().equals("2")){
+            return "Giao dịch đang được hoàn tiền....";
+        }
+        else if(result.get("returncode").toString().equals("1")){
+            return "Refund thành công";
+        }
+        else if(result.get("returncode").toString().equals("-1")){
+            return "Refund thất bại.";
+        }
+        else if(result.get("returncode").toString().equals("-13")){
+            return "Quá thời hạn cho phép hoàn tiền";
+        }
+        else
+            return "Refund có lỗi";
+    }
+
+
 
 }
