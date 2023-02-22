@@ -4,16 +4,14 @@ import com.tfs.demo.tfs_crud_demo.dao.RevenueRepository;
 import com.tfs.demo.tfs_crud_demo.entity.Order;
 import com.tfs.demo.tfs_crud_demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class RevenueRestController {
 
     private RevenueRepository revenueRepository;

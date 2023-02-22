@@ -27,6 +27,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class OrderRestController {
 
     //config for implementing ZalopayAPI
