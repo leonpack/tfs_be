@@ -83,21 +83,19 @@ public class OrderRestController {
     }
 
     //original working addNewOrder method without ZaloAPI
-//    @PostMapping("/orders")
-//    public Order addNewOrder(@RequestBody Order order){
-//        orderService.saveOrder(order);
-//        return order;
-//    }
+    @PostMapping("/orders")
+    public Order addNewOrder(@RequestBody Order order){
+        orderService.saveOrder(order);
+        return order;
+    }
 
     //addNewOrder with ZaloPay intergrated
-    @PostMapping("/orders")
-    public Map<String, Object> addNewOrder(@RequestBody Order orderBody) throws IOException {
-        orderService.saveOrder(orderBody);
+    @PostMapping("/orders/zaloPay")
+    public Map<String, Object> createZaloPayOrder(@RequestBody Order orderBody) throws IOException {
         Map<String, Object> normalReturn = new HashMap<>();
         normalReturn.put("message","Tạo đơn thành công");
 
         //from now on is for implementing ZaloAPI
-        if(orderBody.getPaymentMethod().equals("ZaloPay")){
             final Map embeddata = new HashMap(){{
                 put("merchantinfo", "embeddata123");
             }};
@@ -160,9 +158,6 @@ public class OrderRestController {
 
 //            return "apptransid: " + order.get("apptransid")+ " - zptranstoken: " +order.get("zptranstoken") + " - zaloUrl: " + result.get("orderurl").toString() ;
             return returnValue;
-        }
-        else 
-            return normalReturn;
     }
 
     @PutMapping("/orders")
