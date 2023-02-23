@@ -90,6 +90,7 @@ public class CustomerRestController {
         if(theCustomer.getAvatarURL()==null){
             theCustomer.setAvatarURL(customer.getAvatarURL());
         }
+        accountService.saveAccount(theCustomer.getTheAccount());
         customerService.saveCustomer(theCustomer);
         return theCustomer;
     }
