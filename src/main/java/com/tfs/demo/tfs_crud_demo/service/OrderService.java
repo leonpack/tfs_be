@@ -21,4 +21,6 @@ public interface OrderService {
 
     public void deleteOrder(int orderId);
 
+    public boolean CheckDuplicateOrderId(int orderId);
+
 }

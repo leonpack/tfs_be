@@ -53,7 +53,7 @@ public class Order {
     @JoinColumn(name = "staff_id")
     private String staffId;
 
-    @OneToMany(mappedBy = "theOrder",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToMany(mappedBy = "theOrder",cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.MERGE}, orphanRemoval = true)
     @JsonManagedReference
     private List<OrderDetail> itemList = new ArrayList<>();
 
@@ -61,7 +61,24 @@ public class Order {
 
     }
 
-    public Order(Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate, Date receiveTime, String status, Integer customerId, String restaurantId, String staffId, List<OrderDetail> itemList) {
+//    public Order(Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate, Date receiveTime, String status, Integer customerId, String restaurantId, String staffId, List<OrderDetail> itemList) {
+//        this.totalPrice = totalPrice;
+//        this.totalQuantity = totalQuantity;
+//        this.paymentMethod = paymentMethod;
+//        this.deliveryAddress = deliveryAddress;
+//        this.orderDate = orderDate;
+//        this.deliveryDate = deliveryDate;
+//        this.receiveTime = receiveTime;
+//        this.status = status;
+//        this.customerId = customerId;
+//        this.restaurantId = restaurantId;
+//        this.staffId = staffId;
+//        this.itemList = itemList;
+//    }
+
+
+    public Order(int id, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate, Date receiveTime, String status, Integer customerId, String restaurantId, String staffId, List<OrderDetail> itemList) {
+        this.id = id;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
         this.paymentMethod = paymentMethod;

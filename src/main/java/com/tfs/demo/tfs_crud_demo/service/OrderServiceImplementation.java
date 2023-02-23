@@ -70,4 +70,13 @@ public class OrderServiceImplementation implements OrderService{
         orderRepository.delete(order);
     }
 
+    @Override
+    public boolean CheckDuplicateOrderId(int orderId) {
+        Optional<Order> result = orderRepository.findById(orderId);
+        if(result.isPresent()){
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
+import com.tfs.demo.tfs_crud_demo.dao.OrderDetailRepository;
 import com.tfs.demo.tfs_crud_demo.dto.RefundDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Order;
 import com.tfs.demo.tfs_crud_demo.library.vn.zalopay.crypto.HMACUtil;
@@ -50,10 +51,13 @@ public class OrderRestController {
     }
 
     private OrderService orderService;
+    private final OrderDetailRepository orderDetailRepository;
 
     @Autowired
-    public OrderRestController(OrderService theOrderService){
+    public OrderRestController(OrderService theOrderService,
+                               OrderDetailRepository orderDetailRepository){
         orderService = theOrderService;
+        this.orderDetailRepository = orderDetailRepository;
     }
 
     @GetMapping("/orders")
@@ -85,6 +89,9 @@ public class OrderRestController {
     //original working addNewOrder method without ZaloAPI
     @PostMapping("/orders")
     public Order addNewOrder(@RequestBody Order order){
+        if(orderService.CheckDuplicateOrderId(order.getId())){
+            throw new RuntimeException("Order with id -" +order.getId() + " already exist, please try again!");
+        }
         orderService.saveOrder(order);
         return order;
     }
@@ -92,8 +99,8 @@ public class OrderRestController {
     //addNewOrder with ZaloPay intergrated
     @PostMapping("/orders/zaloPay")
     public Map<String, Object> createZaloPayOrder(@RequestBody Order orderBody) throws IOException {
-        Map<String, Object> normalReturn = new HashMap<>();
-        normalReturn.put("message","Tạo đơn thành công");
+//        Map<String, Object> normalReturn = new HashMap<>();
+//        normalReturn.put("message","Tạo đơn thành công");
 
         //from now on is for implementing ZaloAPI
             final Map embeddata = new HashMap(){{
@@ -103,7 +110,7 @@ public class OrderRestController {
             final Map[] item = {
                     new HashMap(){{
                         put("itemid", orderBody.getId());
-                        put("itemname", "Đơn hàng " +orderBody.getId());
+                        put("itemname", "Đơn hàng " + orderBody.getId());
                         put("itemprice", orderBody.getTotalPrice().longValue());
                         put("itemquantity", orderBody.getTotalQuantity());
                     }}
@@ -209,6 +216,7 @@ public class OrderRestController {
             order.setTotalQuantity(theTempOrder.getTotalQuantity());
         }
 
+        order.setItemList(order.getItemList());
         orderService.saveOrder(order);
         return order;
     }
