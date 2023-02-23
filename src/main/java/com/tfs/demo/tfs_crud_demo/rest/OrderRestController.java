@@ -91,8 +91,10 @@ public class OrderRestController {
 
     //addNewOrder with ZaloPay intergrated
     @PostMapping("/orders")
-    public String addNewOrder(@RequestBody Order orderBody) throws IOException {
+    public Map<String, Object> addNewOrder(@RequestBody Order orderBody) throws IOException {
         orderService.saveOrder(orderBody);
+        Map<String, Object> normalReturn = new HashMap<>();
+        normalReturn.put("message","Tạo đơn thành công");
 
         //from now on is for implementing ZaloAPI
         if(orderBody.getPaymentMethod().equals("ZaloPay")){
@@ -151,11 +153,16 @@ public class OrderRestController {
                 System.out.format("%s = %s\n", key, result.get(key));
             }
             System.out.println(order.get("apptransid"));
+            Map<String, Object> returnValue = new HashMap<>();
+            returnValue.put("apptransid", order.get("apptransid"));
+            returnValue.put("zptranstoken", result.get("zptranstoken"));
+            returnValue.put("zaloUrl", result.get("orderurl"));
 
-            return "apptransid: " + order.get("apptransid")+ " - zptranstoken: " +order.get("zptranstoken") + " - zaloUrl: " + result.get("orderurl").toString() ;
+//            return "apptransid: " + order.get("apptransid")+ " - zptranstoken: " +order.get("zptranstoken") + " - zaloUrl: " + result.get("orderurl").toString() ;
+            return returnValue;
         }
-        else
-            return "Tạo đơn hàng thành công";
+        else 
+            return normalReturn;
     }
 
     @PutMapping("/orders")
@@ -262,7 +269,7 @@ public class OrderRestController {
     }
 
     @GetMapping("/orders/refund")
-    public String refundOrder(@RequestBody RefundDTO refundDTO) throws IOException {
+    public Map<String, Object> refundOrder(@RequestBody RefundDTO refundDTO) throws IOException {
         String appid = config.get("appid");
         Random rand = new Random();
         long timestamp = System.currentTimeMillis(); // miliseconds
@@ -306,19 +313,17 @@ public class OrderRestController {
             System.out.format("%s = %s\n", key, result.get(key));
         }
 
-        if(result.get("returncode").toString().equals("1")){
-            return "Hoàn tiền giao dịch THÀNH CÔNG với mrefundid là " + result.get("mrefundid");
-        }
+        Map<String, Object> returnMessage = new HashMap<>();
+        returnMessage.put("returncode",result.get("returncode"));
+        returnMessage.put("returnMessage",result.get("returnmessage"));
+        returnMessage.put("refundId",result.get("refundid"));
+        returnMessage.put("mrefundid",order.get("mrefundid"));
 
-        if (((int) result.get("returncode"))<1){
-            return "Hoàn tiền giao dịch THẤT BẠI, vui lòng thực hiện lại. Mã mrefundid là " +result.get("mrefundid");
-        }
-        else
-            return "Đang thực hiện hoàn tiền, vui lòng gọi refundStatus api để lấy trạng thái cuối cùng. Mã mrefundid là " +result.get("mrefundid");
+        return returnMessage;
     }
 
     @GetMapping("/orders/refundStatus/{id}")
-    public String getRefundStatus(@PathVariable String id) throws URISyntaxException, IOException {
+    public Map<String, Object> getRefundStatus(@PathVariable String id) throws URISyntaxException, IOException {
         String mrefundid = id;
         String timestamp = Long.toString(System.currentTimeMillis()); // miliseconds
         String data = config.get("appid") +"|"+ mrefundid  +"|"+ timestamp; // appid|mrefundid|timestamp
@@ -350,20 +355,11 @@ public class OrderRestController {
             System.out.format("%s = %s\n", key, result.get(key));
         }
 
-        if(result.get("returncode").toString().equals("2")){
-            return "Giao dịch đang được hoàn tiền....";
-        }
-        else if(result.get("returncode").toString().equals("1")){
-            return "Refund thành công";
-        }
-        else if(result.get("returncode").toString().equals("-1")){
-            return "Refund thất bại.";
-        }
-        else if(result.get("returncode").toString().equals("-13")){
-            return "Quá thời hạn cho phép hoàn tiền";
-        }
-        else
-            return "Refund có lỗi";
+        Map<String, Object> returnMessage = new HashMap<>();
+        returnMessage.put("returnCode",result.get("returncode"));
+        returnMessage.put("returnMessage",result.get("returnmessage"));
+
+        return returnMessage;
     }
 
 

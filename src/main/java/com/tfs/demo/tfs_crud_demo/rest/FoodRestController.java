@@ -54,7 +54,7 @@ public class FoodRestController {
             food.setFoodName(theFood1.getFoodName());
         }
         if(food.getDescription()==null){
-            food.setFoodName(theFood1.getDescription());
+            food.setDescription(theFood1.getDescription());
         }
         if(food.getEventList()==null){
             food.setEventList(theFood1.getEventList());
