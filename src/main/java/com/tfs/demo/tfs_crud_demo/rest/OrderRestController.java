@@ -152,7 +152,7 @@ public class OrderRestController {
             }
             System.out.println(order.get("apptransid"));
 
-            return "apptransid: " + order.get("apptransid")+ " - zptranstoken: " +order.get("ztranstoken") + " - zaloUrl: " + result.get("orderurl").toString() ;
+            return "apptransid: " + order.get("apptransid")+ " - zptranstoken: " +order.get("zptranstoken") + " - zaloUrl: " + result.get("orderurl").toString() ;
         }
         else
             return "Tạo đơn hàng thành công";
