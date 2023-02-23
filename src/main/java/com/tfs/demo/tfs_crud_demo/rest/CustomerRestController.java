@@ -85,7 +85,7 @@ public class CustomerRestController {
             theCustomer.setAddress(customer.getAddress());
         }
         if(theCustomer.getEmail()==null){
-            theCustomer.setAddress(customer.getEmail());
+            theCustomer.setEmail(customer.getEmail());
         }
         if(theCustomer.getAvatarURL()==null){
             theCustomer.setAvatarURL(customer.getAvatarURL());
