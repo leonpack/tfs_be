@@ -31,16 +31,16 @@ public class Event {
     private Date toDate;
     @Column(name = "status")
     private boolean status;
-    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToMany()
     @JoinTable(name = "eventdetail", joinColumns = @JoinColumn(name = "event_id"),inverseJoinColumns = @JoinColumn(name = "food_id"))
 //    @JsonManagedReference(value = "event-food")
-    private List<Food> foodListFromEvent;
+    private List<Food> foodList;
 
     public Event(){
 
     }
 
-    public Event(String eventId, String eventName, String description, String image_url, Date fromDate, Date toDate, boolean status, List<Food> foodListFromEvent) {
+    public Event(String eventId, String eventName, String description, String image_url, Date fromDate, Date toDate, boolean status, List<Food> foodList) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.description = description;
@@ -48,7 +48,7 @@ public class Event {
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.status = status;
-        this.foodListFromEvent = foodListFromEvent;
+        this.foodList = foodList;
     }
 
     public String getEventId() {
@@ -107,32 +107,11 @@ public class Event {
         this.status = status;
     }
 
-    public List<Food> getFoodListFromEvent() {
-        return foodListFromEvent;
+    public List<Food> getFoodList() {
+        return foodList;
     }
 
-    public void setFoodListFromEvent(List<Food> foodListFromEvent) {
-        this.foodListFromEvent = foodListFromEvent;
-    }
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "eventId='" + eventId + '\'' +
-                ", eventName='" + eventName + '\'' +
-                ", description='" + description + '\'' +
-                ", image_url='" + image_url + '\'' +
-                ", fromDate=" + fromDate +
-                ", toDate=" + toDate +
-                ", status=" + status +
-                ", foodListFromEvent=" + foodListFromEvent +
-                '}';
-    }
-
-    public void addFood(Food theFood){
-        if(foodListFromEvent==null){
-            foodListFromEvent = new ArrayList<>();
-        }
-        foodListFromEvent.add(theFood);
+    public void setFoodList(List<Food> foodList) {
+        this.foodList = foodList;
     }
 }

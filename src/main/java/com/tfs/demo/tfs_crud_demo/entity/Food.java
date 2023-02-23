@@ -47,7 +47,7 @@ public class Food {
     @Column(name = "purchase_num")
     private Integer purchaseNum;
 
-    @ManyToMany(mappedBy = "foodListFromEvent",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToMany(mappedBy = "foodList")
 //    @JsonBackReference(value = "event-food")
     @JsonIgnoreProperties("foodListFromEvent")
     @JsonIgnore

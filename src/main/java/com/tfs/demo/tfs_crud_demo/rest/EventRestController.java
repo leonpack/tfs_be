@@ -49,6 +49,28 @@ public class EventRestController {
 
     @PutMapping("/events")
     public Event updateEvent(@RequestBody Event theEvent){
+        Event event = eventService.getEventById(theEvent.getEventId());
+
+        if(theEvent.getEventName()==null){
+            theEvent.setEventId(event.getEventName());
+        }
+        if(theEvent.getDescription()==null){
+            theEvent.setDescription(event.getDescription());
+        }
+        if(theEvent.getImage_url()==null){
+            theEvent.setImage_url(event.getImage_url());
+        }
+        if(theEvent.getFromDate()==null){
+            theEvent.setFromDate(event.getFromDate());
+        }
+        if(theEvent.getToDate()==null){
+            theEvent.setToDate(event.getToDate());
+        }
+        if(theEvent.getFoodList()==null){
+            theEvent.setFoodList(event.getFoodList());
+        }
+        theEvent.setFoodList(theEvent.getFoodList());
+
         eventService.saveEvent(theEvent);
         return theEvent;
     }
@@ -59,21 +81,21 @@ public class EventRestController {
         return "Disable event with id - " +eventId + " successful!";
     }
 
-    @PostMapping("/events/{foodId}TO{eventId}")
-    public String addFoodToEvent(@PathVariable String eventId,@PathVariable int foodId){
-        Food theFood = foodService.getFoodById(foodId);
-        Event theEvent = eventService.getEventById(eventId);
-
-        if(theEvent==null || theFood==null){
-            throw new RuntimeException("Event with id " +eventId+ " or food with id -"+foodId+ " not found!");
-        }
-        theEvent.addFood(theFood);
-        theFood.addEvent(theEvent);
-
-        foodService.saveFood(theFood);
-        eventService.saveEvent(theEvent);
-
-        return "Add food: " +theFood.getFoodName() + " to event: "+theEvent.getEventName()+" successful!";
-    }
+//    @PostMapping("/events/{foodId}TO{eventId}")
+//    public String addFoodToEvent(@PathVariable String eventId,@PathVariable int foodId){
+//        Food theFood = foodService.getFoodById(foodId);
+//        Event theEvent = eventService.getEventById(eventId);
+//
+//        if(theEvent==null || theFood==null){
+//            throw new RuntimeException("Event with id " +eventId+ " or food with id -"+foodId+ " not found!");
+//        }
+//        theEvent.addFood(theFood);
+//        theFood.addEvent(theEvent);
+//
+//        foodService.saveFood(theFood);
+//        eventService.saveEvent(theEvent);
+//
+//        return "Add food: " +theFood.getFoodName() + " to event: "+theEvent.getEventName()+" successful!";
+//    }
 
 }
