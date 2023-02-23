@@ -220,7 +220,7 @@ public class OrderRestController {
     }
 
     @GetMapping("/orders/checkPayment/{appstranId}")
-    public String checkZaloPaymentStatus(@PathVariable String appstranId) throws URISyntaxException, IOException {
+    public Map<String, Object> checkZaloPaymentStatus(@PathVariable String appstranId) throws URISyntaxException, IOException {
         String apptransid = appstranId;
         String data = config.get("appid") +"|"+ apptransid  +"|"+ config.get("key1"); // appid|apptransid|key1
         String mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, config.get("key1"), data);
@@ -249,18 +249,14 @@ public class OrderRestController {
         for (String key : result.keySet()) {
             System.out.format("%s = %s\n", key, result.get(key));
         }
-        if(result.get("returncode").toString().equals("1") && result.get("isprocessing").toString().equals("false")){
-            return "Giao dịch thành công";
-        }
-        else if(result.get("returncode").toString().equals("-49") || result.get("isprocessing").toString().equals("true")){
-            return "Đơn hàng chưa được thanh toán hoặc đang xử lý";
-        }
-        else if(result.get("returncode").toString().equals("-117")){
-            return "Người dùng đã nhập sai mật khẩu khi thanh toán trên ZaloPay App";
-        }
 
-        return "Checking";
+        Map<String, Object> returnMessage = new HashMap<>();
+        returnMessage.put("returnCode",result.get("returncode"));
+        returnMessage.put("returnMessage",result.get("returnmessage"));
+        returnMessage.put("isProcessing?",result.get("isprocessing"));
+        returnMessage.put("zptransid",result.get("zptransid"));
 
+        return returnMessage;
     }
 
     @GetMapping("/orders/refund")
