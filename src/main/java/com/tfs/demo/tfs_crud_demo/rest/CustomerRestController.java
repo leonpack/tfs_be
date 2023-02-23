@@ -72,6 +72,7 @@ public class CustomerRestController {
     @PutMapping("/customers")
     public Customer updateCustomer(@RequestBody Customer theCustomer){
         Customer customer = customerService.getCustomerById(theCustomer.getCustomerId());
+        //validate null for Customer
         if(theCustomer.getTheAccount()==null){
             theCustomer.setTheAccount(customer.getTheAccount());
         }
