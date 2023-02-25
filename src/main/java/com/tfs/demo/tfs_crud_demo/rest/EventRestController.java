@@ -68,6 +68,9 @@ public class EventRestController {
         if(theEvent.getFoodList()==null){
             theEvent.setFoodList(event.getFoodList());
         }
+        if(theEvent.getStatus()==null){
+            theEvent.setStatus(event.getStatus());
+        }
         theEvent.setFoodList(theEvent.getFoodList());
         eventService.saveEvent(theEvent);
         return theEvent;

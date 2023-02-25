@@ -28,7 +28,7 @@ public class Event {
     @Column(name = "to_date")
     private Date toDate;
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name = "eventdetail", joinColumns = @JoinColumn(name = "event_id"),inverseJoinColumns = @JoinColumn(name = "food_id"))
@@ -39,7 +39,7 @@ public class Event {
 
     }
 
-    public Event(String eventId, String eventName, String description, String image_url, Date fromDate, Date toDate, boolean status, Set<Food> foodList) {
+    public Event(String eventId, String eventName, String description, String image_url, Date fromDate, Date toDate, Boolean status, Set<Food> foodList) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.description = description;
@@ -98,11 +98,11 @@ public class Event {
         this.toDate = toDate;
     }
 
-    public boolean isStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
