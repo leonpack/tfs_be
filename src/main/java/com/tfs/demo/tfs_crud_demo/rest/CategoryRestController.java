@@ -56,6 +56,14 @@ public class CategoryRestController {
 
     @PutMapping("/categories")
     public Category updateCategory(@RequestBody Category theCategory){
+        Category existCategory = categoryService.getCategoryById(theCategory.getId());
+        if(theCategory.getCategoryName()==null){
+            theCategory.setCategoryName(existCategory.getCategoryName());
+        }
+        if(theCategory.getFoodList()==null){
+            theCategory.setFoodList(existCategory.getFoodList());
+        }
+        theCategory.setFoodList(theCategory.getFoodList());
         categoryService.saveCategory(theCategory);
         return theCategory;
     }

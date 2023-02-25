@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "food")
@@ -47,18 +49,18 @@ public class Food {
     @Column(name = "purchase_num")
     private Integer purchaseNum;
 
-    @ManyToMany(mappedBy = "foodList")
+    @ManyToMany(mappedBy = "foodList", cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 //    @JsonBackReference(value = "event-food")
     @JsonIgnoreProperties("foodListFromEvent")
     @JsonIgnore
-    private List<Event> eventList;
+    private Set<Event> eventList = new HashSet<Event>();
 
 
     public Food(){
 
     }
 
-    public Food(String foodName, String description, double price, String imgUrl, Category theCategory, Region theRegion, boolean status, Integer purchaseNum, List<Event> eventList) {
+    public Food(String foodName, String description, double price, String imgUrl, Category theCategory, Region theRegion, boolean status, Integer purchaseNum, Set<Event> eventList) {
         this.foodName = foodName;
         this.description = description;
         this.price = price;
@@ -126,11 +128,11 @@ public class Food {
         this.theRegion = theRegion;
     }
 
-    public List<Event> getEventList() {
+    public Set<Event> getEventList() {
         return eventList;
     }
 
-    public void setEventList(List<Event> eventList) {
+    public void setEventList(Set<Event> eventList) {
         this.eventList = eventList;
     }
 
@@ -153,9 +155,14 @@ public class Food {
 
     public void addEvent(Event theEvent){
         if(eventList == null){
-            eventList = new ArrayList<>();
+            eventList = new HashSet<Event>();
         }
         eventList.add(theEvent);
+    }
+
+    public void remove(Event event){
+        this.eventList.remove(event);
+        event.getFoodList().remove(this);
     }
 
 }

@@ -50,7 +50,6 @@ public class EventRestController {
     @PutMapping("/events")
     public Event updateEvent(@RequestBody Event theEvent){
         Event event = eventService.getEventById(theEvent.getEventId());
-
         if(theEvent.getEventName()==null){
             theEvent.setEventId(event.getEventName());
         }
@@ -70,7 +69,6 @@ public class EventRestController {
             theEvent.setFoodList(event.getFoodList());
         }
         theEvent.setFoodList(theEvent.getFoodList());
-
         eventService.saveEvent(theEvent);
         return theEvent;
     }

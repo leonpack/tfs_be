@@ -17,5 +17,5 @@ public interface FoodService {
 
     public void disableFood(int id);
 
-    public void enableFood(int id);
+    public void removeFood(int foodId);
 }

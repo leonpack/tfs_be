@@ -1,6 +1,11 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
+import com.tfs.demo.tfs_crud_demo.dao.EventRepository;
+import com.tfs.demo.tfs_crud_demo.dao.FoodRepository;
+import com.tfs.demo.tfs_crud_demo.dto.RemoveFoodDTO;
+import com.tfs.demo.tfs_crud_demo.entity.Event;
 import com.tfs.demo.tfs_crud_demo.entity.Food;
+import com.tfs.demo.tfs_crud_demo.service.EventService;
 import com.tfs.demo.tfs_crud_demo.service.FoodService;
 import com.tfs.demo.tfs_crud_demo.utils.GlobalExceptionHandler;
 import com.tfs.demo.tfs_crud_demo.utils.GlobalExceptionResponse;
@@ -15,9 +20,18 @@ import java.util.List;
 @RequestMapping("/api")
 public class FoodRestController {
     private FoodService foodService;
+    private EventService eventService;
+    private final EventRepository eventRepository;
+    private final FoodRepository foodRepository;
+
     @Autowired
-    public FoodRestController(FoodService theFoodService){
+    public FoodRestController(FoodService theFoodService, EventService theEventService,
+                              EventRepository eventRepository,
+                              FoodRepository foodRepository){
         foodService = theFoodService;
+        eventService = theEventService;
+        this.eventRepository = eventRepository;
+        this.foodRepository = foodRepository;
     }
 
     @GetMapping("/foods")
@@ -87,4 +101,20 @@ public class FoodRestController {
         foodService.disableFood(foodId);
         return "Disable food with id: " +foodId + " completed!!";
     }
+
+    @DeleteMapping("/foods/hidden")
+    public String removeFood(@RequestBody RemoveFoodDTO removeFoodDTO){
+        Food food = foodService.getFoodById(removeFoodDTO.getFood_id());
+        Event event = eventService.getEventById(removeFoodDTO.getEvent_id());
+        food.setTheCategory(null);
+        food.setTheRegion(null);
+        for(Food item : event.getFoodList()){
+            event.remove(item);
+        }
+        eventRepository.delete(event);
+        foodService.saveFood(food);
+        foodRepository.delete(food);
+        return "Deleted!";
+    }
+
 }

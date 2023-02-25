@@ -15,10 +15,10 @@ public class CartDetail {
     private int cart_item_id;
 
     @Column(name = "food_id")
-    private int id;
+    private Integer id;
 
     @Column(name = "combo_id")
-    private int comboId;
+    private Integer comboId;
 
     @Column(name = "name")
     private String name;
@@ -44,7 +44,7 @@ public class CartDetail {
 
     }
 
-    public CartDetail(int id, int comboId, String name, int quantity, String image, Double price, Double subTotal) {
+    public CartDetail(Integer id, Integer comboId, String name, int quantity, String image, Double price, Double subTotal) {
         this.id = id;
         this.comboId = comboId;
         this.name = name;
@@ -62,19 +62,15 @@ public class CartDetail {
         this.cart_item_id = cart_item_id;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getComboId() {
+    public Integer getComboId() {
         return comboId;
     }
 
-    public void setComboId(int comboId) {
+    public void setComboId(Integer comboId) {
         this.comboId = comboId;
     }
 

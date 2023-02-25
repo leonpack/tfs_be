@@ -5,15 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "event")
 public class Event {
     @Id
-    @Column(name = "event_id")
+    @Column(name = "event_id",updatable = false)
     private String eventId;
     @Column(name = "event_name")
     private String eventName;
@@ -31,16 +29,17 @@ public class Event {
     private Date toDate;
     @Column(name = "status")
     private boolean status;
-    @ManyToMany()
+
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name = "eventdetail", joinColumns = @JoinColumn(name = "event_id"),inverseJoinColumns = @JoinColumn(name = "food_id"))
 //    @JsonManagedReference(value = "event-food")
-    private List<Food> foodList;
+    private Set<Food> foodList = new HashSet<Food>();
 
     public Event(){
 
     }
 
-    public Event(String eventId, String eventName, String description, String image_url, Date fromDate, Date toDate, boolean status, List<Food> foodList) {
+    public Event(String eventId, String eventName, String description, String image_url, Date fromDate, Date toDate, boolean status, Set<Food> foodList) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.description = description;
@@ -107,11 +106,17 @@ public class Event {
         this.status = status;
     }
 
-    public List<Food> getFoodList() {
+    public Set<Food> getFoodList() {
         return foodList;
     }
 
-    public void setFoodList(List<Food> foodList) {
+    public void setFoodList(Set<Food> foodList) {
         this.foodList = foodList;
     }
+
+    public void remove(Food food){
+        this.foodList.remove(food);
+        food.getEventList().remove(this);
+    }
+
 }
