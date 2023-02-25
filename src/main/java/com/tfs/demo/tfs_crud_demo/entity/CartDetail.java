@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "cartdetail")
 public class CartDetail {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -20,11 +19,14 @@ public class CartDetail {
     @Column(name = "combo_id")
     private Integer comboId;
 
+    @Column(name = "party_id")
+    private Integer partyId;
+
     @Column(name = "name")
     private String name;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
 
     @Column(name = "image")
     private String image;
@@ -37,21 +39,23 @@ public class CartDetail {
 
     @ManyToOne()
     @JoinColumn(name = "cart_id")
-    @JsonBackReference(value = "cart-detail")
+    @JsonBackReference()
     private Cart cart;
 
     public CartDetail(){
 
     }
 
-    public CartDetail(Integer id, Integer comboId, String name, int quantity, String image, Double price, Double subTotal) {
+    public CartDetail(Integer id, Integer comboId, Integer partyId, String name, Integer quantity, String image, Double price, Double subTotal, Cart cart) {
         this.id = id;
         this.comboId = comboId;
+        this.partyId = partyId;
         this.name = name;
         this.quantity = quantity;
         this.image = image;
         this.price = price;
         this.subTotal = subTotal;
+        this.cart = cart;
     }
 
     public int getCart_item_id() {
@@ -60,6 +64,10 @@ public class CartDetail {
 
     public void setCart_item_id(int cart_item_id) {
         this.cart_item_id = cart_item_id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public void setId(Integer id) {
@@ -74,11 +82,19 @@ public class CartDetail {
         this.comboId = comboId;
     }
 
-    public int getQuantity() {
+    public Integer getPartyId() {
+        return partyId;
+    }
+
+    public void setPartyId(Integer partyId) {
+        this.partyId = partyId;
+    }
+
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

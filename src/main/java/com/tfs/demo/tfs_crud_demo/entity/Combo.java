@@ -1,5 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,7 @@ public class Combo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "combo_name")
     private String comboName;
@@ -26,6 +28,7 @@ public class Combo {
     private String image;
 
     @OneToMany(mappedBy = "combo", cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE}, orphanRemoval = true)
+    @JsonManagedReference
     private List<ComboDetail> comboItems = new ArrayList<>();
 
     @Column(name = "status")
@@ -44,11 +47,11 @@ public class Combo {
         this.status = status;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

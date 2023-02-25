@@ -260,6 +260,8 @@ public class OrderRestController {
             order.setTotalQuantity(theTempOrder.getTotalQuantity());
         }
 
+        //TODO cho phép khách huỷ tối đa trước 1 ngày giao hàng
+
         order.setItemList(order.getItemList());
         orderService.saveOrder(order);
         return order;

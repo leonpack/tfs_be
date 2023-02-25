@@ -1,5 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -19,6 +21,7 @@ public class ComboDetail {
 
     @ManyToOne()
     @JoinColumn(name = "combo_id")
+    @JsonBackReference
     private Combo combo;
 
     public ComboDetail(){

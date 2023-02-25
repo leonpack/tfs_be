@@ -21,6 +21,9 @@ public class OrderDetail {
     @Column(name = "combo_id")
     private Integer comboId;
 
+    @Column(name = "party_id")
+    private Integer partyId;
+
     @Column(name = "name")
     private String name;
 
@@ -45,9 +48,10 @@ public class OrderDetail {
 
     }
 
-    public OrderDetail(Integer id, Integer comboId, String name, Double price, Integer quantity, Double subTotal, String image) {
+    public OrderDetail(Integer id, Integer comboId, Integer partyId, String name, Double price, Integer quantity, Double subTotal, String image) {
         this.id = id;
         this.comboId = comboId;
+        this.partyId = partyId;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
@@ -77,6 +81,14 @@ public class OrderDetail {
 
     public void setComboId(Integer comboId) {
         this.comboId = comboId;
+    }
+
+    public Integer getPartyId() {
+        return partyId;
+    }
+
+    public void setPartyId(Integer partyId) {
+        this.partyId = partyId;
     }
 
     public String getName() {
