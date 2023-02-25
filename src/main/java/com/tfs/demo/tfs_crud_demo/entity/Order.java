@@ -19,6 +19,9 @@ public class Order {
     @Column(name = "id")
     private int id;
 
+    @Column(name = "promotion_code")
+    private String promotionCode;
+
     @Column(name = "total_price")
     private Double totalPrice;
 
@@ -77,8 +80,11 @@ public class Order {
 //    }
 
 
-    public Order(int id, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate, Date receiveTime, String status, Integer customerId, String restaurantId, String staffId, List<OrderDetail> itemList) {
+    public Order(int id, String promotionCode, Double totalPrice, Integer totalQuantity,
+                 String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate,
+                 Date receiveTime, String status, Integer customerId, String restaurantId, String staffId, List<OrderDetail> itemList) {
         this.id = id;
+        this.promotionCode = promotionCode;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
         this.paymentMethod = paymentMethod;
@@ -99,6 +105,14 @@ public class Order {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getPromotionCode() {
+        return promotionCode;
+    }
+
+    public void setPromotionCode(String promotionCode) {
+        this.promotionCode = promotionCode;
     }
 
     public Double getTotalPrice() {

@@ -2,9 +2,12 @@ package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.dao.OrderDetailRepository;
 import com.tfs.demo.tfs_crud_demo.dto.RefundDTO;
-import com.tfs.demo.tfs_crud_demo.entity.Order;
+import com.tfs.demo.tfs_crud_demo.entity.*;
 import com.tfs.demo.tfs_crud_demo.library.vn.zalopay.crypto.HMACUtil;
+import com.tfs.demo.tfs_crud_demo.service.EventService;
+import com.tfs.demo.tfs_crud_demo.service.FoodService;
 import com.tfs.demo.tfs_crud_demo.service.OrderService;
+import com.tfs.demo.tfs_crud_demo.service.PromotionService;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -23,7 +26,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -50,14 +55,26 @@ public class OrderRestController {
         return fmt.format(cal.getTimeInMillis());
     }
 
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
     private OrderService orderService;
+    private PromotionService promotionService;
+    private FoodService foodService;
     private final OrderDetailRepository orderDetailRepository;
+
+    private EventService eventService;
 
     @Autowired
     public OrderRestController(OrderService theOrderService,
-                               OrderDetailRepository orderDetailRepository){
+                               OrderDetailRepository orderDetailRepository,
+                               PromotionService thePromotionService,
+                               FoodService theFoodService,
+                               EventService theEventService){
         orderService = theOrderService;
         this.orderDetailRepository = orderDetailRepository;
+        promotionService = thePromotionService;
+        foodService = theFoodService;
+        eventService = theEventService;
     }
 
     @GetMapping("/orders")
@@ -88,11 +105,38 @@ public class OrderRestController {
 
     //original working addNewOrder method without ZaloAPI
     @PostMapping("/orders")
-    public Order addNewOrder(@RequestBody Order order){
+    public Order addNewOrder(@RequestBody Order order) throws ParseException {
+
+        Promotion promotion = promotionService.getPromotionByCode(order.getPromotionCode());
+
         if(orderService.CheckDuplicateOrderId(order.getId())){
             throw new RuntimeException("Order with id -" +order.getId() + " already exist, please try again!");
         }
+
+        //check promotion code availability
+        if(promotion.getPromotionQuantity()<=0 || promotion.isStatus()==false){
+            throw new RuntimeException("Promotion" +order.getPromotionCode() + " has reach it limit of usage!");
+        }
+
         orderService.saveOrder(order);
+
+        //minus quantity of promotion if order save successfully
+        promotion.setPromotionQuantity(promotion.getPromotionQuantity()-1);
+
+        //check if promotion is valid to use
+        Event event = eventService.getEventById(promotion.getEventId());
+        Date today = sdf.parse(LocalDate.now().toString());
+        if(!today.after(event.getFromDate()) && today.before(event.getToDate())){
+            throw new RuntimeException("This promotion can't be use in this time!");
+        }
+
+        //auto increase num of purchase if order has been successfully saved
+        for(OrderDetail item : order.getItemList()){
+            Food food = foodService.getFoodById(item.getId());
+            food.setPurchaseNum(food.getPurchaseNum()+item.getQuantity());
+        }
+
+
         return order;
     }
 

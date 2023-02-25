@@ -11,6 +11,9 @@ public class Promotion {
     @Column(name = "promotion_code")
     private String promotionCode;
 
+    @Column(name = "event_id")
+    private String eventId;
+
     @Column(name = "promotion_quantity")
     private int promotionQuantity;
 
@@ -24,8 +27,9 @@ public class Promotion {
 
     }
 
-    public Promotion(String promotionCode, int promotionQuantity, int discountPercent, boolean status) {
+    public Promotion(String promotionCode, String eventId, int promotionQuantity, int discountPercent, boolean status) {
         this.promotionCode = promotionCode;
+        this.eventId = eventId;
         this.promotionQuantity = promotionQuantity;
         this.discountPercent = discountPercent;
         this.status = status;
@@ -37,6 +41,14 @@ public class Promotion {
 
     public void setPromotionCode(String promotionCode) {
         this.promotionCode = promotionCode;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
     public int getPromotionQuantity() {
@@ -63,13 +75,4 @@ public class Promotion {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Promotion{" +
-                "promotionCode='" + promotionCode + '\'' +
-                ", promotionQuantity=" + promotionQuantity +
-                ", discountPercent=" + discountPercent +
-                ", status=" + status +
-                '}';
-    }
 }
