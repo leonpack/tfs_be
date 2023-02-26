@@ -49,13 +49,18 @@ public class PartyRestController {
         if(party.getPartyPrice()==null){
             party.setPartyPrice(existParty.getPartyPrice());
         }
-        if(party.getPartyItems()==null){
+        party.setPartyItems(party.getPartyItems());
+        if(party.getPartyItems()==null || party.getPartyItems().isEmpty()){
             party.setPartyItems(existParty.getPartyItems());
         }
-        party.setPartyItems(party.getPartyItems());
-
         partyService.save(party);
+        return party;
+    }
 
+    @PutMapping("/parties/clear/{partyId}")
+    public Party clearPartyItem(@PathVariable int partyId){
+        Party party = partyService.getById(partyId);
+        party.setPartyItems(null);
         return party;
     }
 

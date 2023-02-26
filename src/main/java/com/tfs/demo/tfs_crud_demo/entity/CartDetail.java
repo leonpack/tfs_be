@@ -22,6 +22,9 @@ public class CartDetail {
     @Column(name = "party_id")
     private Integer partyId;
 
+    @Column(name = "service_id")
+    private Integer serviceId;
+
     @Column(name = "name")
     private String name;
 
@@ -46,16 +49,16 @@ public class CartDetail {
 
     }
 
-    public CartDetail(Integer id, Integer comboId, Integer partyId, String name, Integer quantity, String image, Double price, Double subTotal, Cart cart) {
+    public CartDetail(Integer id, Integer comboId, Integer partyId, Integer serviceId, String name, Integer quantity, String image, Double price, Double subTotal) {
         this.id = id;
         this.comboId = comboId;
         this.partyId = partyId;
+        this.serviceId = serviceId;
         this.name = name;
         this.quantity = quantity;
         this.image = image;
         this.price = price;
         this.subTotal = subTotal;
-        this.cart = cart;
     }
 
     public int getCart_item_id() {
@@ -88,6 +91,14 @@ public class CartDetail {
 
     public void setPartyId(Integer partyId) {
         this.partyId = partyId;
+    }
+
+    public Integer getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Integer serviceId) {
+        this.serviceId = serviceId;
     }
 
     public Integer getQuantity() {

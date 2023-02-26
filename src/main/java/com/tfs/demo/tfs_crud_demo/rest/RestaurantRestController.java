@@ -80,6 +80,14 @@ public class RestaurantRestController {
         return theRestaurant;
     }
 
+    @DeleteMapping("/restaurants/remove/{staffId}")
+    public String removeStaffFromRestaurant(@PathVariable String staffId){
+        Staff staff = staffService.getStaffById(staffId);
+        staff.setTheRestaurant(null);
+        staffService.saveStaff(staff);
+        return "Staff has been removed from the restaurant";
+    }
+
     @DeleteMapping("/restaurants/{restaurantId}")
     public String DisableRestaurant(@PathVariable String restaurantId){
         restaurantService.disableRestaurant(restaurantId);

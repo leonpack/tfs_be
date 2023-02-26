@@ -14,6 +14,9 @@ public class Services {
     @Column(name = "service_name")
     private String serviceName;
 
+    @Column(name = "service_price")
+    private Double servicePrice;
+
     @Column(name = "service_description")
     private String serviceDescription;
 
@@ -27,8 +30,9 @@ public class Services {
 
     }
 
-    public Services(String serviceName, String serviceDescription, String serviceImage, Boolean status) {
+    public Services(String serviceName, Double servicePrice, String serviceDescription, String serviceImage, Boolean status) {
         this.serviceName = serviceName;
+        this.servicePrice = servicePrice;
         this.serviceDescription = serviceDescription;
         this.serviceImage = serviceImage;
         this.status = status;
@@ -48,6 +52,14 @@ public class Services {
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    public Double getServicePrice() {
+        return servicePrice;
+    }
+
+    public void setServicePrice(Double servicePrice) {
+        this.servicePrice = servicePrice;
     }
 
     public String getServiceDescription() {

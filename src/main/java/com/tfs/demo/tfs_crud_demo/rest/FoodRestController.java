@@ -109,9 +109,19 @@ public class FoodRestController {
         food.setTheCategory(null);
         food.setTheRegion(null);
         for(Food item : event.getFoodList()){
-            event.remove(item);
+            if(item==food){
+                event.remove(item);
+                eventRepository.save(event);
+            }
         }
-        eventRepository.delete(event);
+        eventRepository.save(event);
+        for(Event item : food.getEventList()){
+            if(item==event){
+                food.remove(item);
+                foodRepository.save(food);
+            }
+        }
+        foodRepository.save(food);
         foodService.saveFood(food);
         foodRepository.delete(food);
         return "Deleted!";

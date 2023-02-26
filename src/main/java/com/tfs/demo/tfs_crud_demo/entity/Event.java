@@ -33,6 +33,7 @@ public class Event {
     @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name = "eventdetail", joinColumns = @JoinColumn(name = "event_id"),inverseJoinColumns = @JoinColumn(name = "food_id"))
 //    @JsonManagedReference(value = "event-food")
+    @JsonIgnoreProperties("eventList")
     private Set<Food> foodList = new HashSet<Food>();
 
     public Event(){

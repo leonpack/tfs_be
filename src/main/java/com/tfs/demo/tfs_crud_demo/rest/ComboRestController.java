@@ -51,12 +51,21 @@ public class ComboRestController {
         if(combo.getDescription()==null){
             combo.setDescription(existCombo.getDescription());
         }
-        if(combo.getComboItems()==null){
+        combo.setComboItems(combo.getComboItems());
+        if(combo.getComboItems()==null || combo.getComboItems().isEmpty()){
             combo.setComboItems(existCombo.getComboItems());
         }
-        combo.setComboItems(combo.getComboItems());
-
+        if(combo.getStatus()==null){
+            combo.setStatus(existCombo.getStatus());
+        }
         comboService.saveCombo(combo);
+        return combo;
+    }
+
+    @PutMapping("/combos/clear/{comboId}")
+    public Combo clearComboItem(@PathVariable int comboId){
+        Combo combo = comboService.getComboById(comboId);
+        combo.setComboItems(null);
         return combo;
     }
 

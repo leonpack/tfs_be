@@ -11,10 +11,10 @@ public class ComboDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int comboDetailId;
+    private int id;
 
     @Column(name = "food_id")
-    private int id;
+    private int foodId;
 
     @Column(name = "food_name")
     private String name;
@@ -28,18 +28,18 @@ public class ComboDetail {
 
     }
 
-    public ComboDetail(int id, String name, Combo combo) {
-        this.id = id;
+    public ComboDetail(int foodId, String name, Combo combo) {
+        this.foodId = foodId;
         this.name = name;
         this.combo = combo;
     }
 
-    public int getComboDetailId() {
-        return comboDetailId;
+    public int getFoodId() {
+        return foodId;
     }
 
-    public void setComboDetailId(int comboDetailId) {
-        this.comboDetailId = comboDetailId;
+    public void setFoodId(int foodId) {
+        this.foodId = foodId;
     }
 
     public int getId() {
