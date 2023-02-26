@@ -9,4 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin
 public interface EventRepository extends JpaRepository<Event, String> {
 
+    Event getEventByEventName(String name);
+
 }

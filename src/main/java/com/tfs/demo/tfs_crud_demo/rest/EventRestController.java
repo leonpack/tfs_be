@@ -38,6 +38,15 @@ public class EventRestController {
         return theEvent;
     }
 
+    @GetMapping("/events/name/{eventName}")
+    public Event getEventByName(@PathVariable String eventName){
+        Event event = eventService.getEventByName(eventName);
+        if(event == null){
+            throw new RuntimeException("Event with name - " +eventName + " not found!");
+        }
+        return event;
+    }
+
     @PostMapping("/events")
     public String addNewEvent(@RequestBody Event theEvent){
         if(!eventService.CheckDuplicateEventId(theEvent.getEventId())){

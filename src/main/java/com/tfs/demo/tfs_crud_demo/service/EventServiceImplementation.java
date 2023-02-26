@@ -37,6 +37,11 @@ public class EventServiceImplementation implements EventService {
     }
 
     @Override
+    public Event getEventByName(String eventName) {
+        return eventRepository.getEventByEventName(eventName);
+    }
+
+    @Override
     public void saveEvent(Event theEvent) {
         eventRepository.save(theEvent);
     }

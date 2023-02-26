@@ -10,6 +10,8 @@ public interface EventService {
 
     public Event getEventById(String eventId);
 
+    public Event getEventByName(String eventName);
+
     public void saveEvent(Event theEvent);
 
     public void disableEvent(String eventId);
