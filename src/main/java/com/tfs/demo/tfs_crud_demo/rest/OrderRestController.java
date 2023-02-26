@@ -29,6 +29,7 @@ import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @RestController
@@ -212,7 +213,7 @@ public class OrderRestController {
     }
 
     @PutMapping("/orders")
-    public Order updateOrder(@RequestBody Order order){
+    public Order updateOrder(@RequestBody Order order) throws ParseException {
         Order theTempOrder = orderService.getOrderById(order.getId());
 
         //try catch null input for update
@@ -261,11 +262,13 @@ public class OrderRestController {
         }
 
         //TODO cho phép khách huỷ tối đa trước 1 ngày giao hàng
+        Date today = sdf.parse(LocalDate.now().toString());
 
         order.setItemList(order.getItemList());
         orderService.saveOrder(order);
         return order;
     }
+
 
     @DeleteMapping("/orders/{orderId}")
     public String deleteOrder(@PathVariable int orderId){
@@ -407,6 +410,26 @@ public class OrderRestController {
         return returnMessage;
     }
 
-
+    @PutMapping("/orders/{orderId}")
+    public Order denyOrder(@PathVariable int orderId){
+        Order order = orderService.getOrderById(orderId);
+        for(OrderDetail item : order.getItemList()){
+            if(item.getPartyId()!=null || !item.getPartyId().toString().isEmpty()){
+                LocalDate today = LocalDate.parse(LocalDate.now().toString());
+                LocalDate deliDay = LocalDate.parse(order.getDeliveryDate().toString());
+                long diffDays= ChronoUnit.DAYS.between(today,deliDay);
+                if(diffDays>1){
+                    order.setStatus("DENY");
+                    orderService.saveOrder(order);
+                } else {
+                    throw new RuntimeException("Order can't be deny right now");
+                }
+            } else {
+                order.setStatus("DENY");
+                orderService.saveOrder(order);
+            }
+        }
+        return order;
+    }
 
 }

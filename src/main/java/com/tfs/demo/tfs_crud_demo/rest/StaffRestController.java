@@ -45,6 +45,9 @@ public class StaffRestController {
         if(!theAccount.getPassword().equals(loginDTO.getPassword())){
             throw new RuntimeException("Wrong password!");
         }
+        if(theAccount.getRoleId().toString().equals("5")){
+            throw new RuntimeException("This type of account is not permit here");
+        }
         Staff theStaff = staffService.getStaffByTheAccount(theAccount);
         return theStaff;
     }
