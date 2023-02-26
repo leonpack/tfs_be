@@ -19,6 +19,9 @@ public class ComboDetail {
     @Column(name = "food_name")
     private String name;
 
+    @Column(name = "quantity")
+    private Integer quantity;
+
     @ManyToOne()
     @JoinColumn(name = "combo_id")
     @JsonBackReference
@@ -28,9 +31,10 @@ public class ComboDetail {
 
     }
 
-    public ComboDetail(int foodId, String name, Combo combo) {
+    public ComboDetail(int foodId, String name, Integer quantity, Combo combo) {
         this.foodId = foodId;
         this.name = name;
+        this.quantity = quantity;
         this.combo = combo;
     }
 
@@ -56,6 +60,14 @@ public class ComboDetail {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public Combo getCombo() {
