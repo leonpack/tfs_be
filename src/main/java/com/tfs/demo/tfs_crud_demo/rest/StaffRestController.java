@@ -36,7 +36,7 @@ public class StaffRestController {
         return theStaff;
     }
 
-    @GetMapping("/staffs/login")
+    @PostMapping("/staffs/login")
     public Staff loginForStaff(@RequestBody StaffLoginDTO loginDTO){
         Account theAccount = accountService.getAccountById(loginDTO.getUsername());
         if(theAccount==null){
