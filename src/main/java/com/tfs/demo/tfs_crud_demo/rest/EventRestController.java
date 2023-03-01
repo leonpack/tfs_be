@@ -60,7 +60,7 @@ public class EventRestController {
     public Event updateEvent(@RequestBody Event theEvent){
         Event event = eventService.getEventById(theEvent.getEventId());
         if(theEvent.getEventName()==null){
-            theEvent.setEventId(event.getEventName());
+            theEvent.setEventName(event.getEventName());
         }
         if(theEvent.getDescription()==null){
             theEvent.setDescription(event.getDescription());

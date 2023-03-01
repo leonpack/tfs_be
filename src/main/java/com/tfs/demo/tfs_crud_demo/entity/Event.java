@@ -30,10 +30,10 @@ public class Event {
     @Column(name = "status")
     private Boolean status;
 
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "eventdetail", joinColumns = @JoinColumn(name = "event_id"),inverseJoinColumns = @JoinColumn(name = "food_id"))
 //    @JsonManagedReference(value = "event-food")
-    @JsonIgnoreProperties("eventList")
+    @JsonIgnoreProperties({"eventList","theCategory","theRegion","status","purchaseNum"})
     private Set<Food> foodList = new HashSet<Food>();
 
     public Event(){

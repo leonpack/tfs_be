@@ -51,7 +51,7 @@ public class Food {
     @Column(name = "purchase_num")
     private Integer purchaseNum;
 
-    @ManyToMany(mappedBy = "foodList", cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToMany(mappedBy = "foodList", cascade = CascadeType.REMOVE)
 //    @JsonBackReference(value = "event-food")
     @JsonIgnoreProperties("foodList")
     private Set<Event> eventList = new HashSet<Event>();
