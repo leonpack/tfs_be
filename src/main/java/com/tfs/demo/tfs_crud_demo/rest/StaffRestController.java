@@ -49,6 +49,9 @@ public class StaffRestController {
             throw new RuntimeException("This type of account is not permit here");
         }
         Staff theStaff = staffService.getStaffByTheAccount(theAccount);
+        if(theStaff == null){
+            throw new RuntimeException("Login success but this staff need to update their information");
+        }
         return theStaff;
     }
 

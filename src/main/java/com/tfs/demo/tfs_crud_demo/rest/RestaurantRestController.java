@@ -1,5 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
+import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Restaurant;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
 import com.tfs.demo.tfs_crud_demo.service.RestaurantService;
@@ -7,6 +8,7 @@ import com.tfs.demo.tfs_crud_demo.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,6 +38,31 @@ public class RestaurantRestController {
             throw new RuntimeException("Restaurant with id - " +restaurantId+" not found!");
         }
         return theRestaurant;
+    }
+
+    @GetMapping("/restaurants/manager/{restaurantId}")
+    public Staff getManagerOfTheRestaurant(@PathVariable String restaurantId){
+        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+        Staff manager = null;
+        for(Staff item : restaurant.getStaffList()){
+            if(item.getTheAccountForStaff().getRoleId().toString().equals("3")){
+                manager = item;
+                return manager;
+            }
+        }
+        return manager;
+    }
+
+    @GetMapping("/restaurants/available/{restaurantId}")
+    public List<Staff> getAllFreeStaffs(@PathVariable String restaurantId){
+        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+        List<Staff> freeStaffs = new ArrayList<>();
+        for(Staff item : restaurant.getStaffList()){
+            if(item.getStaffActivityStatus().equals("available") && item.getTheAccountForStaff().getRoleId().toString().equals("4")){
+                freeStaffs.add(item);
+            }
+        }
+        return freeStaffs;
     }
 
     @PostMapping("/restaurants")

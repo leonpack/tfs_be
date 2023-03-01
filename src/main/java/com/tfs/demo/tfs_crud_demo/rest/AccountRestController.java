@@ -62,6 +62,9 @@ public class AccountRestController {
         if(!theAccount.getPassword().equals(userLogin.getPassword())){
             throw new RuntimeException("Password is incorrect!");
         }
+        if(theAccount.getTheCustomer()==null){
+            throw new RuntimeException("Login success but this customer need to update their information!");
+        }
         return theAccount.getTheCustomer();
     }
 
