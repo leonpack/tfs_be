@@ -26,6 +26,16 @@ public class FoodServiceImplementation implements FoodService{
     }
 
     @Override
+    public List<Food> getBestSellerFoods(int number) {
+        return foodRepository.findFoodsByPurchaseNumGreaterThan(number);
+    }
+
+    @Override
+    public List<Food> getAllFoodWithPaging(int size) {
+        return foodRepository.findAll(size);
+    }
+
+    @Override
     public Food getFoodById(int id) {
         Optional<Food> result = foodRepository.findById(id);
 
@@ -39,12 +49,6 @@ public class FoodServiceImplementation implements FoodService{
         }
         return theFood;
     }
-
-    @Override
-    public List<Object[]> getFoodDetail(int id) {
-        return foodRepository.getFoodDetail(id);
-    }
-
 
     @Override
     @Transactional

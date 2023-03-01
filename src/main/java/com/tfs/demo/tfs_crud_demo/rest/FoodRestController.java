@@ -39,6 +39,16 @@ public class FoodRestController {
         return foodService.getAllFood();
     }
 
+    @GetMapping("/foods/paging")
+    public List<Food> getAllFood(@RequestParam int size){
+        return foodService.getAllFoodWithPaging(size);
+    }
+
+    @GetMapping("/foods/bestseller")
+    public List<Food> getBestSellers(){
+        return foodService.getBestSellerFoods(50);
+    }
+
     @GetMapping("/foods/{foodId}")
     public Food theFood(@PathVariable int foodId){
         Food theFood = foodService.getFoodById(foodId);
@@ -46,11 +56,6 @@ public class FoodRestController {
             throw new RuntimeException("Food with id - "+foodId +" not found");
         }
         return theFood;
-    }
-
-    @GetMapping("/foods/detail/{foodId}")
-    public List<Object[]> getFoodDetail(@PathVariable int foodId){
-        return foodService.getFoodDetail(foodId);
     }
 
     @PostMapping("/foods")

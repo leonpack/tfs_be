@@ -35,7 +35,7 @@ public class Food {
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "category_id",referencedColumnName = "category_id")
-    @JsonIgnoreProperties("foodList")
+    @JsonIgnoreProperties({"foodList","status"})
 //    @JsonBackReference(value = "category-food")
     private Category theCategory;
 
@@ -46,14 +46,16 @@ public class Food {
     private Region theRegion;
 
     @Column(name = "status")
+    @JsonIgnore
     private boolean status;
 
     @Column(name = "purchase_num")
+    @JsonIgnore
     private Integer purchaseNum;
 
     @ManyToMany(mappedBy = "foodList", cascade = CascadeType.REMOVE)
 //    @JsonBackReference(value = "event-food")
-    @JsonIgnoreProperties("foodList")
+    @JsonIgnoreProperties({"foodList","description","image_url","fromDate","toDate","status"})
     private Set<Event> eventList = new HashSet<Event>();
 
 
