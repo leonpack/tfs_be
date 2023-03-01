@@ -3,6 +3,7 @@ package com.tfs.demo.tfs_crud_demo.rest;
 import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Restaurant;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
+import com.tfs.demo.tfs_crud_demo.service.AccountService;
 import com.tfs.demo.tfs_crud_demo.service.RestaurantService;
 import com.tfs.demo.tfs_crud_demo.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,13 @@ public class RestaurantRestController {
     private RestaurantService restaurantService;
     private StaffService staffService;
 
+    private AccountService accountService;
+
     @Autowired
-    public RestaurantRestController(RestaurantService theRestaurantService, StaffService theStaffService){
+    public RestaurantRestController(RestaurantService theRestaurantService, StaffService theStaffService, AccountService theAccountService){
         restaurantService = theRestaurantService;
         staffService = theStaffService;
+        accountService = theAccountService;
     }
 
     @GetMapping("/restaurants")
@@ -52,6 +56,21 @@ public class RestaurantRestController {
         }
         return manager;
     }
+
+    @GetMapping("/manager/{managerId}")
+    public Restaurant getRestaurantByManagerId(@PathVariable String managerId){
+        Staff manager = staffService.getStaffByTheAccount(accountService.getAccountById(managerId));
+        if(manager == null){
+            throw new RuntimeException("This manager information is not found!");
+        }
+        if(manager.getTheRestaurant()==null){
+            throw new RuntimeException("This manager doesn't work at any restaurant at the time");
+        }
+        return manager.getTheRestaurant();
+    }
+
+
+
 
     @GetMapping("/restaurants/available/{restaurantId}")
     public List<Staff> getAllFreeStaffs(@PathVariable String restaurantId){
