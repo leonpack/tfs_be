@@ -13,10 +13,6 @@ public class Promotion {
 
     @Column(name = "event_id")
     private String eventId;
-
-    @Column(name = "promotion_quantity")
-    private int promotionQuantity;
-
     @Column(name = "discount_percent")
     private int discountPercent;
 
@@ -27,10 +23,9 @@ public class Promotion {
 
     }
 
-    public Promotion(String promotionCode, String eventId, int promotionQuantity, int discountPercent, boolean status) {
+    public Promotion(String promotionCode, String eventId, int discountPercent, boolean status) {
         this.promotionCode = promotionCode;
         this.eventId = eventId;
-        this.promotionQuantity = promotionQuantity;
         this.discountPercent = discountPercent;
         this.status = status;
     }
@@ -49,14 +44,6 @@ public class Promotion {
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
-    }
-
-    public int getPromotionQuantity() {
-        return promotionQuantity;
-    }
-
-    public void setPromotionQuantity(int promotionQuantity) {
-        this.promotionQuantity = promotionQuantity;
     }
 
     public int getDiscountPercent() {

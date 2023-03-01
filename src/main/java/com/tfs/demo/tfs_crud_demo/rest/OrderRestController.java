@@ -108,35 +108,31 @@ public class OrderRestController {
     @PostMapping("/orders")
     public Order addNewOrder(@RequestBody Order order) throws ParseException {
 
-        Promotion promotion = promotionService.getPromotionByCode(order.getPromotionCode());
+        if(order.getPromotionCode()!=null){
+            Promotion promotion = promotionService.getPromotionByCode(order.getPromotionCode());
+            //        check if promotion is valid to use
+            Event event = eventService.getEventById(promotion.getEventId());
+            Date today = sdf.parse(LocalDate.now().toString());
+            if(!today.after(event.getFromDate()) && today.before(event.getToDate())){
+                throw new RuntimeException("This promotion can't be use in this time!");
+            }
+            //check promotion code availability
+            if(promotion.isStatus()==false){
+                throw new RuntimeException("Promotion" +order.getPromotionCode() + " is unusable!");
+            }
+        }
 
         if(orderService.CheckDuplicateOrderId(order.getId())){
             throw new RuntimeException("Order with id -" +order.getId() + " already exist, please try again!");
         }
 
-        //check promotion code availability
-        if(promotion.getPromotionQuantity()<=0 || promotion.isStatus()==false){
-            throw new RuntimeException("Promotion" +order.getPromotionCode() + " has reach it limit of usage!");
-        }
-
         orderService.saveOrder(order);
 
-        //minus quantity of promotion if order save successfully
-        promotion.setPromotionQuantity(promotion.getPromotionQuantity()-1);
-
-        //check if promotion is valid to use
-        Event event = eventService.getEventById(promotion.getEventId());
-        Date today = sdf.parse(LocalDate.now().toString());
-        if(!today.after(event.getFromDate()) && today.before(event.getToDate())){
-            throw new RuntimeException("This promotion can't be use in this time!");
-        }
-
-        //auto increase num of purchase if order has been successfully saved
+//        auto increase num of purchase if order has been successfully saved
         for(OrderDetail item : order.getItemList()){
             Food food = foodService.getFoodById(item.getId());
             food.setPurchaseNum(food.getPurchaseNum()+item.getQuantity());
         }
-
 
         return order;
     }

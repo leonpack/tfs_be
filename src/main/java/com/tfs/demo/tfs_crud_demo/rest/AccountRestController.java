@@ -1,5 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
+import com.tfs.demo.tfs_crud_demo.dto.UserLogin;
 import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
@@ -40,14 +41,26 @@ public class AccountRestController {
         return theAccount;
     }
 
-    @GetMapping ("/accountsByUsername/{accountId}&{password}")
-    public Customer checkLogin(@PathVariable String accountId, @PathVariable String password){
-        Account theAccount = accountService.getAccountById(accountId);
-        if(theAccount==null){
-            return null;
+//    @GetMapping ("/accountsByUsername/{accountId}&{password}")
+//    public Customer checkLogin(@PathVariable String accountId, @PathVariable String password){
+//        Account theAccount = accountService.getAccountById(accountId);
+//        if(theAccount==null){
+//            return null;
+//        }
+//        if(!password.equals(theAccount.getPassword())){
+//            throw new RuntimeException("Wrong password");
+//        }
+//        return theAccount.getTheCustomer();
+//    }
+
+    @PostMapping("/user/login")
+    public Customer loginByUserInformation(@RequestBody UserLogin userLogin){
+        Account theAccount = accountService.getAccountById(userLogin.getUsername());
+        if(theAccount == null){
+            throw new RuntimeException("Account not found!");
         }
-        if(!password.equals(theAccount.getPassword())){
-            throw new RuntimeException("Wrong password");
+        if(!theAccount.getPassword().equals(userLogin.getPassword())){
+            throw new RuntimeException("Password is incorrect!");
         }
         return theAccount.getTheCustomer();
     }
