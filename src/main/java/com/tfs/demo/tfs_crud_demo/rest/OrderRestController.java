@@ -1,6 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.dao.OrderDetailRepository;
+import com.tfs.demo.tfs_crud_demo.dto.AssignOrderDTO;
 import com.tfs.demo.tfs_crud_demo.dto.OrderStatusDTO;
 import com.tfs.demo.tfs_crud_demo.dto.RefundDTO;
 import com.tfs.demo.tfs_crud_demo.entity.*;
@@ -285,6 +286,14 @@ public class OrderRestController {
     public Order updateOrderStatusOnly(@RequestBody OrderStatusDTO orderStatusDTO){
         Order order = orderService.getOrderById(orderStatusDTO.getOrderId());
         order.setStatus(orderStatusDTO.getStatus());
+        orderService.saveOrder(order);
+        return order;
+    }
+
+    @PutMapping("/orders/assign")
+    public Order assignOrderForStaff(@RequestBody AssignOrderDTO assignOrderDTO){
+        Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
+        order.setStaffId(assignOrderDTO.getStaffId());
         orderService.saveOrder(order);
         return order;
     }
