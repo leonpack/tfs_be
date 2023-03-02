@@ -49,7 +49,6 @@ public class Food {
     private boolean status;
 
     @Column(name = "purchase_num")
-    @JsonIgnore
     private Integer purchaseNum;
 
     @ManyToMany(mappedBy = "foodList")

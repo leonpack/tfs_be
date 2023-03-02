@@ -47,6 +47,12 @@ public class Order {
     @Column(name = "activity_status")
     private String status;
 
+    @Column(name = "note")
+    private String note;
+
+    @Column(name = "reason")
+    private String reason;
+
     @JoinColumn(name = "customer_id")
     private Integer customerId;
 
@@ -64,25 +70,7 @@ public class Order {
 
     }
 
-//    public Order(Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate, Date receiveTime, String status, Integer customerId, String restaurantId, String staffId, List<OrderDetail> itemList) {
-//        this.totalPrice = totalPrice;
-//        this.totalQuantity = totalQuantity;
-//        this.paymentMethod = paymentMethod;
-//        this.deliveryAddress = deliveryAddress;
-//        this.orderDate = orderDate;
-//        this.deliveryDate = deliveryDate;
-//        this.receiveTime = receiveTime;
-//        this.status = status;
-//        this.customerId = customerId;
-//        this.restaurantId = restaurantId;
-//        this.staffId = staffId;
-//        this.itemList = itemList;
-//    }
-
-
-    public Order(int id, String promotionCode, Double totalPrice, Integer totalQuantity,
-                 String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate,
-                 Date receiveTime, String status, Integer customerId, String restaurantId, String staffId, List<OrderDetail> itemList) {
+    public Order(int id, String promotionCode, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate, Date receiveTime, String status, String note, String reason, Integer customerId, String restaurantId, String staffId) {
         this.id = id;
         this.promotionCode = promotionCode;
         this.totalPrice = totalPrice;
@@ -93,10 +81,11 @@ public class Order {
         this.deliveryDate = deliveryDate;
         this.receiveTime = receiveTime;
         this.status = status;
+        this.note = note;
+        this.reason = reason;
         this.customerId = customerId;
         this.restaurantId = restaurantId;
         this.staffId = staffId;
-        this.itemList = itemList;
     }
 
     public int getId() {
@@ -177,6 +166,22 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public Integer getCustomerId() {
