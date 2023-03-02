@@ -101,7 +101,7 @@ public class OrderRestController {
     }
 
     @GetMapping("/orders/restaurant/{resId}")
-    public List<Order> getAllOrderByRestaurant(@PathVariable String resId){
+    public List<Order> getAllOrderByRestaurant(@PathVariable int resId){
         return orderService.getAllOrderByRestaurantId(resId);
     }
 
@@ -118,7 +118,7 @@ public class OrderRestController {
                 throw new RuntimeException("This promotion can't be use in this time!");
             }
             //check promotion code availability
-            if(promotion.isStatus()==false){
+            if(promotion.getStatus()==false){
                 throw new RuntimeException("Promotion" +order.getPromotionCode() + " is unusable!");
             }
         }
@@ -282,16 +282,9 @@ public class OrderRestController {
     }
 
     @PutMapping("/orders/status")
-    public Order updateOrderStatusOnly(@RequestBody OrderStatusDTO orderStatusDTO){
-        Order order = orderService.getOrderById(orderStatusDTO.getOrderId());
-        order.setStatus(orderStatusDTO.getStatus());
-        orderService.saveOrder(order);
-        return order;
-    }
-
-    @PutMapping("/orders/assign")
-    public Order assignOrderForStaff(@RequestBody AssignOrderDTO assignOrderDTO){
+    public Order updateOrderStatus(@RequestBody AssignOrderDTO assignOrderDTO){
         Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
+        order.setStatus(assignOrderDTO.getStatus());
         Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
         if(staff.getStaffActivityStatus().equals("busy")){
             throw new RuntimeException("This staff can't be assign to an order right now");
@@ -302,6 +295,21 @@ public class OrderRestController {
         orderService.saveOrder(order);
         return order;
     }
+
+    //DEPRECATED
+//    @PutMapping("/orders/assign")
+//    public Order assignOrderForStaff(@RequestBody AssignOrderDTO assignOrderDTO){
+//        Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
+//        Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
+//        if(staff.getStaffActivityStatus().equals("busy")){
+//            throw new RuntimeException("This staff can't be assign to an order right now");
+//        }
+//        order.setStaffId(assignOrderDTO.getStaffId());
+//        staff.setStaffActivityStatus("busy");
+//        staffService.saveStaff(staff);
+//        orderService.saveOrder(order);
+//        return order;
+//    }
 
     @DeleteMapping("/orders/{orderId}")
     public String deleteOrder(@PathVariable int orderId){

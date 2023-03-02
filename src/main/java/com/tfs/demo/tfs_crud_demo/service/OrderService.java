@@ -13,7 +13,7 @@ public interface OrderService {
 
     public List<Order> getAllOrderByStaffId(String staffId);
 
-    public List<Order> getAllOrderByRestaurantId(String restaurantId);
+    public List<Order> getAllOrderByRestaurantId(int restaurantId);
 
     public Order getOrderById(int orderId);
 

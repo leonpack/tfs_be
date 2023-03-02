@@ -57,10 +57,10 @@ public class Order {
     private Integer customerId;
 
     @JoinColumn(name = "restaurant_id")
-    private String restaurantId;
+    private Integer restaurantId;
 
     @JoinColumn(name = "staff_id")
-    private String staffId;
+    private Integer staffId;
 
     @OneToMany(mappedBy = "theOrder",cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.MERGE}, orphanRemoval = true)
     @JsonManagedReference
@@ -70,8 +70,7 @@ public class Order {
 
     }
 
-    public Order(int id, String promotionCode, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate, Date receiveTime, String status, String note, String reason, Integer customerId, String restaurantId, String staffId) {
-        this.id = id;
+    public Order(String promotionCode, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate, Date receiveTime, String status, String note, String reason, Integer customerId, Integer restaurantId, Integer staffId) {
         this.promotionCode = promotionCode;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
@@ -192,19 +191,19 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public String getRestaurantId() {
+    public Integer getRestaurantId() {
         return restaurantId;
     }
 
-    public void setRestaurantId(String restaurantId) {
+    public void setRestaurantId(Integer restaurantId) {
         this.restaurantId = restaurantId;
     }
 
-    public String getStaffId() {
+    public Integer getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(String staffId) {
+    public void setStaffId(Integer staffId) {
         this.staffId = staffId;
     }
 

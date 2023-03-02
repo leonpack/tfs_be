@@ -8,26 +8,39 @@ import javax.persistence.*;
 public class Promotion {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "promotion_id")
+    private int id;
+
     @Column(name = "promotion_code")
     private String promotionCode;
 
     @Column(name = "event_id")
-    private String eventId;
+    private Integer eventId;
     @Column(name = "discount_percent")
     private int discountPercent;
 
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     public Promotion(){
 
     }
 
-    public Promotion(String promotionCode, String eventId, int discountPercent, boolean status) {
+    public Promotion(int id, String promotionCode, Integer eventId, int discountPercent, Boolean status) {
+        this.id = id;
         this.promotionCode = promotionCode;
         this.eventId = eventId;
         this.discountPercent = discountPercent;
         this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPromotionCode() {
@@ -38,11 +51,11 @@ public class Promotion {
         this.promotionCode = promotionCode;
     }
 
-    public String getEventId() {
+    public Integer getEventId() {
         return eventId;
     }
 
-    public void setEventId(String eventId) {
+    public void setEventId(Integer eventId) {
         this.eventId = eventId;
     }
 
@@ -54,12 +67,11 @@ public class Promotion {
         this.discountPercent = discountPercent;
     }
 
-    public boolean isStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
-
 }

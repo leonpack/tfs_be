@@ -13,8 +13,9 @@ import java.util.List;
 public class Category {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private String id;
+    private int id;
 
     @Column(name = "category_name")
     private String categoryName;
@@ -31,17 +32,16 @@ public class Category {
 
     }
 
-    public Category(String id, String categoryName, Boolean status) {
-        this.id = id;
+    public Category(String categoryName, Boolean status) {
         this.categoryName = categoryName;
         this.status = status;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

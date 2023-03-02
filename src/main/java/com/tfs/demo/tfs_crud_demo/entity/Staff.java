@@ -15,8 +15,9 @@ import java.util.Set;
 public class Staff {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "staff_id")
-    private String staffId;
+    private int staffId;
 
     @Column(name = "staff_full_name")
     private String staffFullName;
@@ -47,8 +48,7 @@ public class Staff {
 
     }
 
-    public Staff(String staffId, String staffFullName, String staffEmail, String staffAvatarUrl, Account theAccountForStaff, Restaurant theRestaurants, String staffActivityStatus, boolean staffStatus) {
-        this.staffId = staffId;
+    public Staff(String staffFullName, String staffEmail, String staffAvatarUrl, Account theAccountForStaff, Restaurant theRestaurant, String staffActivityStatus, boolean staffStatus) {
         this.staffFullName = staffFullName;
         this.staffEmail = staffEmail;
         this.staffAvatarUrl = staffAvatarUrl;
@@ -58,11 +58,11 @@ public class Staff {
         this.staffStatus = staffStatus;
     }
 
-    public String getStaffId() {
+    public int getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(String staffId) {
+    public void setStaffId(int staffId) {
         this.staffId = staffId;
     }
 

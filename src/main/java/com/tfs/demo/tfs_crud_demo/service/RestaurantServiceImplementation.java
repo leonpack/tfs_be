@@ -28,7 +28,7 @@ public class RestaurantServiceImplementation implements RestaurantService{
     }
 
     @Override
-    public Restaurant getRestaurantById(String restaurantId) {
+    public Restaurant getRestaurantById(int restaurantId) {
         Optional<Restaurant> result = restaurantRepository.findById(restaurantId);
         Restaurant theRestaurant = null;
         if(result.isPresent()){
@@ -45,7 +45,7 @@ public class RestaurantServiceImplementation implements RestaurantService{
     }
 
     @Override
-    public void disableRestaurant(String restaurantId) {
+    public void disableRestaurant(int restaurantId) {
         Optional<Restaurant> result = restaurantRepository.findById(restaurantId);
         Restaurant theRestaurant = null;
         if(result.isPresent()){
@@ -55,15 +55,6 @@ public class RestaurantServiceImplementation implements RestaurantService{
         }
         theRestaurant.setStatus(false);
         restaurantRepository.save(theRestaurant);
-    }
-
-    @Override
-    public boolean checkDuplicateId(String checkRestaurantId) {
-        Optional<Restaurant> result = restaurantRepository.findById(checkRestaurantId);
-        if(result.isPresent()){
-            throw new RuntimeException("Duplicate with restaurant id "+checkRestaurantId+" has been found, please try again!");
-        }
-        return true;
     }
 
     @Override
@@ -77,15 +68,5 @@ public class RestaurantServiceImplementation implements RestaurantService{
         return true;
     }
 
-    @Override
-    public boolean checkDuplicateName(String checkRestaurantName) {
-        Query theQuery = entityManager.createQuery("select restaurantName from Restaurant");
-        for(int i=0;i<theQuery.getResultList().size();i++){
-            if (checkRestaurantName.equals(theQuery.getResultList().get(i))){
-                throw new RuntimeException("This restaurant name - " +checkRestaurantName+" has been taken by another restaurant, please try again!");
-            }
-        }
-        return true;
-    }
 
 }

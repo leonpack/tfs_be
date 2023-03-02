@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Repository
 @CrossOrigin
-public interface CategoryRepository extends JpaRepository<Category, String> {
-
+public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
 
 }

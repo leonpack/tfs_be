@@ -24,18 +24,8 @@ public class PromotionServiceImplementation implements PromotionService{
         return promotionRepository.findAll();
     }
 
-    @Override
-    public Promotion getPromotionByCode(String promotionCode) {
-        Optional<Promotion> result = promotionRepository.findById(promotionCode);
-
-        Promotion thePromotion = null;
-        if(result.isPresent()){
-            thePromotion = result.get();
-        }
-        else {
-            throw new RuntimeException("Promotion code - " +promotionCode+ " not found!");
-        }
-        return thePromotion;
+    public Promotion getPromotionByCode(String code){
+        return promotionRepository.findPromotionByPromotionCode(code);
     }
 
     @Override
@@ -44,27 +34,16 @@ public class PromotionServiceImplementation implements PromotionService{
     }
 
     @Override
-    public void disablePromotion(String promotionCode) {
-        Optional<Promotion> result = promotionRepository.findById(promotionCode);
+    public void disablePromotion(int id) {
+        Optional<Promotion> result = promotionRepository.findById(id);
 
         Promotion thePromotion = null;
         if(result.isPresent()){
             thePromotion = result.get();
         } else {
-            throw new RuntimeException("Promotion code - " +promotionCode+ " not found!");
+            throw new RuntimeException("Promotion code - " +id+ " not found!");
         }
         thePromotion.setStatus(false);
-    }
-
-    @Override
-    public boolean checkDuplicatePromotionCode(String promotionCode) {
-        Optional<Promotion> result = promotionRepository.findById(promotionCode);
-
-        Promotion thePromotion = null;
-        if(result.isPresent()){
-            throw new RuntimeException("Promotion code - " +promotionCode +" already in the list, please try again!");
-        }
-        return true;
     }
 
 }

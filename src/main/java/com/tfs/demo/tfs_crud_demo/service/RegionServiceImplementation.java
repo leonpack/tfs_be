@@ -24,7 +24,7 @@ public class RegionServiceImplementation implements RegionService{
     }
 
     @Override
-    public Region getRegionById(String regionId) {
+    public Region getRegionById(int regionId) {
         Optional<Region> result = regionRepository.findById(regionId);
 
         Region theRegion = null;

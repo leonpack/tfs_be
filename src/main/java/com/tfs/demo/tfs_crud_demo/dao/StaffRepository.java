@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Repository
 @CrossOrigin
-public interface StaffRepository extends JpaRepository<Staff, String> {
+public interface StaffRepository extends JpaRepository<Staff, Integer> {
 
     Staff getStaffByTheAccountForStaff(Account theAccount);
 

@@ -9,7 +9,7 @@ public interface StaffService {
 
     public List<Staff> getAllStaffs();
 
-    public Staff getStaffById(String staffId);
+    public Staff getStaffById(int staffId);
 
     public Staff getStaffByEmail(String email);
 
@@ -17,9 +17,7 @@ public interface StaffService {
 
     public void saveStaff(Staff theStaff);
 
-    public void disableStaff(String staffId);
-
-    public boolean checkDuplicateStaffId(String staffId);
+    public void disableStaff(int staffId);
 
     public boolean checkDuplicateAccountId(String accountId);
 

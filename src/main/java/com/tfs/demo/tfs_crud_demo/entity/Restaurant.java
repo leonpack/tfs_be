@@ -15,8 +15,9 @@ import java.util.Set;
 public class Restaurant {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "restaurant_id")
-    private String restaurantId;
+    private int restaurantId;
 
     @Column(name = "restaurant_location")
     private String restaurantLocation;
@@ -44,8 +45,7 @@ public class Restaurant {
 
     }
 
-    public Restaurant(String restaurantId, String restaurantLocation, String latitude, String longitude, String restaurantName, String restaurantNumber, Boolean status) {
-        this.restaurantId = restaurantId;
+    public Restaurant(String restaurantLocation, String latitude, String longitude, String restaurantName, String restaurantNumber, Boolean status) {
         this.restaurantLocation = restaurantLocation;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -54,11 +54,11 @@ public class Restaurant {
         this.status = status;
     }
 
-    public String getRestaurantId() {
+    public int getRestaurantId() {
         return restaurantId;
     }
 
-    public void setRestaurantId(String restaurantId) {
+    public void setRestaurantId(int restaurantId) {
         this.restaurantId = restaurantId;
     }
 

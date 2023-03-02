@@ -8,13 +8,12 @@ public interface EventService {
 
     public List<Event> getAllEvents();
 
-    public Event getEventById(String eventId);
+    public Event getEventById(int eventId);
 
     public Event getEventByName(String eventName);
 
     public void saveEvent(Event theEvent);
 
-    public void disableEvent(String eventId);
+    public void disableEvent(int eventId);
 
-    public boolean CheckDuplicateEventId(String eventId);
 }

@@ -34,7 +34,7 @@ public class StaffRestController {
     }
 
     @GetMapping("/staffs/{staffId}")
-    public Staff getStaffById(@PathVariable String staffId){
+    public Staff getStaffById(@PathVariable int staffId){
         Staff theStaff = staffService.getStaffById(staffId);
         return theStaff;
     }
@@ -71,9 +71,6 @@ public class StaffRestController {
 
     @PostMapping("/staffs")
     public Staff addNewStaff(@RequestBody Staff theStaff){
-        if(!staffService.checkDuplicateStaffId(theStaff.getStaffId())){
-            throw new RuntimeException("Staff with id " +theStaff.getStaffId()+ " already exist");
-        }
         if(!staffService.checkDuplicateAccountId(theStaff.getTheAccountForStaff().getAccountId())){
             throw new RuntimeException("Account with id" +theStaff.getTheAccountForStaff().getAccountId() + " already exist!");
         }
@@ -124,7 +121,7 @@ public class StaffRestController {
     }
 
     @DeleteMapping("/staffs/{staffId}")
-    public String disableStaff(@PathVariable String staffId){
+    public String disableStaff(@PathVariable int staffId){
         staffService.disableStaff(staffId);
         return "Disable staff with id - " +staffId + " completed!";
     }

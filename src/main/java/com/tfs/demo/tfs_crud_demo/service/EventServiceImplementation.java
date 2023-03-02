@@ -24,7 +24,7 @@ public class EventServiceImplementation implements EventService {
     }
 
     @Override
-    public Event getEventById(String eventId) {
+    public Event getEventById(int eventId) {
         Optional<Event> result = eventRepository.findById(eventId);
 
         Event theEvent = null;
@@ -47,7 +47,7 @@ public class EventServiceImplementation implements EventService {
     }
 
     @Override
-    public void disableEvent(String eventId) {
+    public void disableEvent(int eventId) {
         Optional<Event> result = eventRepository.findById(eventId);
         Event theEvent = null;
         if(result.isPresent()){
@@ -59,14 +59,4 @@ public class EventServiceImplementation implements EventService {
         eventRepository.save(theEvent);
     }
 
-    @Override
-    public boolean CheckDuplicateEventId(String eventId) {
-        Optional<Event> result = eventRepository.findById(eventId);
-        Event theEvent = null;
-        if(result.isPresent()){
-            throw new RuntimeException("Event with id - " +eventId +" already exist, please try again!");
-        }
-
-        return true;
-    }
 }

@@ -30,7 +30,7 @@ public class StaffServiceImplementation implements StaffService{
     }
 
     @Override
-    public Staff getStaffById(String staffId) {
+    public Staff getStaffById(int staffId) {
         Optional<Staff> result = staffRepository.findById(staffId);
         Staff theStaff = null;
         if(result.isPresent()){
@@ -58,7 +58,7 @@ public class StaffServiceImplementation implements StaffService{
     }
 
     @Override
-    public void disableStaff(String staffId) {
+    public void disableStaff(int staffId) {
         Optional<Staff> result = staffRepository.findById(staffId);
         Staff theStaff = null;
         if(result.isPresent()){
@@ -66,15 +66,6 @@ public class StaffServiceImplementation implements StaffService{
         }
         theStaff.setStaffStatus(false);
         staffRepository.save(theStaff);
-    }
-
-    @Override
-    public boolean checkDuplicateStaffId(String staffId) {
-        Optional<Staff> result = staffRepository.findById(staffId);
-        if(result.isPresent()){
-            throw new RuntimeException("Duplicate staff id - " +staffId+ " has been found, please try again");
-        }
-        return true;
     }
 
     @Override

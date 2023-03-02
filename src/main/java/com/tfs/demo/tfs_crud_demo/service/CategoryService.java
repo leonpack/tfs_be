@@ -8,11 +8,10 @@ public interface CategoryService {
 
     public List<Category> getAllCategories();
 
-    public Category getCategoryById(String id);
+    public Category getCategoryById(int id);
 
     public void saveCategory(Category theCategory);
 
-    public void disableCategory(String id);
+    public void disableCategory(int id);
 
-    public boolean CheckDuplicateId(String categoryId);
 }

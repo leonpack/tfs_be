@@ -24,7 +24,7 @@ public class CategoryServiceImplementation implements CategoryService{
     }
 
     @Override
-    public Category getCategoryById(String id) {
+    public Category getCategoryById(int id) {
         Optional<Category> result = categoryRepository.findById(id);
 
         Category theCategory = null;
@@ -43,7 +43,7 @@ public class CategoryServiceImplementation implements CategoryService{
     }
 
     @Override
-    public void disableCategory(String id) {
+    public void disableCategory(int id) {
         Optional<Category> result = categoryRepository.findById(id);
 
         Category theCategory = null;
@@ -57,16 +57,4 @@ public class CategoryServiceImplementation implements CategoryService{
         categoryRepository.save(theCategory);
     }
 
-    @Override
-    public boolean CheckDuplicateId(String categoryId){
-        Optional<Category> result = categoryRepository.findById(categoryId);
-
-
-        Category theCategory = null;
-        if(result.isPresent()){
-            throw new RuntimeException("Category with id - " +categoryId+ " already exist, please try again!");
-        }
-
-        return true;
-    }
 }

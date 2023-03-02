@@ -36,7 +36,7 @@ public class OrderServiceImplementation implements OrderService{
     }
 
     @Override
-    public List<Order> getAllOrderByRestaurantId(String restaurantId) {
+    public List<Order> getAllOrderByRestaurantId(int restaurantId) {
         return orderRepository.getAllByRestaurantId(restaurantId);
     }
 

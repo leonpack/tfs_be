@@ -35,7 +35,7 @@ public class RestaurantRestController {
     }
 
     @GetMapping("/restaurants/{restaurantId}")
-    public Restaurant getRestaurantById(@PathVariable String restaurantId){
+    public Restaurant getRestaurantById(@PathVariable int restaurantId){
         Restaurant theRestaurant = restaurantService.getRestaurantById(restaurantId);
 
         if(theRestaurant==null){
@@ -45,7 +45,7 @@ public class RestaurantRestController {
     }
 
     @GetMapping("/restaurants/manager/{restaurantId}")
-    public Staff getManagerOfTheRestaurant(@PathVariable String restaurantId){
+    public Staff getManagerOfTheRestaurant(@PathVariable int restaurantId){
         Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
         Staff manager = null;
         for(Staff item : restaurant.getStaffList()){
@@ -73,7 +73,7 @@ public class RestaurantRestController {
 
 
     @GetMapping("/restaurants/available/{restaurantId}")
-    public List<Staff> getAllFreeStaffs(@PathVariable String restaurantId){
+    public List<Staff> getAllFreeStaffs(@PathVariable int restaurantId){
         Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
         List<Staff> freeStaffs = new ArrayList<>();
         for(Staff item : restaurant.getStaffList()){
@@ -86,12 +86,6 @@ public class RestaurantRestController {
 
     @PostMapping("/restaurants")
     public String AddNewRestaurant(@RequestBody Restaurant theRestaurant){
-        if(!restaurantService.checkDuplicateId(theRestaurant.getRestaurantId())){
-            return "Duplicate with id -" +theRestaurant.getRestaurantId() + " has been found!, please try again";
-        }
-        if(!restaurantService.checkDuplicateName(theRestaurant.getRestaurantName())){
-            return "This restaurant name - " +theRestaurant.getRestaurantName() + " has been taken, please try again";
-        }
         if(!restaurantService.checkDuplicatePhoneNumber(theRestaurant.getRestaurantNumber())){
             return "This restaurant phone number - " +theRestaurant.getRestaurantNumber() + " has been linked with another restaurant, please try again!";
         }
@@ -134,7 +128,7 @@ public class RestaurantRestController {
     }
 
     @DeleteMapping("/restaurants/remove/{staffId}")
-    public String removeStaffFromRestaurant(@PathVariable String staffId){
+    public String removeStaffFromRestaurant(@PathVariable int staffId){
         Staff staff = staffService.getStaffById(staffId);
         staff.setTheRestaurant(null);
         staffService.saveStaff(staff);
@@ -142,7 +136,7 @@ public class RestaurantRestController {
     }
 
     @DeleteMapping("/restaurants/{restaurantId}")
-    public String DisableRestaurant(@PathVariable String restaurantId){
+    public String DisableRestaurant(@PathVariable int restaurantId){
         restaurantService.disableRestaurant(restaurantId);
         return "Disable restaurant with id - "+restaurantId + " completed!";
     }

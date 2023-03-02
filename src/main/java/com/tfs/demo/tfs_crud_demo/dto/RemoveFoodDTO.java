@@ -3,13 +3,13 @@ package com.tfs.demo.tfs_crud_demo.dto;
 public class RemoveFoodDTO {
 
     private int food_id;
-    private String event_id;
+    private int event_id;
 
     public RemoveFoodDTO(){
 
     }
 
-    public RemoveFoodDTO(int food_id, String event_id) {
+    public RemoveFoodDTO(int food_id, int event_id) {
         this.food_id = food_id;
         this.event_id = event_id;
     }
@@ -22,11 +22,11 @@ public class RemoveFoodDTO {
         this.food_id = food_id;
     }
 
-    public String getEvent_id() {
+    public int getEvent_id() {
         return event_id;
     }
 
-    public void setEvent_id(String event_id) {
+    public void setEvent_id(int event_id) {
         this.event_id = event_id;
     }
 }

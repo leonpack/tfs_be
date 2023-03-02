@@ -15,6 +15,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     List<Order> getAllByStaffId(String staffId);
 
-    List<Order> getAllByRestaurantId(String restaurantId);
+    List<Order> getAllByRestaurantId(int restaurantId);
 
 }

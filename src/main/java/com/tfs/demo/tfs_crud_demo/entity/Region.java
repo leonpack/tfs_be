@@ -13,8 +13,9 @@ import java.util.List;
 public class Region {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "region_id")
-    private String id;
+    private int id;
 
     @Column(name = "region_name")
     private String region_name;
@@ -28,17 +29,15 @@ public class Region {
 
     }
 
-    public Region(String id, String region_name, List<Food> foodList) {
-        this.id = id;
+    public Region(String region_name) {
         this.region_name = region_name;
-        this.foodList = foodList;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

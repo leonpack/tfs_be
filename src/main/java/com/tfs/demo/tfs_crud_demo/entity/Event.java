@@ -11,8 +11,9 @@ import java.util.*;
 @Table(name = "event")
 public class Event {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id",updatable = false)
-    private String eventId;
+    private int eventId;
     @Column(name = "event_name")
     private String eventName;
 
@@ -39,8 +40,7 @@ public class Event {
 
     }
 
-    public Event(String eventId, String eventName, String description, String image_url, Date fromDate, Date toDate, Boolean status, Set<Food> foodList) {
-        this.eventId = eventId;
+    public Event(String eventName, String description, String image_url, Date fromDate, Date toDate, Boolean status, Set<Food> foodList) {
         this.eventName = eventName;
         this.description = description;
         this.image_url = image_url;
@@ -50,11 +50,11 @@ public class Event {
         this.foodList = foodList;
     }
 
-    public String getEventId() {
+    public int getEventId() {
         return eventId;
     }
 
-    public void setEventId(String eventId) {
+    public void setEventId(int eventId) {
         this.eventId = eventId;
     }
 

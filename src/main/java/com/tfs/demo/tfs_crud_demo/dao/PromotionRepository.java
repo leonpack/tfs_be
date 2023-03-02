@@ -7,5 +7,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Repository
 @CrossOrigin
-public interface PromotionRepository extends JpaRepository<Promotion, String> {
+public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
+
+    Promotion findPromotionByPromotionCode(String code);
+
 }

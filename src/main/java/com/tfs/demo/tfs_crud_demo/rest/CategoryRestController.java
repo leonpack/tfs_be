@@ -31,7 +31,7 @@ public class CategoryRestController {
     }
 
     @GetMapping("/categories/{categoryId}")
-    public Category getCategoryById(@PathVariable String categoryId){
+    public Category getCategoryById(@PathVariable int categoryId){
         Category theCategory = categoryService.getCategoryById(categoryId);
 
         if(theCategory == null){
@@ -43,9 +43,9 @@ public class CategoryRestController {
     @PostMapping("/categories")
     public String addCategory(@RequestBody Category theCategory){
 
-        if(!categoryService.CheckDuplicateId(theCategory.getId())){
-            return "Duplicate id issues has been found!";
-        }
+//        if(!categoryService.CheckDuplicateId(theCategory.getId())){
+//            return "Duplicate id issues has been found!";
+//        }
 //        categoryService.saveCategory(theCategory);
 //        return theCategory;
         categoryService.saveCategory(theCategory);
@@ -75,7 +75,7 @@ public class CategoryRestController {
     }
 
     @DeleteMapping("/categories/{categoryId}")
-    public String disableCategory(@PathVariable String categoryId){
+    public String disableCategory(@PathVariable int categoryId){
         Category theCategory = categoryService.getCategoryById(categoryId);
 
         if(theCategory == null){
@@ -89,7 +89,7 @@ public class CategoryRestController {
     }
 
     @PostMapping("/categories/{foodId}TO{categoryId}")
-    public String addFoodToCategory(@PathVariable String categoryId,@PathVariable int foodId){
+    public String addFoodToCategory(@PathVariable int categoryId,@PathVariable int foodId){
         Food theFood = foodService.getFoodById(foodId);
         Category theCategory = categoryService.getCategoryById(categoryId);
         if(theCategory == null || theFood == null){

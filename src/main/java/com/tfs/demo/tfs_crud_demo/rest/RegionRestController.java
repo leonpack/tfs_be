@@ -29,7 +29,7 @@ public class RegionRestController {
     }
 
     @GetMapping("/regions/{regionId}")
-    public Region getRegionById(@PathVariable String regionId){
+    public Region getRegionById(@PathVariable int regionId){
         Region theRegion = regionService.getRegionById(regionId);
         if(theRegion == null){
             throw new RuntimeException("Region with id - " +regionId + " not found!");
@@ -38,7 +38,7 @@ public class RegionRestController {
     }
 
     @PostMapping("/regions/{foodId}TO{regionId}")
-    public String addFoodToRegion(@PathVariable String regionId,@PathVariable int foodId){
+    public String addFoodToRegion(@PathVariable int regionId,@PathVariable int foodId){
         Food theFood = foodService.getFoodById(foodId);
         Region theRegion = regionService.getRegionById(regionId);
         if(theRegion==null){

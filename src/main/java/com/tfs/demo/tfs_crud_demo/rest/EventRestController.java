@@ -30,7 +30,7 @@ public class EventRestController {
     }
 
     @GetMapping("/events/{eventId}")
-    public Event getEventById(@PathVariable String eventId){
+    public Event getEventById(@PathVariable int eventId){
         Event theEvent = eventService.getEventById(eventId);
         if(theEvent==null){
             throw new RuntimeException("Event with id - "+eventId+" not found!");
@@ -49,9 +49,6 @@ public class EventRestController {
 
     @PostMapping("/events")
     public String addNewEvent(@RequestBody Event theEvent){
-        if(!eventService.CheckDuplicateEventId(theEvent.getEventId())){
-            return "Duplicate issue with event id has been found!";
-        }
         eventService.saveEvent(theEvent);
         return "Saved " +theEvent;
     }
@@ -86,7 +83,7 @@ public class EventRestController {
     }
 
     @DeleteMapping("/events/{eventId}")
-    public String disableEvent(@PathVariable String eventId){
+    public String disableEvent(@PathVariable int eventId){
         eventService.disableEvent(eventId);
         return "Disable event with id - " +eventId + " successful!";
     }

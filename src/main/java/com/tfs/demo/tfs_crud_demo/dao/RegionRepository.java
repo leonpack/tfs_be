@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Repository
 @CrossOrigin
-public interface RegionRepository extends JpaRepository<Region, String> {
+public interface RegionRepository extends JpaRepository<Region, Integer> {
 
 }

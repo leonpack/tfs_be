@@ -8,16 +8,12 @@ public interface RestaurantService {
 
     public List<Restaurant> getAllRestaurants();
 
-    public Restaurant getRestaurantById(String restaurantId);
+    public Restaurant getRestaurantById(int restaurantId);
 
     public void saveRestaurant(Restaurant theRestaurant);
 
-    public void disableRestaurant(String restaurantId);
-
-    public boolean checkDuplicateId(String checkRestaurantId);
+    public void disableRestaurant(int restaurantId);
 
     public boolean checkDuplicatePhoneNumber(String checkPhoneNumber);
-
-    public boolean checkDuplicateName(String checkRestaurantName);
 
 }

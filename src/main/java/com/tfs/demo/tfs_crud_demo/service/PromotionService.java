@@ -12,7 +12,6 @@ public interface PromotionService {
 
     public void savePromotion(Promotion thePromotion);
 
-    public void disablePromotion(String promotionCode);
+    public void disablePromotion(int id);
 
-    public boolean checkDuplicatePromotionCode(String promotionCode);
 }
