@@ -6,10 +6,7 @@ import com.tfs.demo.tfs_crud_demo.dto.OrderStatusDTO;
 import com.tfs.demo.tfs_crud_demo.dto.RefundDTO;
 import com.tfs.demo.tfs_crud_demo.entity.*;
 import com.tfs.demo.tfs_crud_demo.library.vn.zalopay.crypto.HMACUtil;
-import com.tfs.demo.tfs_crud_demo.service.EventService;
-import com.tfs.demo.tfs_crud_demo.service.FoodService;
-import com.tfs.demo.tfs_crud_demo.service.OrderService;
-import com.tfs.demo.tfs_crud_demo.service.PromotionService;
+import com.tfs.demo.tfs_crud_demo.service.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -64,7 +61,7 @@ public class OrderRestController {
     private PromotionService promotionService;
     private FoodService foodService;
     private final OrderDetailRepository orderDetailRepository;
-
+    private StaffService staffService;
     private EventService eventService;
 
     @Autowired
@@ -72,12 +69,14 @@ public class OrderRestController {
                                OrderDetailRepository orderDetailRepository,
                                PromotionService thePromotionService,
                                FoodService theFoodService,
-                               EventService theEventService){
+                               EventService theEventService,
+                               StaffService theStaffService){
         orderService = theOrderService;
         this.orderDetailRepository = orderDetailRepository;
         promotionService = thePromotionService;
         foodService = theFoodService;
         eventService = theEventService;
+        staffService = theStaffService;
     }
 
     @GetMapping("/orders")
@@ -293,7 +292,13 @@ public class OrderRestController {
     @PutMapping("/orders/assign")
     public Order assignOrderForStaff(@RequestBody AssignOrderDTO assignOrderDTO){
         Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
+        Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
+        if(staff.getStaffActivityStatus().equals("busy")){
+            throw new RuntimeException("This staff can't be assign to an order right now");
+        }
         order.setStaffId(assignOrderDTO.getStaffId());
+        staff.setStaffActivityStatus("busy");
+        staffService.saveStaff(staff);
         orderService.saveOrder(order);
         return order;
     }
