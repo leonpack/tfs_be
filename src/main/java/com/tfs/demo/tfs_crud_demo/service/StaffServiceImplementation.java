@@ -42,6 +42,11 @@ public class StaffServiceImplementation implements StaffService{
     }
 
     @Override
+    public Staff getStaffByEmail(String email) {
+        return staffRepository.getStaffByStaffEmail(email);
+    }
+
+    @Override
     public Staff getStaffByTheAccount(Account theAccount) {
         return staffRepository.getStaffByTheAccountForStaff(theAccount);
     }

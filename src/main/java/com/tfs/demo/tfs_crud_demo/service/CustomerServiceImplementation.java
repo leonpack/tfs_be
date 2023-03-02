@@ -41,6 +41,11 @@ public class CustomerServiceImplementation implements CustomerService{
     }
 
     @Override
+    public Customer getCustomerByEmail(String email) {
+        return customerRepository.getCustomerByEmail(email);
+    }
+
+    @Override
     public void saveCustomer(Customer theCustomer) {
         customerRepository.save(theCustomer);
     }

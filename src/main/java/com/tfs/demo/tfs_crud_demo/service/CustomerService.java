@@ -11,6 +11,8 @@ public interface CustomerService {
 
     public Customer getCustomerById(int customerId);
 
+    public Customer getCustomerByEmail(String email);
+
     public void saveCustomer(Customer theCustomer);
 
     public void disableCustomer(int customerId);

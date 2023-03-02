@@ -46,7 +46,6 @@ public class Food {
     private Region theRegion;
 
     @Column(name = "status")
-    @JsonIgnore
     private boolean status;
 
     @Column(name = "purchase_num")

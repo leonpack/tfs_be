@@ -12,4 +12,6 @@ public interface StaffRepository extends JpaRepository<Staff, String> {
 
     Staff getStaffByTheAccountForStaff(Account theAccount);
 
+    Staff getStaffByStaffEmail(String mail);
+
 }

@@ -4,6 +4,7 @@ import com.tfs.demo.tfs_crud_demo.dto.StaffLoginDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
+import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 import com.tfs.demo.tfs_crud_demo.service.StaffService;
 //import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,13 @@ public class StaffRestController {
 
     private StaffService staffService;
     private AccountService accountService;
+    private CustomerService customerService;
 
     @Autowired
-    public StaffRestController(StaffService theStaffService, AccountService theAccountService){
+    public StaffRestController(StaffService theStaffService, AccountService theAccountService, CustomerService theCustomerService){
         staffService = theStaffService;
         accountService = theAccountService;
+        customerService = theCustomerService;
     }
 
     @GetMapping("/staffs")
@@ -74,6 +77,14 @@ public class StaffRestController {
         if(!staffService.checkDuplicateAccountId(theStaff.getTheAccountForStaff().getAccountId())){
             throw new RuntimeException("Account with id" +theStaff.getTheAccountForStaff().getAccountId() + " already exist!");
         }
+        if(!accountService.checkDuplicatePhoneNumber(theStaff.getTheAccountForStaff().getPhoneNumber())){
+            throw new RuntimeException("This phone number is already linked with another account, please try again!");
+        }
+        //check duplicate email when adding new staff
+        if(staffService.getStaffByEmail(theStaff.getStaffEmail()).getStaffId()!=theStaff.getStaffId()
+        && customerService.getCustomerByEmail(theStaff.getStaffEmail()).getTheAccount().getAccountId()!=theStaff.getTheAccountForStaff().getAccountId()){
+            throw new RuntimeException("This email has already linked with another account, please try again");
+        }
         accountService.saveAccount(theStaff.getTheAccountForStaff());
         staffService.saveStaff(theStaff);
         return theStaff;
@@ -99,6 +110,13 @@ public class StaffRestController {
         }
         if(theStaff.getStaffFullName()==null){
             theStaff.setStaffFullName(theStaffFix.getStaffFullName());
+        }
+        if(theStaff.getTheAccountForStaff().getPhoneNumber()!=null &&!accountService.checkDuplicatePhoneNumber(theStaff.getTheAccountForStaff().getPhoneNumber())){
+            throw new RuntimeException("This phone number is already linked with another account, please try again!");
+        }
+        if(staffService.getStaffByEmail(theStaff.getStaffEmail()).getStaffId()!=theStaff.getStaffId()
+                && customerService.getCustomerByEmail(theStaff.getStaffEmail()).getTheAccount().getAccountId()!=theStaff.getTheAccountForStaff().getAccountId()){
+            throw new RuntimeException("This email has already linked with another account, please try again");
         }
         accountService.saveAccount(theStaff.getTheAccountForStaff());
         staffService.saveStaff(theStaff);

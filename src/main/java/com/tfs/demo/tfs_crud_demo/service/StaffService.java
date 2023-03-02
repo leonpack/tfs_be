@@ -11,6 +11,8 @@ public interface StaffService {
 
     public Staff getStaffById(String staffId);
 
+    public Staff getStaffByEmail(String email);
+
     public Staff getStaffByTheAccount(Account theAccount);
 
     public void saveStaff(Staff theStaff);

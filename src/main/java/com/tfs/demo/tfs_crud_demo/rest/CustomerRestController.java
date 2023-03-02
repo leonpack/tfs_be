@@ -7,6 +7,7 @@ import com.tfs.demo.tfs_crud_demo.service.AccountService;
 import com.tfs.demo.tfs_crud_demo.service.CartService;
 import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 //import io.swagger.annotations.ApiOperation;
+import com.tfs.demo.tfs_crud_demo.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,14 +20,16 @@ public class CustomerRestController {
     private CustomerService customerService;
     private AccountService accountService;
 
+    private StaffService staffService;
 
     private CartService cartService;
 
     @Autowired
-    public CustomerRestController(CustomerService theCustomerService, AccountService theAccountService, CartService theCartService){
+    public CustomerRestController(CustomerService theCustomerService, AccountService theAccountService, CartService theCartService, StaffService theStaffService){
         customerService = theCustomerService;
         accountService = theAccountService;
         cartService = theCartService;
+        staffService = theStaffService;
     }
 
     @GetMapping("/customers")
@@ -61,6 +64,11 @@ public class CustomerRestController {
         Account theAccount = accountService.getAccountById(accountId);
         theCustomer.setTheAccount(theAccount);
         theCustomer.setCustomerId(0);
+        //check duplicate email when adding new customer
+        if(customerService.getCustomerByEmail(theCustomer.getEmail()).getCustomerId()!=theCustomer.getCustomerId()
+        && staffService.getStaffByEmail(theCustomer.getEmail()).getTheAccountForStaff().getAccountId()!= theCustomer.getTheAccount().getAccountId()){
+            throw new RuntimeException("This email has been linked with another account, please try again");
+        }
         customerService.saveCustomer(theCustomer);
         Cart theCart = new Cart((double) 0, 0, theCustomer);
         cartService.saveCart(theCart);
@@ -90,6 +98,11 @@ public class CustomerRestController {
         }
         if(theCustomer.getAvatarURL()==null){
             theCustomer.setAvatarURL(customer.getAvatarURL());
+        }
+        //check duplicate email when updating customer
+        if(customerService.getCustomerByEmail(theCustomer.getEmail()).getCustomerId()!=theCustomer.getCustomerId()
+                && staffService.getStaffByEmail(theCustomer.getEmail()).getTheAccountForStaff().getAccountId()!= theCustomer.getTheAccount().getAccountId()){
+            throw new RuntimeException("This email has been linked with another account, please try again");
         }
         accountService.saveAccount(theCustomer.getTheAccount());
         customerService.saveCustomer(theCustomer);

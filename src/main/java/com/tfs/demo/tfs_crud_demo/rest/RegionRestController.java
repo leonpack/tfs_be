@@ -61,6 +61,10 @@ public class RegionRestController {
             theRegion.setFoodList(existRegion.getFoodList());
         }
         theRegion.setFoodList(theRegion.getFoodList());
+        for(Food item: theRegion.getFoodList()){
+            Food food = foodService.getFoodById(item.getId());
+            food.setTheRegion(theRegion);
+        }
         regionService.saveRegion(theRegion);
         return theRegion;
     }
