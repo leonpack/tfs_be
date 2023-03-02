@@ -75,7 +75,7 @@ public class AccountServiceImplementation implements AccountService{
         theQuery.getResultList();
         for(int i = 0; i<theQuery.getResultList().size();i++){
             if (phoneCheckNum.equals(theQuery.getResultList().get(i))){
-                throw new RuntimeException("This account has already linked with another account, please try another number!");
+                throw new RuntimeException("This phone number has already linked with another account, please try another number!");
             }
         }
         return true;
