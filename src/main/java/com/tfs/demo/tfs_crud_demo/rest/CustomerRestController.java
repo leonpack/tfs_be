@@ -65,10 +65,10 @@ public class CustomerRestController {
         theCustomer.setTheAccount(theAccount);
         theCustomer.setCustomerId(0);
         //check duplicate email when adding new customer
-        if(customerService.getCustomerByEmail(theCustomer.getEmail()).getCustomerId()!=theCustomer.getCustomerId()
-        && staffService.getStaffByEmail(theCustomer.getEmail()).getTheAccountForStaff().getAccountId()!= theCustomer.getTheAccount().getAccountId()){
-            throw new RuntimeException("This email has been linked with another account, please try again");
-        }
+//        if(customerService.getCustomerByEmail(theCustomer.getEmail()).getCustomerId()!=theCustomer.getCustomerId()
+//        && staffService.getStaffByEmail(theCustomer.getEmail()).getTheAccountForStaff().getAccountId()!= theCustomer.getTheAccount().getAccountId()){
+//            throw new RuntimeException("This email has been linked with another account, please try again");
+//        }
         customerService.saveCustomer(theCustomer);
         Cart theCart = new Cart((double) 0, 0, theCustomer);
         cartService.saveCart(theCart);
@@ -100,10 +100,10 @@ public class CustomerRestController {
             theCustomer.setAvatarURL(customer.getAvatarURL());
         }
         //check duplicate email when updating customer
-        if(customerService.getCustomerByEmail(theCustomer.getEmail()).getCustomerId()!=theCustomer.getCustomerId()
-                && staffService.getStaffByEmail(theCustomer.getEmail()).getTheAccountForStaff().getAccountId()!= theCustomer.getTheAccount().getAccountId()){
-            throw new RuntimeException("This email has been linked with another account, please try again");
-        }
+//        if(customerService.getCustomerByEmail(theCustomer.getEmail()).getCustomerId()!=theCustomer.getCustomerId()
+//                && staffService.getStaffByEmail(theCustomer.getEmail()).getTheAccountForStaff().getAccountId()!= theCustomer.getTheAccount().getAccountId()){
+//            throw new RuntimeException("This email has been linked with another account, please try again");
+//        }
         accountService.saveAccount(theCustomer.getTheAccount());
         customerService.saveCustomer(theCustomer);
         return theCustomer;

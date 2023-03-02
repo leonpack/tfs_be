@@ -81,10 +81,10 @@ public class StaffRestController {
             throw new RuntimeException("This phone number is already linked with another account, please try again!");
         }
         //check duplicate email when adding new staff
-        if(staffService.getStaffByEmail(theStaff.getStaffEmail()).getStaffId()!=theStaff.getStaffId()
-        && customerService.getCustomerByEmail(theStaff.getStaffEmail()).getTheAccount().getAccountId()!=theStaff.getTheAccountForStaff().getAccountId()){
-            throw new RuntimeException("This email has already linked with another account, please try again");
-        }
+//        if(staffService.getStaffByEmail(theStaff.getStaffEmail()).getStaffId()!=theStaff.getStaffId()
+//        && customerService.getCustomerByEmail(theStaff.getStaffEmail()).getTheAccount().getAccountId()!=theStaff.getTheAccountForStaff().getAccountId()){
+//            throw new RuntimeException("This email has already linked with another account, please try again");
+//        }
         accountService.saveAccount(theStaff.getTheAccountForStaff());
         staffService.saveStaff(theStaff);
         return theStaff;
@@ -114,10 +114,10 @@ public class StaffRestController {
         if(theStaff.getTheAccountForStaff().getPhoneNumber()!=null &&!accountService.checkDuplicatePhoneNumber(theStaff.getTheAccountForStaff().getPhoneNumber())){
             throw new RuntimeException("This phone number is already linked with another account, please try again!");
         }
-        if(staffService.getStaffByEmail(theStaff.getStaffEmail()).getStaffId()!=theStaff.getStaffId()
-                && customerService.getCustomerByEmail(theStaff.getStaffEmail()).getTheAccount().getAccountId()!=theStaff.getTheAccountForStaff().getAccountId()){
-            throw new RuntimeException("This email has already linked with another account, please try again");
-        }
+//        if(staffService.getStaffByEmail(theStaff.getStaffEmail()).getStaffId()!=theStaff.getStaffId()
+//                && customerService.getCustomerByEmail(theStaff.getStaffEmail()).getTheAccount().getAccountId()!=theStaff.getTheAccountForStaff().getAccountId()){
+//            throw new RuntimeException("This email has already linked with another account, please try again");
+//        }
         accountService.saveAccount(theStaff.getTheAccountForStaff());
         staffService.saveStaff(theStaff);
         return theStaff;

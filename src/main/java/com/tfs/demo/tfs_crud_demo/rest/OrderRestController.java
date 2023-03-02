@@ -1,6 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.dao.OrderDetailRepository;
+import com.tfs.demo.tfs_crud_demo.dto.OrderStatusDTO;
 import com.tfs.demo.tfs_crud_demo.dto.RefundDTO;
 import com.tfs.demo.tfs_crud_demo.entity.*;
 import com.tfs.demo.tfs_crud_demo.library.vn.zalopay.crypto.HMACUtil;
@@ -212,6 +213,7 @@ public class OrderRestController {
     public Order updateOrder(@RequestBody Order order) throws ParseException {
         Order theTempOrder = orderService.getOrderById(order.getId());
 
+
         //try catch null input for update
         if(order.getCustomerId()==null){
             order.setCustomerId(theTempOrder.getCustomerId());
@@ -223,10 +225,6 @@ public class OrderRestController {
 
         if(order.getStaffId()==null){
             order.setStaffId(theTempOrder.getStaffId());
-        }
-
-        if(order.getItemList()==null){
-            order.setItemList(theTempOrder.getItemList());
         }
 
         if(order.getOrderDate()==null){
@@ -257,14 +255,39 @@ public class OrderRestController {
             order.setTotalQuantity(theTempOrder.getTotalQuantity());
         }
 
-        //TODO cho phép khách huỷ tối đa trước 1 ngày giao hàng
-        Date today = sdf.parse(LocalDate.now().toString());
+        if(order.getStatus()==null){
+            order.setStatus(theTempOrder.getStatus());
+        }
 
-        order.setItemList(order.getItemList());
+        if(order.getNote()==null){
+            order.setNote(theTempOrder.getNote());
+        }
+
+        if(order.getReason()==null){
+            order.setReason(theTempOrder.getReason());
+        }
+
+        if(order.getPromotionCode()==null){
+            order.setPromotionCode(theTempOrder.getPromotionCode());
+        }
+
+        if(order.getItemList()==null || order.getItemList().isEmpty()){
+            order.setItemList(theTempOrder.getItemList());
+        }
+//
+//        //TODO cho phép khách huỷ tối đa trước 1 ngày giao hàng
+//        Date today = sdf.parse(LocalDate.now().toString());
         orderService.saveOrder(order);
         return order;
     }
 
+    @PutMapping("/orders/status")
+    public Order updateOrderStatusOnly(@RequestBody OrderStatusDTO orderStatusDTO){
+        Order order = orderService.getOrderById(orderStatusDTO.getOrderId());
+        order.setStatus(orderStatusDTO.getStatus());
+        orderService.saveOrder(order);
+        return order;
+    }
 
     @DeleteMapping("/orders/{orderId}")
     public String deleteOrder(@PathVariable int orderId){
