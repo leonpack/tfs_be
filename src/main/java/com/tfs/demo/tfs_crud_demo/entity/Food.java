@@ -53,11 +53,9 @@ public class Food {
     @JsonIgnore
     private Integer purchaseNum;
 
-    @ManyToMany(mappedBy = "foodList", cascade = CascadeType.REMOVE)
-//    @JsonBackReference(value = "event-food")
+    @ManyToMany(mappedBy = "foodList")
     @JsonIgnoreProperties({"foodList","description","image_url","fromDate","toDate","status"})
     private Set<Event> eventList = new HashSet<Event>();
-
 
     public Food(){
 

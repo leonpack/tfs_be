@@ -121,7 +121,14 @@ public class RestaurantRestController {
         if(theRestaurant.getStaffList()==null){
             theRestaurant.setStaffList(restaurant.getStaffList());
         }
+        if(theRestaurant.getStatus()==null){
+            theRestaurant.setStatus(restaurant.getStatus());
+        }
         theRestaurant.setStaffList(theRestaurant.getStaffList());
+        for(Staff item : theRestaurant.getStaffList()){
+            Staff staff = staffService.getStaffById(item.getStaffId());
+            staff.setTheRestaurant(theRestaurant);
+        }
         restaurantService.saveRestaurant(theRestaurant);
         return theRestaurant;
     }

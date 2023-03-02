@@ -32,7 +32,7 @@ public class Staff {
     @JsonManagedReference(value = "account-staff")
     private Account theAccountForStaff;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
     @JsonBackReference(value = "restaurant-staff")
     private Restaurant theRestaurant;

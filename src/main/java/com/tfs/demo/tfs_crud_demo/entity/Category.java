@@ -19,22 +19,21 @@ public class Category {
     @Column(name = "category_name")
     private String categoryName;
 
-    @OneToMany(mappedBy = "theCategory",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "theCategory")
 //    @JsonManagedReference(value = "category-food")
-    @JsonIgnoreProperties("theCategory")
+    @JsonIgnoreProperties({"theCategory","theRegion","eventList"})
     private List<Food> foodList;
 
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     public Category(){
 
     }
 
-    public Category(String id, String categoryName, List<Food> foodList, boolean status) {
+    public Category(String id, String categoryName, Boolean status) {
         this.id = id;
         this.categoryName = categoryName;
-        this.foodList = foodList;
         this.status = status;
     }
 
@@ -62,21 +61,12 @@ public class Category {
         this.foodList = foodList;
     }
 
-    public boolean isStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id='" + id + '\'' +
-                ", categoryName='" + categoryName + '\'' +
-                ", status=" + status +
-                '}';
     }
 
     public void addFood(Food theFood){

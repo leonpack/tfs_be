@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -63,7 +62,14 @@ public class CategoryRestController {
         if(theCategory.getFoodList()==null){
             theCategory.setFoodList(existCategory.getFoodList());
         }
+        if(theCategory.getStatus()==null){
+            theCategory.setStatus(existCategory.getStatus());
+        }
         theCategory.setFoodList(theCategory.getFoodList());
+        for(Food item : theCategory.getFoodList()){
+            Food addFood = foodService.getFoodById(item.getId());
+            addFood.setTheCategory(theCategory);
+        }
         categoryService.saveCategory(theCategory);
         return theCategory;
     }
@@ -95,6 +101,14 @@ public class CategoryRestController {
         foodService.saveFood(theFood);
 
         return "Add food: " +theFood.getFoodName() + " to category: " +theCategory.getCategoryName()+" successful!";
+    }
+
+    @DeleteMapping("/categories/removeFood/{foodId}")
+    public String removeFoodFromCategory(@PathVariable int foodId){
+        Food food = foodService.getFoodById(foodId);
+        food.setTheCategory(null);
+        foodService.saveFood(food);
+        return "Remove food from this category successful";
     }
 
 }

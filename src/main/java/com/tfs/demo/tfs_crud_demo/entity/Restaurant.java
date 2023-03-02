@@ -33,18 +33,18 @@ public class Restaurant {
     @Column(name = "restaurant_phone_number")
     private String restaurantNumber;
 
-    @OneToMany(mappedBy = "theRestaurant")
+    @OneToMany(mappedBy = "theRestaurant", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonManagedReference(value = "restaurant-staff")
-    private List<Staff> staffList;
+    private List<Staff> staffList = new ArrayList<>();
 
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     public Restaurant(){
 
     }
 
-    public Restaurant(String restaurantId, String restaurantLocation, String latitude, String longitude, String restaurantName, String restaurantNumber, boolean status) {
+    public Restaurant(String restaurantId, String restaurantLocation, String latitude, String longitude, String restaurantName, String restaurantNumber, Boolean status) {
         this.restaurantId = restaurantId;
         this.restaurantLocation = restaurantLocation;
         this.latitude = latitude;
@@ -110,12 +110,11 @@ public class Restaurant {
         this.staffList = staffList;
     }
 
-    public boolean isStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
-
 }

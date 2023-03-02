@@ -19,7 +19,7 @@ public class Region {
     @Column(name = "region_name")
     private String region_name;
 
-    @OneToMany(mappedBy = "theRegion",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "theRegion",cascade = CascadeType.REMOVE, orphanRemoval = true)
 //    @JsonManagedReference(value = "region-food")
     @JsonIgnoreProperties("theRegion")
     private List<Food> foodList;
@@ -56,15 +56,6 @@ public class Region {
 
     public void setFoodList(List<Food> foodList) {
         this.foodList = foodList;
-    }
-
-    @Override
-    public String toString() {
-        return "Region{" +
-                "id='" + id + '\'' +
-                ", region_name='" + region_name + '\'' +
-                ", foodList=" + foodList +
-                '}';
     }
 
     public void addFood(Food theFood){
