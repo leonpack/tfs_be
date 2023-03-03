@@ -280,17 +280,30 @@ public class OrderRestController {
 
     @PutMapping("/orders/status")
     public Order updateOrderStatus(@RequestBody AssignOrderDTO assignOrderDTO){
-        Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
-        order.setStatus(assignOrderDTO.getStatus());
-        Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
-        if(staff.getStaffActivityStatus().equals("busy")){
-            throw new RuntimeException("This staff can't be assign to an order right now");
+        if(assignOrderDTO.getStatus().toLowerCase().equals("deny")){
+            Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
+            order.setStatus(assignOrderDTO.getStatus());
+            Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
+            order.setStaffId(null);
+            staff.setStaffActivityStatus("available");
+            staffService.saveStaff(staff);
+            orderService.saveOrder(order);
+            return order;
         }
-        order.setStaffId(assignOrderDTO.getStaffId());
-        staff.setStaffActivityStatus("busy");
-        staffService.saveStaff(staff);
-        orderService.saveOrder(order);
-        return order;
+        else
+        {
+            Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
+            order.setStatus(assignOrderDTO.getStatus());
+            Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
+            if (staff.getStaffActivityStatus().equals("busy")) {
+                throw new RuntimeException("This staff can't be assign to an order right now");
+            }
+            order.setStaffId(assignOrderDTO.getStaffId());
+            staff.setStaffActivityStatus("busy");
+            staffService.saveStaff(staff);
+            orderService.saveOrder(order);
+            return order;
+        }
     }
 
     //DEPRECATED
@@ -458,12 +471,20 @@ public class OrderRestController {
                 long diffDays= ChronoUnit.DAYS.between(today,deliDay);
                 if(diffDays>1){
                     order.setStatus("DENY");
+                    order.setStaffId(null);
+                    Staff staff = staffService.getStaffById(order.getStaffId());
+                    staff.setStaffActivityStatus("available");
+                    staffService.saveStaff(staff);
                     orderService.saveOrder(order);
                 } else {
                     throw new RuntimeException("Order can't be deny right now");
                 }
             } else {
                 order.setStatus("DENY");
+                order.setStaffId(null);
+                Staff staff = staffService.getStaffById(order.getStaffId());
+                staff.setStaffActivityStatus("available");
+                staffService.saveStaff(staff);
                 orderService.saveOrder(order);
             }
         }
