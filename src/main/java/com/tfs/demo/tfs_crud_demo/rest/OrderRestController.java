@@ -109,8 +109,8 @@ public class OrderRestController {
     @PostMapping("/orders")
     public Order addNewOrder(@RequestBody Order order) throws ParseException {
 
-        if(order.getPromotionCode()!=null){
-            Promotion promotion = promotionService.getPromotionByCode(order.getPromotionCode());
+        if(order.getPromotionId()!=null){
+            Promotion promotion = promotionService.getPromotionById(order.getPromotionId());
             //        check if promotion is valid to use
             Event event = eventService.getEventById(promotion.getEventId());
             Date today = sdf.parse(LocalDate.now().toString());
@@ -119,7 +119,7 @@ public class OrderRestController {
             }
             //check promotion code availability
             if(promotion.getStatus()==false){
-                throw new RuntimeException("Promotion" +order.getPromotionCode() + " is unusable!");
+                throw new RuntimeException("Promotion" +order.getPromotionId() + " is unusable!");
             }
         }
 
@@ -267,16 +267,13 @@ public class OrderRestController {
             order.setReason(theTempOrder.getReason());
         }
 
-        if(order.getPromotionCode()==null){
-            order.setPromotionCode(theTempOrder.getPromotionCode());
+        if(order.getPromotionId()==null){
+            order.setPromotionId(theTempOrder.getPromotionId());
         }
 
         if(order.getItemList()==null || order.getItemList().isEmpty()){
             order.setItemList(theTempOrder.getItemList());
         }
-//
-//        //TODO cho phép khách huỷ tối đa trước 1 ngày giao hàng
-//        Date today = sdf.parse(LocalDate.now().toString());
         orderService.saveOrder(order);
         return order;
     }

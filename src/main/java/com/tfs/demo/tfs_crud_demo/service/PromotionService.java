@@ -8,6 +8,8 @@ public interface PromotionService {
 
     public List<Promotion> getAllPromotions();
 
+    public Promotion getPromotionById(int id);
+
     public Promotion getPromotionByCode(String promotionCode);
 
     public void savePromotion(Promotion thePromotion);

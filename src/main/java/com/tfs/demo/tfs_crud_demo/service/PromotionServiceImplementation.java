@@ -24,6 +24,11 @@ public class PromotionServiceImplementation implements PromotionService{
         return promotionRepository.findAll();
     }
 
+    @Override
+    public Promotion getPromotionById(int id) {
+        return null;
+    }
+
     public Promotion getPromotionByCode(String code){
         return promotionRepository.findPromotionByPromotionCode(code);
     }

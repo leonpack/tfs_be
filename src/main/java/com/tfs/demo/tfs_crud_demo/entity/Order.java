@@ -19,8 +19,8 @@ public class Order {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "promotion_code")
-    private String promotionCode;
+    @Column(name = "promotion_id")
+    private Integer promotionId;
 
     @Column(name = "total_price")
     private Double totalPrice;
@@ -53,6 +53,9 @@ public class Order {
     @Column(name = "reason")
     private String reason;
 
+    @Column(name = "delivery_method")
+    private String deliveryMethod;
+
     @JoinColumn(name = "customer_id")
     private Integer customerId;
 
@@ -70,8 +73,8 @@ public class Order {
 
     }
 
-    public Order(String promotionCode, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate, Date receiveTime, String status, String note, String reason, Integer customerId, Integer restaurantId, Integer staffId) {
-        this.promotionCode = promotionCode;
+    public Order(Integer promotionId, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate, Date receiveTime, String status, String note, String reason, String deliveryMethod, Integer customerId, Integer restaurantId, Integer staffId) {
+        this.promotionId = promotionId;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
         this.paymentMethod = paymentMethod;
@@ -82,6 +85,7 @@ public class Order {
         this.status = status;
         this.note = note;
         this.reason = reason;
+        this.deliveryMethod = deliveryMethod;
         this.customerId = customerId;
         this.restaurantId = restaurantId;
         this.staffId = staffId;
@@ -95,12 +99,12 @@ public class Order {
         this.id = id;
     }
 
-    public String getPromotionCode() {
-        return promotionCode;
+    public Integer getPromotionId() {
+        return promotionId;
     }
 
-    public void setPromotionCode(String promotionCode) {
-        this.promotionCode = promotionCode;
+    public void setPromotionId(Integer promotionId) {
+        this.promotionId = promotionId;
     }
 
     public Double getTotalPrice() {
@@ -125,6 +129,14 @@ public class Order {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public String getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    public void setDeliveryMethod(String deliveryMethod) {
+        this.deliveryMethod = deliveryMethod;
     }
 
     public String getDeliveryAddress() {
