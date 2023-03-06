@@ -290,6 +290,15 @@ public class OrderRestController {
             orderService.saveOrder(order);
             return order;
         }
+        else if(assignOrderDTO.getStatus().toLowerCase().equals("done")){
+            Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
+            order.setStatus(assignOrderDTO.getStatus());
+            Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
+            staff.setStaffActivityStatus("available");
+            staffService.saveStaff(staff);
+            orderService.saveOrder(order);
+            return order;
+        }
         else
         {
             Order order = orderService.getOrderById(assignOrderDTO.getOrderId());

@@ -80,10 +80,36 @@ public class CustomerRestController {
     @PutMapping("/customers")
     public Customer updateCustomer(@RequestBody Customer theCustomer){
         Customer customer = customerService.getCustomerById(theCustomer.getCustomerId());
-        //validate null for Customer
-        if(theCustomer.getTheAccount()==null){
-            theCustomer.setTheAccount(customer.getTheAccount());
+
+        if(theCustomer.getTheAccount()!=null && theCustomer.getTheAccount().getPhoneNumber()!=null){
+            Account accountCheck = accountService.checkLoginByPhone(theCustomer.getTheAccount().getPhoneNumber());
+            if(accountCheck==null){
+                if(theCustomer.getCart()==null){
+                    theCustomer.setCart(customer.getCart());
+                }
+                if(theCustomer.getCustomerName()==null){
+                    theCustomer.setCustomerName(customer.getCustomerName());
+                }
+                if(theCustomer.getAddress()==null){
+                    theCustomer.setAddress(customer.getAddress());
+                }
+                if(theCustomer.getEmail()==null){
+                    theCustomer.setEmail(customer.getEmail());
+                }
+                if(theCustomer.getAvatarURL()==null){
+                    theCustomer.setAvatarURL(customer.getAvatarURL());
+                }
+                if(theCustomer.getTheAccount()==null){
+                    theCustomer.setTheAccount(customer.getTheAccount());
+                }
+                accountService.saveAccount(theCustomer.getTheAccount());
+                customerService.saveCustomer(theCustomer);
+                return theCustomer;
+            } else if (accountCheck!=null || !accountCheck.getAccountId().equals(theCustomer.getTheAccount().getAccountId())){
+                throw new RuntimeException("This phone number is already linked with another account!");
+            }
         }
+
         if(theCustomer.getCart()==null){
             theCustomer.setCart(customer.getCart());
         }
@@ -99,10 +125,19 @@ public class CustomerRestController {
         if(theCustomer.getAvatarURL()==null){
             theCustomer.setAvatarURL(customer.getAvatarURL());
         }
-        //check duplicate email when updating customer
+        if(theCustomer.getTheAccount()==null){
+            theCustomer.setTheAccount(customer.getTheAccount());
+        }
+        //TODO check duplicate email & phoneNumber
 //        if(customerService.getCustomerByEmail(theCustomer.getEmail()).getCustomerId()!=theCustomer.getCustomerId()
 //                && staffService.getStaffByEmail(theCustomer.getEmail()).getTheAccountForStaff().getAccountId()!= theCustomer.getTheAccount().getAccountId()){
 //            throw new RuntimeException("This email has been linked with another account, please try again");
+//        }
+//        if(theCustomer.getTheAccount().getPhoneNumber()!=null){
+//            Account accountCheck = accountService.checkLoginByPhone(theCustomer.getTheAccount().getPhoneNumber());
+//            if(accountCheck!=null || !accountCheck.getAccountId().equals(theCustomer.getTheAccount().getAccountId())){
+//                throw new RuntimeException("This phone number already linked with another account!");
+//            }
 //        }
         accountService.saveAccount(theCustomer.getTheAccount());
         customerService.saveCustomer(theCustomer);

@@ -90,9 +90,38 @@ public class StaffRestController {
     @PutMapping("/staffs")
     public Staff updateStaff(@RequestBody Staff theStaff){
         Staff theStaffFix = staffService.getStaffById(theStaff.getStaffId());
-        if(theStaff.getTheAccountForStaff()==null){
-            theStaff.setTheAccountForStaff(theStaffFix.getTheAccountForStaff());
+
+        if(theStaff.getTheAccountForStaff()!=null && theStaff.getTheAccountForStaff().getPhoneNumber()!=null){
+            Account accountCheck = accountService.checkLoginByPhone(theStaff.getTheAccountForStaff().getPhoneNumber());
+            if (accountCheck==null){
+                if(theStaff.getTheRestaurant()==null){
+                    theStaff.setTheRestaurant(theStaffFix.getTheRestaurant());
+                }
+                if(theStaff.getStaffEmail()==null){
+                    theStaff.setStaffEmail(theStaffFix.getStaffEmail());
+                }
+                if(theStaff.getStaffActivityStatus()==null){
+                    theStaff.setStaffActivityStatus(theStaffFix.getStaffActivityStatus());
+                }
+                if(theStaff.getStaffAvatarUrl()==null){
+                    theStaff.setStaffAvatarUrl(theStaffFix.getStaffAvatarUrl());
+                }
+                if(theStaff.getStaffFullName()==null){
+                    theStaff.setStaffFullName(theStaffFix.getStaffFullName());
+                }
+
+                if(theStaff.getTheAccountForStaff()==null){
+                    theStaff.setTheAccountForStaff(theStaffFix.getTheAccountForStaff());
+                }
+                accountService.saveAccount(theStaff.getTheAccountForStaff());
+                staffService.saveStaff(theStaff);
+                return theStaff;
+            }
+            else if(accountCheck!=null || !accountCheck.getAccountId().equals(theStaff.getTheAccountForStaff().getAccountId())){
+                throw new RuntimeException("This phone number has already linked with another account!");
+            }
         }
+
         if(theStaff.getTheRestaurant()==null){
             theStaff.setTheRestaurant(theStaffFix.getTheRestaurant());
         }
@@ -108,9 +137,19 @@ public class StaffRestController {
         if(theStaff.getStaffFullName()==null){
             theStaff.setStaffFullName(theStaffFix.getStaffFullName());
         }
-        if(theStaff.getTheAccountForStaff().getPhoneNumber()!=null &&!accountService.checkDuplicatePhoneNumber(theStaff.getTheAccountForStaff().getPhoneNumber())){
-            throw new RuntimeException("This phone number is already linked with another account, please try again!");
+
+        if(theStaff.getTheAccountForStaff()==null){
+            theStaff.setTheAccountForStaff(theStaffFix.getTheAccountForStaff());
         }
+
+        //TODO check duplicate phone number and email
+
+//        if(theStaff.getTheAccountForStaff().getPhoneNumber()!=null){
+//            Account accountCheck = accountService.checkLoginByPhone(theStaff.getTheAccountForStaff().getPhoneNumber());
+//            if(!(accountCheck==null) || !accountCheck.getAccountId().equals(theStaff.getTheAccountForStaff().getAccountId())){
+//                throw new RuntimeException("This phone number has already linked with another account!");
+//            }
+//        }
 //        if(staffService.getStaffByEmail(theStaff.getStaffEmail()).getStaffId()!=theStaff.getStaffId()
 //                && customerService.getCustomerByEmail(theStaff.getStaffEmail()).getTheAccount().getAccountId()!=theStaff.getTheAccountForStaff().getAccountId()){
 //            throw new RuntimeException("This email has already linked with another account, please try again");
