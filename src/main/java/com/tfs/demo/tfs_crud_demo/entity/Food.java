@@ -59,16 +59,25 @@ public class Food {
 
     }
 
-    public Food(String foodName, String description, double price, String imgUrl, Category theCategory, Region theRegion, boolean status, Integer purchaseNum, Set<Event> eventList) {
+//    public Food(String foodName, String description, double price, String imgUrl, Category theCategory, Region theRegion, boolean status, Integer purchaseNum, Set<Event> eventList) {
+//        this.foodName = foodName;
+//        this.description = description;
+//        this.price = price;
+//        this.imgUrl = imgUrl;
+//        this.theCategory = theCategory;
+//        this.theRegion = theRegion;
+//        this.status = status;
+//        this.purchaseNum = purchaseNum;
+//        this.eventList = eventList;
+//    }
+
+    public Food(String foodName, String description, double price, String imgUrl, boolean status, Integer purchaseNum) {
         this.foodName = foodName;
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
-        this.theCategory = theCategory;
-        this.theRegion = theRegion;
         this.status = status;
         this.purchaseNum = purchaseNum;
-        this.eventList = eventList;
     }
 
     public int getId() {

@@ -1,6 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.aspectj.weaver.ast.Or;
 
@@ -35,7 +36,8 @@ public class Restaurant {
     private String restaurantNumber;
 
     @OneToMany(mappedBy = "theRestaurant", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JsonManagedReference(value = "restaurant-staff")
+//    @JsonManagedReference(value = "restaurant-staff")
+    @JsonIgnoreProperties("theRestaurant")
     private List<Staff> staffList = new ArrayList<>();
 
     @Column(name = "status")

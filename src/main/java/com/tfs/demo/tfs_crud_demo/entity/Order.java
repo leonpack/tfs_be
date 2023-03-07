@@ -1,11 +1,11 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,13 +36,13 @@ public class Order {
 
     @Column(name = "order_date")
     @CreationTimestamp
-    private Date orderDate;
+    private LocalDateTime orderDate;
 
     @Column(name = "delivery_date")
-    private Date deliveryDate;
+    private LocalDateTime deliveryDate;
 
     @Column(name = "received_time")
-    private Date receiveTime;
+    private LocalDateTime receiveTime;
 
     @Column(name = "activity_status")
     private String status;
@@ -73,7 +73,7 @@ public class Order {
 
     }
 
-    public Order(Integer promotionId, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, Date orderDate, Date deliveryDate, Date receiveTime, String status, String note, String reason, String deliveryMethod, Integer customerId, Integer restaurantId, Integer staffId) {
+    public Order(Integer promotionId, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, LocalDateTime orderDate, LocalDateTime deliveryDate, LocalDateTime receiveTime, String status, String note, String reason, String deliveryMethod, Integer customerId, Integer restaurantId, Integer staffId) {
         this.promotionId = promotionId;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
@@ -147,27 +147,27 @@ public class Order {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public Date getOrderDate() {
+    public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
     }
 
-    public Date getDeliveryDate() {
+    public LocalDateTime getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(Date deliveryDate) {
+    public void setDeliveryDate(LocalDateTime deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
-    public Date getReceiveTime() {
+    public LocalDateTime getReceiveTime() {
         return receiveTime;
     }
 
-    public void setReceiveTime(Date receiveTime) {
+    public void setReceiveTime(LocalDateTime receiveTime) {
         this.receiveTime = receiveTime;
     }
 

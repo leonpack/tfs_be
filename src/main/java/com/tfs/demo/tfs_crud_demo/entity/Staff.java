@@ -2,6 +2,7 @@ package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -28,14 +29,15 @@ public class Staff {
     @Column(name = "staff_avatar_url")
     private String staffAvatarUrl;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne()
     @JoinColumn(name = "account_id")
-    @JsonManagedReference(value = "account-staff")
+//    @JsonManagedReference(value = "account-staff")
     private Account theAccountForStaff;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
-    @JsonBackReference(value = "restaurant-staff")
+//    @JsonBackReference(value = "restaurant-staff")
+    @JsonIgnoreProperties({"staffList","restaurantLocation","latitude","longitude","status","restaurantNumber"})
     private Restaurant theRestaurant;
 
     @Column(name = "activity_status")
