@@ -5,10 +5,7 @@ import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
 import com.tfs.demo.tfs_crud_demo.service.CustomerService;
-//import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

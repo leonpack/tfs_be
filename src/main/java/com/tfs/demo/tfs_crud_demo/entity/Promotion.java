@@ -1,7 +1,5 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 @Entity
 @Table(name = "Promotion")

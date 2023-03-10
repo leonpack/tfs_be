@@ -8,9 +8,7 @@ public interface FeedbackService {
 
     public List<Feedback> getAllFeedbacks();
 
-    public List<Feedback> getAllByFoodId(int foodId);
-
-    public List<Feedback> getAllByCustomerId(int customerId);
+    public List<Feedback> getALlByAccountId(String accountId);
 
     public Feedback getById(int feedbackId);
 

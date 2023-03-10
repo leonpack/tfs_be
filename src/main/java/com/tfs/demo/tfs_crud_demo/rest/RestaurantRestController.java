@@ -1,6 +1,5 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
-import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Restaurant;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;

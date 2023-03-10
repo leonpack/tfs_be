@@ -9,10 +9,8 @@ import com.tfs.demo.tfs_crud_demo.entity.Order;
 import com.tfs.demo.tfs_crud_demo.entity.Restaurant;
 import com.tfs.demo.tfs_crud_demo.service.OrderService;
 import com.tfs.demo.tfs_crud_demo.service.RestaurantService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

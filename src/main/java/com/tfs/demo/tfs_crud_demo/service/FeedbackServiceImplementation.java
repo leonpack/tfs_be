@@ -26,14 +26,10 @@ public class FeedbackServiceImplementation implements FeedbackService{
     }
 
     @Override
-    public List<Feedback> getAllByFoodId(int foodId) {
-        return feedbackRepository.getFeedbacksByFoodId(foodId);
+    public List<Feedback> getALlByAccountId(String accountId) {
+        return feedbackRepository.getFeedbacksByAccountId(accountId);
     }
 
-    @Override
-    public List<Feedback> getAllByCustomerId(int customerId) {
-        return feedbackRepository.getFeedbacksByCustomerId(customerId);
-    }
 
     @Override
     public Feedback getById(int feedbackId) {
@@ -58,8 +54,7 @@ public class FeedbackServiceImplementation implements FeedbackService{
         Feedback feedback = null;
         if(result.isPresent()){
             feedback = result.get();
-            feedback.setStatus(false);
-            feedbackRepository.save(feedback);
+            feedbackRepository.delete(feedback);
         } else {
             throw new RuntimeException("Feed back with id - " +feedbackId + " not found");
         }

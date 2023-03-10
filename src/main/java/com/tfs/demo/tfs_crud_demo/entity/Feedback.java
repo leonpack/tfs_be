@@ -1,5 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,11 +13,14 @@ public class Feedback {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "food_id")
-    private Integer foodId;
 
-    @Column(name = "customer_id")
-    private Integer customerId;
+    @ManyToOne()
+    @JoinColumn(name = "food_id")
+    @JsonBackReference
+    private Food foodComment;
+
+    @Column(name = "account_id")
+    private String accountId;
 
     @Column(name = "comment")
     private String comment;
@@ -31,9 +36,9 @@ public class Feedback {
 
     }
 
-    public Feedback(Integer foodId, Integer customerId, String comment, Integer point, Boolean status) {
-        this.foodId = foodId;
-        this.customerId = customerId;
+    public Feedback(Food foodComment, String accountId, String comment, Integer point, Boolean status) {
+        this.foodComment = foodComment;
+        this.accountId = accountId;
         this.comment = comment;
         this.point = point;
         this.status = status;
@@ -47,20 +52,20 @@ public class Feedback {
         this.id = id;
     }
 
-    public Integer getFoodId() {
-        return foodId;
+    public Food getFoodComment() {
+        return foodComment;
     }
 
-    public void setFoodId(Integer foodId) {
-        this.foodId = foodId;
+    public void setFoodComment(Food foodComment) {
+        this.foodComment = foodComment;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public String getComment() {

@@ -1,7 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.service;
 
 import com.tfs.demo.tfs_crud_demo.entity.Food;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

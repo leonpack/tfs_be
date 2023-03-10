@@ -1,7 +1,5 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -51,9 +49,14 @@ public class Food {
     @Column(name = "purchase_num")
     private Integer purchaseNum;
 
-    @ManyToMany(mappedBy = "foodList")
+    @ManyToMany(mappedBy = "foodList", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"foodList","description","image_url","fromDate","toDate","status"})
     private Set<Event> eventList = new HashSet<Event>();
+
+
+    @OneToMany(mappedBy = "foodComment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Feedback> listComment = new ArrayList<>();
 
     public Food(){
 
@@ -70,6 +73,7 @@ public class Food {
 //        this.purchaseNum = purchaseNum;
 //        this.eventList = eventList;
 //    }
+
 
     public Food(String foodName, String description, double price, String imgUrl, boolean status, Integer purchaseNum) {
         this.foodName = foodName;
@@ -160,6 +164,13 @@ public class Food {
         this.purchaseNum = purchaseNum;
     }
 
+    public List<Feedback> getListComment() {
+        return listComment;
+    }
+
+    public void setListComment(List<Feedback> listComment) {
+        this.listComment = listComment;
+    }
 
     public void addEvent(Event theEvent){
         if(eventList == null){
@@ -171,6 +182,14 @@ public class Food {
     public void remove(Event event){
         this.eventList.remove(event);
         event.getFoodList().remove(this);
+    }
+
+    public void addComment(Feedback feedback){
+        if(listComment == null){
+            listComment = new ArrayList<>();
+        }
+        listComment.add(feedback);
+        feedback.setFoodComment(this);
     }
 
 }

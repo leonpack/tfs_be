@@ -1,10 +1,8 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.entity.Event;
-import com.tfs.demo.tfs_crud_demo.entity.Food;
 import com.tfs.demo.tfs_crud_demo.service.EventService;
 import com.tfs.demo.tfs_crud_demo.service.FoodService;
-//import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

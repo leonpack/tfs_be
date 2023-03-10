@@ -6,7 +6,6 @@ import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
 import com.tfs.demo.tfs_crud_demo.service.CartService;
 import com.tfs.demo.tfs_crud_demo.service.CustomerService;
-//import io.swagger.annotations.ApiOperation;
 import com.tfs.demo.tfs_crud_demo.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -81,7 +80,7 @@ public class CustomerRestController {
     public Customer updateCustomer(@RequestBody Customer theCustomer){
         Customer customer = customerService.getCustomerById(theCustomer.getCustomerId());
 
-        if(theCustomer.getTheAccount()!=null && theCustomer.getTheAccount().getPhoneNumber()!=null){
+        if(theCustomer.getTheAccount()!=null && theCustomer.getTheAccount().getPhoneNumber()!=null && !theCustomer.getTheAccount().getPhoneNumber().equals(customer.getTheAccount().getPhoneNumber())){
             Account accountCheck = accountService.checkLoginByPhone(theCustomer.getTheAccount().getPhoneNumber());
             if(accountCheck==null){
                 if(theCustomer.getCart()==null){

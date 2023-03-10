@@ -1,9 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.springframework.lang.NonNull;
-
 import javax.persistence.*;
 
 @Entity
@@ -19,11 +16,6 @@ public class Account {
 
     @Column(name = "password")
     private String password;
-
-//    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-//    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
-//    @JsonBackReference(value = "acc_role")
-//    private Role theRole;
 
     @Column(name = "role_id")
     private Integer roleId;
@@ -99,17 +91,5 @@ public class Account {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "accountId='" + accountId + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", password='" + password + '\'' +
-                ", roleId=" + roleId +
-                ", status=" + status +
-                '}';
-    }
-
 
 }

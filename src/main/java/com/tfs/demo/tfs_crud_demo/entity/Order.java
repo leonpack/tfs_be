@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -68,6 +66,16 @@ public class Order {
     @OneToMany(mappedBy = "theOrder",cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.MERGE}, orphanRemoval = true)
     @JsonManagedReference
     private List<OrderDetail> itemList = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "orderService", cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.MERGE}, orphanRemoval = true)
+    @JsonManagedReference
+    private List<OrderServices> serviceList = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "orderCombo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<OrderComboDetail> comboList = new ArrayList<>();
 
     public Order(){
 
@@ -225,5 +233,21 @@ public class Order {
 
     public void setItemList(List<OrderDetail> itemList) {
         this.itemList = itemList;
+    }
+
+    public List<OrderServices> getServiceList() {
+        return serviceList;
+    }
+
+    public void setServiceList(List<OrderServices> serviceList) {
+        this.serviceList = serviceList;
+    }
+
+    public List<OrderComboDetail> getComboList() {
+        return comboList;
+    }
+
+    public void setComboList(List<OrderComboDetail> comboList) {
+        this.comboList = comboList;
     }
 }

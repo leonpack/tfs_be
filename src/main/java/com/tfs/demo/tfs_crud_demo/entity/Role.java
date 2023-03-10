@@ -1,10 +1,9 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 @Entity
@@ -17,10 +16,6 @@ public class Role {
 
     @Column(name = "role_name")
     private String roleName;
-//
-//    @OneToMany(mappedBy = "theRole", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-//    @JsonManagedReference(value = "acc_role")
-//    private List<Account> accountList;
 
     public Role(){
 

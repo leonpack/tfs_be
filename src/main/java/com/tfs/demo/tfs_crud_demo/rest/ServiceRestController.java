@@ -28,6 +28,11 @@ public class ServiceRestController {
         return servicesService.getServiceById(serviceId);
     }
 
+    @GetMapping("/services/byEvent/{eventId}")
+    public List<Services> getAllByEventId(@PathVariable int eventId){
+        return servicesService.getAllByEventId(eventId);
+    }
+
     @PostMapping("/services")
     public Services addNewService(@RequestBody Services services){
         servicesService.save(services);

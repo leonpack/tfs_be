@@ -1,10 +1,8 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "orderdetail")
@@ -17,15 +15,6 @@ public class OrderDetail {
 
     @Column(name = "food_id")
     private Integer id;
-
-    @Column(name = "combo_id")
-    private Integer comboId;
-
-    @Column(name = "party_id")
-    private Integer partyId;
-
-    @Column(name = "service_id")
-    private Integer serviceId;
 
     @Column(name = "name")
     private String name;
@@ -51,11 +40,8 @@ public class OrderDetail {
 
     }
 
-    public OrderDetail(Integer id, Integer comboId, Integer partyId, Integer serviceId, String name, Double price, Integer quantity, Double subTotal, String image) {
+    public OrderDetail(Integer id,String name, Double price, Integer quantity, Double subTotal, String image) {
         this.id = id;
-        this.comboId = comboId;
-        this.partyId = partyId;
-        this.serviceId = serviceId;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
@@ -77,30 +63,6 @@ public class OrderDetail {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getComboId() {
-        return comboId;
-    }
-
-    public void setComboId(Integer comboId) {
-        this.comboId = comboId;
-    }
-
-    public Integer getPartyId() {
-        return partyId;
-    }
-
-    public void setPartyId(Integer partyId) {
-        this.partyId = partyId;
-    }
-
-    public Integer getServiceId() {
-        return serviceId;
-    }
-
-    public void setServiceId(Integer serviceId) {
-        this.serviceId = serviceId;
     }
 
     public String getName() {

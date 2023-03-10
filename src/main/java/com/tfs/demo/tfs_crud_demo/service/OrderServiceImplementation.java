@@ -2,7 +2,6 @@ package com.tfs.demo.tfs_crud_demo.service;
 
 import com.tfs.demo.tfs_crud_demo.dao.OrderRepository;
 import com.tfs.demo.tfs_crud_demo.entity.Order;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -64,19 +64,23 @@ public class OrderRestController {
     private StaffService staffService;
     private EventService eventService;
 
+    private RestaurantService restaurantService;
+
     @Autowired
     public OrderRestController(OrderService theOrderService,
                                OrderDetailRepository orderDetailRepository,
                                PromotionService thePromotionService,
                                FoodService theFoodService,
                                EventService theEventService,
-                               StaffService theStaffService){
+                               StaffService theStaffService,
+                               RestaurantService theRestaurantService){
         orderService = theOrderService;
         this.orderDetailRepository = orderDetailRepository;
         promotionService = thePromotionService;
         foodService = theFoodService;
         eventService = theEventService;
         staffService = theStaffService;
+        restaurantService = theRestaurantService;
     }
 
     @GetMapping("/orders")
@@ -109,6 +113,7 @@ public class OrderRestController {
     @PostMapping("/orders")
     public Order addNewOrder(@RequestBody Order order) throws ParseException {
 
+        //check valid promotion
         if(order.getPromotionId()!=null){
             Promotion promotion = promotionService.getPromotionById(order.getPromotionId());
             //        check if promotion is valid to use
@@ -125,6 +130,26 @@ public class OrderRestController {
 
         if(orderService.CheckDuplicateOrderId(order.getId())){
             throw new RuntimeException("Order with id -" +order.getId() + " already exist, please try again!");
+        }
+
+        //try catch restaurant null value
+        if(order.getRestaurantId()==null || order.getRestaurantId().toString().isEmpty()){
+            throw new RuntimeException("Restaurant Id can't be null");
+        }
+
+        //auto assign order staff
+        Restaurant restaurant = restaurantService.getRestaurantById(order.getRestaurantId());
+        if(order.getStatus().equals("accept") && (order.getStaffId()==null || order.getStaffId().toString().isEmpty())){
+            for(Staff item: restaurant.getStaffList()){
+                if(item.getStaffActivityStatus().equals("available")){
+                    order.setStaffId(item.getStaffId());
+                }
+            }
+            if(order.getStaffId()==null || order.getStaffId().toString().isEmpty()){
+                Random rd = new Random();
+                Integer randomDude = rd.nextInt(restaurant.getStaffList().size()+1);
+                order.setStaffId(randomDude);
+            }
         }
 
         orderService.saveOrder(order);
@@ -213,7 +238,6 @@ public class OrderRestController {
     public Order updateOrder(@RequestBody Order order) throws ParseException {
         Order theTempOrder = orderService.getOrderById(order.getId());
 
-
         //try catch null input for update
         if(order.getCustomerId()==null){
             order.setCustomerId(theTempOrder.getCustomerId());
@@ -274,6 +298,15 @@ public class OrderRestController {
         if(order.getItemList()==null || order.getItemList().isEmpty()){
             order.setItemList(theTempOrder.getItemList());
         }
+
+        if(order.getServiceList()==null || order.getServiceList().isEmpty()){
+            order.setServiceList(theTempOrder.getServiceList());
+        }
+
+        if(order.getComboList()==null || order.getComboList().isEmpty()){
+            order.setComboList(theTempOrder.getComboList());
+        }
+
         orderService.saveOrder(order);
         return order;
     }
@@ -470,34 +503,36 @@ public class OrderRestController {
         return returnMessage;
     }
 
-    @PutMapping("/orders/{orderId}")
-    public Order denyOrder(@PathVariable int orderId){
-        Order order = orderService.getOrderById(orderId);
-        for(OrderDetail item : order.getItemList()){
-            if(item.getPartyId()!=null || !item.getPartyId().toString().isEmpty()){
-                LocalDate today = LocalDate.parse(LocalDate.now().toString());
-                LocalDate deliDay = LocalDate.parse(order.getDeliveryDate().toString());
-                long diffDays= ChronoUnit.DAYS.between(today,deliDay);
-                if(diffDays>1){
-                    order.setStatus("DENY");
-                    order.setStaffId(null);
-                    Staff staff = staffService.getStaffById(order.getStaffId());
-                    staff.setStaffActivityStatus("available");
-                    staffService.saveStaff(staff);
-                    orderService.saveOrder(order);
-                } else {
-                    throw new RuntimeException("Order can't be deny right now");
-                }
-            } else {
-                order.setStatus("DENY");
-                order.setStaffId(null);
-                Staff staff = staffService.getStaffById(order.getStaffId());
-                staff.setStaffActivityStatus("available");
-                staffService.saveStaff(staff);
-                orderService.saveOrder(order);
-            }
-        }
-        return order;
-    }
+
+    //TODO ADD Party and then TURN THIS ON AGAIN
+//    @PutMapping("/orders/{orderId}")
+//    public Order denyOrder(@PathVariable int orderId){
+//        Order order = orderService.getOrderById(orderId);
+//        for(OrderDetail item : order.getItemList()){
+//            if(item.getPartyId()!=null || !item.getPartyId().toString().isEmpty()){
+//                LocalDate today = LocalDate.parse(LocalDate.now().toString());
+//                LocalDate deliDay = LocalDate.parse(order.getDeliveryDate().toString());
+//                long diffDays= ChronoUnit.DAYS.between(today,deliDay);
+//                if(diffDays>1){
+//                    order.setStatus("DENY");
+//                    order.setStaffId(null);
+//                    Staff staff = staffService.getStaffById(order.getStaffId());
+//                    staff.setStaffActivityStatus("available");
+//                    staffService.saveStaff(staff);
+//                    orderService.saveOrder(order);
+//                } else {
+//                    throw new RuntimeException("Order can't be deny right now");
+//                }
+//            } else {
+//                order.setStatus("DENY");
+//                order.setStaffId(null);
+//                Staff staff = staffService.getStaffById(order.getStaffId());
+//                staff.setStaffActivityStatus("available");
+//                staffService.saveStaff(staff);
+//                orderService.saveOrder(order);
+//            }
+//        }
+//        return order;
+//    }
 
 }

@@ -4,7 +4,6 @@ import com.tfs.demo.tfs_crud_demo.entity.Category;
 import com.tfs.demo.tfs_crud_demo.entity.Food;
 import com.tfs.demo.tfs_crud_demo.service.CategoryService;
 import com.tfs.demo.tfs_crud_demo.service.FoodService;
-//import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

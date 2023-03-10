@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
 
-    List<Feedback> getFeedbacksByFoodId(int foodId);
-
-    List<Feedback> getFeedbacksByCustomerId(int customerId);
+    List<Feedback> getFeedbacksByAccountId(String accountId);
 
 }

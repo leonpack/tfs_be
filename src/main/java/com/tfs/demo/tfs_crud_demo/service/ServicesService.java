@@ -8,6 +8,8 @@ public interface ServicesService {
 
     public List<Services> getAllServices();
 
+    public List<Services> getAllByEventId(int eventId);
+
     public Services getServiceById(int id);
 
     public Services save(Services service);

@@ -1,11 +1,11 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "event")
@@ -31,7 +31,7 @@ public class Event {
     @Column(name = "status")
     private Boolean status;
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinTable(name = "eventdetail", joinColumns = @JoinColumn(name = "event_id"),inverseJoinColumns = @JoinColumn(name = "food_id"))
     @JsonIgnoreProperties({"eventList","theCategory","theRegion","status","purchaseNum"})
     private Set<Food> foodList = new HashSet<Food>();

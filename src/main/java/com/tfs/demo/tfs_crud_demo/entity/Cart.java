@@ -2,12 +2,10 @@ package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import javax.persistence.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "cart")
@@ -33,6 +31,17 @@ public class Cart {
     @JsonManagedReference()
     @OrderBy(value = "cart_item_id desc")
     private List<CartDetail> cartItems = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "comboCart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OrderBy(value = "id desc")
+    private List<CartComboDetail> comboList = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "cartParty", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<CartPartyDetail> partyItem = new ArrayList<>();
 
     public Cart(){
 
@@ -84,6 +93,22 @@ public class Cart {
         this.cartItems = cartItems;
     }
 
+    public List<CartComboDetail> getComboList() {
+        return comboList;
+    }
+
+    public void setComboList(List<CartComboDetail> comboList) {
+        this.comboList = comboList;
+    }
+
+    public List<CartPartyDetail> getPartyItem() {
+        return partyItem;
+    }
+
+    public void setPartyItem(List<CartPartyDetail> partyItem) {
+        this.partyItem = partyItem;
+    }
+
     public void add(CartDetail item){
         if(cartItems == null){
             cartItems = new ArrayList<>();
@@ -92,4 +117,19 @@ public class Cart {
         item.setCart(this);
     }
 
+    public void addCombo(CartComboDetail item){
+        if(comboList == null){
+            comboList = new ArrayList<>();
+        }
+        comboList.add(item);
+        item.setComboCart(this);
+    }
+
+    public void addParty(CartPartyDetail item){
+        if(partyItem == null){
+            partyItem = new ArrayList<>();
+        }
+        partyItem.add(item);
+        item.setCartParty(this);
+    }
 }

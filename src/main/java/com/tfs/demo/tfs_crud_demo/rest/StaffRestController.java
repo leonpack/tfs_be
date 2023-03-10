@@ -6,7 +6,6 @@ import com.tfs.demo.tfs_crud_demo.entity.Staff;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
 import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 import com.tfs.demo.tfs_crud_demo.service.StaffService;
-//import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -91,7 +90,7 @@ public class StaffRestController {
     public Staff updateStaff(@RequestBody Staff theStaff){
         Staff theStaffFix = staffService.getStaffById(theStaff.getStaffId());
 
-        if(theStaff.getTheAccountForStaff()!=null && theStaff.getTheAccountForStaff().getPhoneNumber()!=null){
+        if(theStaff.getTheAccountForStaff()!=null && theStaff.getTheAccountForStaff().getPhoneNumber()!=null && !theStaff.getTheAccountForStaff().getPhoneNumber().equals(theStaffFix.getTheAccountForStaff().getPhoneNumber())){
             Account accountCheck = accountService.checkLoginByPhone(theStaff.getTheAccountForStaff().getPhoneNumber());
             if (accountCheck==null){
                 if(theStaff.getTheRestaurant()==null){
