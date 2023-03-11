@@ -11,6 +11,4 @@ import java.util.List;
 @CrossOrigin
 public interface ServicesRepository extends JpaRepository<Services, Integer> {
 
-    List<Services> getServicesByEventId(int eventId);
-
 }

@@ -26,11 +26,6 @@ public class ServicesServiceImplementation implements ServicesService {
     }
 
     @Override
-    public List<Services> getAllByEventId(int eventId) {
-        return serviceRepository.getServicesByEventId(eventId);
-    }
-
-    @Override
     public Services getServiceById(int id) {
         Optional<Services> result = serviceRepository.findById(id);
         Services services = null;

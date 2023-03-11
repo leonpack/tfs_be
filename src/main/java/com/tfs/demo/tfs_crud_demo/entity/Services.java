@@ -23,9 +23,6 @@ public class Services {
     @Column(name = "service_image")
     private String serviceImage;
 
-    @Column(name = "event_id")
-    private Integer eventId;
-
     @Column(name = "status")
     private Boolean status;
 
@@ -33,12 +30,11 @@ public class Services {
 
     }
 
-    public Services(String serviceName, Double servicePrice, String serviceDescription, String serviceImage, Integer eventId, Boolean status) {
+    public Services(String serviceName, Double servicePrice, String serviceDescription, String serviceImage, Boolean status) {
         this.serviceName = serviceName;
         this.servicePrice = servicePrice;
         this.serviceDescription = serviceDescription;
         this.serviceImage = serviceImage;
-        this.eventId = eventId;
         this.status = status;
     }
 
@@ -80,14 +76,6 @@ public class Services {
 
     public void setServiceImage(String serviceImage) {
         this.serviceImage = serviceImage;
-    }
-
-    public Integer getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(Integer eventId) {
-        this.eventId = eventId;
     }
 
     public Boolean getStatus() {
