@@ -5,10 +5,14 @@ import com.tfs.demo.tfs_crud_demo.dto.RevenueBetweenByRestaurantDTO;
 import com.tfs.demo.tfs_crud_demo.dto.RevenueBetweenDTO;
 import com.tfs.demo.tfs_crud_demo.dto.RevenueByDate;
 import com.tfs.demo.tfs_crud_demo.dto.RevenueByDateByRestaurant;
+import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.entity.Order;
 import com.tfs.demo.tfs_crud_demo.entity.Restaurant;
+import com.tfs.demo.tfs_crud_demo.entity.Staff;
+import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 import com.tfs.demo.tfs_crud_demo.service.OrderService;
 import com.tfs.demo.tfs_crud_demo.service.RestaurantService;
+import com.tfs.demo.tfs_crud_demo.service.StaffService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -18,17 +22,22 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
-public class RevenueRestController {
+public class StatisticRestController {
 
     private RevenueRepository revenueRepository;
     private RestaurantService restaurantService;
-
+    private CustomerService customerService;
+    private StaffService staffService;
     private OrderService orderService;
 
-    public RevenueRestController(RevenueRepository theRevenueRepository, OrderService theOrderService, RestaurantService theRestaurantService){
+    public StatisticRestController(RevenueRepository theRevenueRepository, OrderService theOrderService,
+                                   RestaurantService theRestaurantService, CustomerService theCustomerService,
+                                   StaffService theStaffService){
         revenueRepository = theRevenueRepository;
         orderService = theOrderService;
         restaurantService = theRestaurantService;
+        customerService = theCustomerService;
+        staffService = theStaffService;
     }
 
     @PostMapping("/revenues/bydate")
@@ -110,5 +119,45 @@ public class RevenueRestController {
         return returnValue;
     }
 
+    @GetMapping("/statistic")
+    public Map<String, Object> getAllStatistic(){
+        List<Order> getAllOrders = orderService.getAllOrders();
+        List<Customer> getAllCustomers = customerService.getAllCustomers();
+        List<Staff> getAllStaffs = staffService.getAllStaffs();
+        Double totalRevenues = (double) 0;
+        for(Order item: getAllOrders){
+            totalRevenues += item.getTotalPrice();
+        }
+        int orderNum = getAllOrders.size();
+        int customerNum = getAllCustomers.size();
+        int staffNum = getAllStaffs.size();
+
+        Map<String, Object> returnValue = new HashMap<>();
+        returnValue.put("totalorders", orderNum);
+        returnValue.put("totalcustomers", customerNum);
+        returnValue.put("totalstaffs", staffNum);
+        returnValue.put("totalrevenues", totalRevenues);
+
+        return returnValue;
+    }
+
+    @GetMapping("/statistic/byrestaurant/{restaurantId}")
+    public Map<String, Object> getStatisticByRestaurant(@PathVariable int restaurantId){
+        List<Order> getOrdersByRestaurant = orderService.getAllOrderByRestaurantId(restaurantId);
+        List<Staff> getStaffsByRestaurant = staffService.getAllByRestaurant(restaurantService.getRestaurantById(restaurantId));
+        int ordersNum = getOrdersByRestaurant.size();
+        int staffsNum = getStaffsByRestaurant.size();
+        Double totalRevenue = (double) 0;
+        for(Order item: getOrdersByRestaurant){
+            totalRevenue += item.getTotalPrice();
+        }
+
+        Map<String, Object> returnValue = new HashMap<>();
+        returnValue.put("totalorders", ordersNum);
+        returnValue.put("totalstaffs", staffsNum);
+        returnValue.put("totalrevenues", totalRevenue);
+
+        return returnValue;
+    }
 
 }

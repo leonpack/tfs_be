@@ -28,4 +28,5 @@ public interface RevenueRepository extends JpaRepository<Order, Integer> {
 
     List<Order> getOrdersByOrderDateBetweenAndRestaurantId(Date fromDate, Date toDate, int restaurantId);
 
+
 }

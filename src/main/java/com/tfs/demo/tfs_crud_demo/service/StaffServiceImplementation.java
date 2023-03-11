@@ -3,6 +3,7 @@ package com.tfs.demo.tfs_crud_demo.service;
 import com.tfs.demo.tfs_crud_demo.dao.AccountRepository;
 import com.tfs.demo.tfs_crud_demo.dao.StaffRepository;
 import com.tfs.demo.tfs_crud_demo.entity.Account;
+import com.tfs.demo.tfs_crud_demo.entity.Restaurant;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,11 @@ public class StaffServiceImplementation implements StaffService{
     @Override
     public List<Staff> getAllStaffs() {
         return staffRepository.findAll();
+    }
+
+    @Override
+    public List<Staff> getAllByRestaurant(Restaurant theRestaurant) {
+        return staffRepository.getAllByTheRestaurant(theRestaurant);
     }
 
     @Override

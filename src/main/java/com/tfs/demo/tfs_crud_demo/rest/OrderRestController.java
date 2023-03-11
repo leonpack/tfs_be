@@ -18,6 +18,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
@@ -28,6 +29,7 @@ import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -312,7 +314,7 @@ public class OrderRestController {
     }
 
     @PutMapping("/orders/status")
-    public Order updateOrderStatus(@RequestBody AssignOrderDTO assignOrderDTO){
+    public ResponseEntity<String> updateOrderStatus(@RequestBody AssignOrderDTO assignOrderDTO){
         if(assignOrderDTO.getStatus().toLowerCase().equals("deny")){
             Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
             order.setStatus(assignOrderDTO.getStatus());
@@ -321,16 +323,37 @@ public class OrderRestController {
             staff.setStaffActivityStatus("available");
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
-            return order;
+            return ResponseEntity.ok("Huỷ đơn hàng thành công");
+        }
+
+        else if(assignOrderDTO.getStatus().toLowerCase().equals("accept")){
+            Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
+            order.setStatus(assignOrderDTO.getStatus());
+            Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
+            staff.setStaffActivityStatus("busy");
+            staffService.saveStaff(staff);
+            orderService.saveOrder(order);
+            return ResponseEntity.ok("Cập nhật đơn hàng thành công");
+        }
+        else if(assignOrderDTO.getStatus().toLowerCase().equals("delivery")){
+            Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
+            order.setStatus(assignOrderDTO.getStatus());
+            order.setDeliveryDate(LocalDateTime.now());
+            Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
+            staff.setStaffActivityStatus("busy");
+            staffService.saveStaff(staff);
+            orderService.saveOrder(order);
+            return ResponseEntity.ok("Cập nhật trạng thái đơn hàng thành công");
         }
         else if(assignOrderDTO.getStatus().toLowerCase().equals("done")){
             Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
+            order.setReceiveTime(LocalDateTime.now());
             order.setStatus(assignOrderDTO.getStatus());
             Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
             staff.setStaffActivityStatus("available");
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
-            return order;
+            return ResponseEntity.ok("Cập nhật trạng thái đơn hàng thành công");
         }
         else
         {
@@ -344,7 +367,7 @@ public class OrderRestController {
             staff.setStaffActivityStatus("busy");
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
-            return order;
+            return ResponseEntity.ok("Cập nhật trạng thái đơn hàng thành công");
         }
     }
 

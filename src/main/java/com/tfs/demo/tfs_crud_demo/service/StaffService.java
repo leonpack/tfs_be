@@ -1,6 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.service;
 
 import com.tfs.demo.tfs_crud_demo.entity.Account;
+import com.tfs.demo.tfs_crud_demo.entity.Restaurant;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
 
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.List;
 public interface StaffService {
 
     public List<Staff> getAllStaffs();
+
+    public List<Staff> getAllByRestaurant(Restaurant theRestaurant);
 
     public Staff getStaffById(int staffId);
 
