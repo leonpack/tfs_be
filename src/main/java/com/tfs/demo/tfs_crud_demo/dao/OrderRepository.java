@@ -13,7 +13,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     List<Order> getAllByCustomerId(int customerId);
 
-    List<Order> getAllByStaffId(String staffId);
+    List<Order> getAllByStaffId(int staffId);
 
     List<Order> getAllByRestaurantId(int restaurantId);
 

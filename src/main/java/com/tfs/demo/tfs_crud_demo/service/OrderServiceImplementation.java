@@ -30,7 +30,7 @@ public class OrderServiceImplementation implements OrderService{
     }
 
     @Override
-    public List<Order> getAllOrderByStaffId(String staffId) {
+    public List<Order> getAllOrderByStaffId(int staffId) {
         return orderRepository.getAllByStaffId(staffId);
     }
 

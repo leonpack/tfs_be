@@ -4,7 +4,6 @@ import com.tfs.demo.tfs_crud_demo.dao.*;
 import com.tfs.demo.tfs_crud_demo.dto.RemoveComboFromCartDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Cart;
 import com.tfs.demo.tfs_crud_demo.entity.CartComboDetail;
-import com.tfs.demo.tfs_crud_demo.entity.CartPartyDetail;
 import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,21 +25,18 @@ public class CartRestController {
     private final CartComboDetailRepository cartComboDetailRepository;
 
     private final CustomerRepository customerRepository;
-    private final PartyRepository partyRepository;
 
     @Autowired
     public CartRestController(CartService theCartService,
                               CartRepository cartRepository,
                               CartDetailRepository cartDetailRepository,
                               CartComboDetailRepository cartComboDetailRepository,
-                              CustomerRepository customerRepository,
-                              PartyRepository partyRepository){
+                              CustomerRepository customerRepository){
         cartService = theCartService;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.customerRepository = customerRepository;
         this.cartComboDetailRepository = cartComboDetailRepository;
-        this.partyRepository = partyRepository;
     }
 
     @GetMapping("/carts")
@@ -106,32 +102,6 @@ public class CartRestController {
             }
         }
         return ResponseEntity.ok("This place is forbidden");
-    }
-
-    @PostMapping("/carts/party/{cartId}")
-    public ResponseEntity<String> addPartyToCart(@PathVariable int cartId, @RequestBody CartPartyDetail party){
-        Cart cart = cartService.getCartById(cartId);
-        if(cart.getPartyItem()==null || cart.getPartyItem().isEmpty()){
-            cart.setPartyItem(new ArrayList<>());
-        }
-        if(cart.getPartyItem().size()>=1){
-            throw new RuntimeException("This cart can only have 1 party item");
-        } else if (cart.getPartyItem().size()==0){
-            cart.addParty(party);
-            party.setCartParty(cart);
-            cartService.saveCart(cart);
-            return ResponseEntity.ok("Thêm tiệc vào giỏ hàng thành công");
-        }
-        return ResponseEntity.ok("This place is forbidden");
-    }
-
-    @PostMapping("/carts/removeParty/{cartId}")
-    public ResponseEntity<String> removePartyFromCart(@PathVariable int cartId){
-        Cart cart = cartService.getCartById(cartId);
-        cart.getPartyItem().remove(0);
-        cart.setPartyItem(null);
-        cartService.saveCart(cart);
-        return ResponseEntity.ok("Xoá tiệc thành công");
     }
 
 }

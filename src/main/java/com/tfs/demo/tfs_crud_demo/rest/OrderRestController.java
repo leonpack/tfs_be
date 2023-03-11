@@ -100,7 +100,7 @@ public class OrderRestController {
     }
 
     @GetMapping("/orders/staff/{staffId}")
-    public List<Order> getAllOrderByStaff(@PathVariable String staffId){
+    public List<Order> getAllOrderByStaff(@PathVariable int staffId){
         return orderService.getAllOrderByStaffId(staffId);
     }
 

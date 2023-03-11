@@ -28,7 +28,7 @@ public class Cart {
     private Customer customer;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference()
+    @JsonManagedReference
     @OrderBy(value = "cart_item_id desc")
     private List<CartDetail> cartItems = new ArrayList<>();
 
@@ -38,10 +38,6 @@ public class Cart {
     @OrderBy(value = "id desc")
     private List<CartComboDetail> comboList = new ArrayList<>();
 
-
-    @OneToMany(mappedBy = "cartParty", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<CartPartyDetail> partyItem = new ArrayList<>();
 
     public Cart(){
 
@@ -101,14 +97,6 @@ public class Cart {
         this.comboList = comboList;
     }
 
-    public List<CartPartyDetail> getPartyItem() {
-        return partyItem;
-    }
-
-    public void setPartyItem(List<CartPartyDetail> partyItem) {
-        this.partyItem = partyItem;
-    }
-
     public void add(CartDetail item){
         if(cartItems == null){
             cartItems = new ArrayList<>();
@@ -125,11 +113,4 @@ public class Cart {
         item.setComboCart(this);
     }
 
-    public void addParty(CartPartyDetail item){
-        if(partyItem == null){
-            partyItem = new ArrayList<>();
-        }
-        partyItem.add(item);
-        item.setCartParty(this);
-    }
 }

@@ -10,7 +10,7 @@ public interface OrderService {
 
     public List<Order> getAllOrderByCustomerId(int customerId);
 
-    public List<Order> getAllOrderByStaffId(String staffId);
+    public List<Order> getAllOrderByStaffId(int staffId);
 
     public List<Order> getAllOrderByRestaurantId(int restaurantId);
 
