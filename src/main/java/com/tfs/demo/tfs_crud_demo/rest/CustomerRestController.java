@@ -48,6 +48,11 @@ public class CustomerRestController {
         return theCustomer;
     }
 
+    @GetMapping("/customers/byid/{customerId}")
+    public Customer getCustomerById(@PathVariable int customerId){
+        return customerService.getCustomerById(customerId);
+    }
+
     @GetMapping("/customers/cart/{accountId}")
     public Cart getCustomerCart(@PathVariable String accountId){
         Customer theCustomer = customerService.getCustomerByTheAccount(accountService.getAccountById(accountId));

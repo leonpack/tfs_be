@@ -1,17 +1,17 @@
 package com.tfs.demo.tfs_crud_demo.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class RevenueByDateByRestaurant {
 
     private Integer restaurantId;
-    private Date revenueDate;
+    private LocalDate revenueDate;
 
     public RevenueByDateByRestaurant(){
 
     }
 
-    public RevenueByDateByRestaurant(Integer restaurantId, Date revenueDate) {
+    public RevenueByDateByRestaurant(Integer restaurantId, LocalDate revenueDate) {
         this.restaurantId = restaurantId;
         this.revenueDate = revenueDate;
     }
@@ -24,11 +24,11 @@ public class RevenueByDateByRestaurant {
         this.restaurantId = restaurantId;
     }
 
-    public Date getRevenueDate() {
+    public LocalDate getRevenueDate() {
         return revenueDate;
     }
 
-    public void setRevenueDate(Date revenueDate) {
+    public void setRevenueDate(LocalDate revenueDate) {
         this.revenueDate = revenueDate;
     }
 }

@@ -145,12 +145,14 @@ public class OrderRestController {
             for(Staff item: restaurant.getStaffList()){
                 if(item.getStaffActivityStatus().equals("available")){
                     order.setStaffId(item.getStaffId());
+                    staffService.getStaffById(item.getStaffId()).setStaffActivityStatus("busy");
                 }
             }
             if(order.getStaffId()==null || order.getStaffId().toString().isEmpty()){
                 Random rd = new Random();
                 Integer randomDude = rd.nextInt(restaurant.getStaffList().size()+1);
-                order.setStaffId(randomDude);
+                order.setStaffId(restaurant.getStaffList().get(randomDude).getStaffId());
+                staffService.getStaffById(restaurant.getStaffList().get(randomDude).getStaffId()).setStaffActivityStatus("busy");
             }
         }
 
@@ -314,7 +316,8 @@ public class OrderRestController {
     }
 
     @PutMapping("/orders/status")
-    public ResponseEntity<String> updateOrderStatus(@RequestBody AssignOrderDTO assignOrderDTO){
+    public Order updateOrderStatus(@RequestBody AssignOrderDTO assignOrderDTO){
+
         if(assignOrderDTO.getStatus().toLowerCase().equals("deny")){
             Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
             order.setStatus(assignOrderDTO.getStatus());
@@ -323,9 +326,8 @@ public class OrderRestController {
             staff.setStaffActivityStatus("available");
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
-            return ResponseEntity.ok("Huỷ đơn hàng thành công");
+            return order;
         }
-
         else if(assignOrderDTO.getStatus().toLowerCase().equals("accept")){
             Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
             order.setStatus(assignOrderDTO.getStatus());
@@ -333,7 +335,7 @@ public class OrderRestController {
             staff.setStaffActivityStatus("busy");
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
-            return ResponseEntity.ok("Cập nhật đơn hàng thành công");
+            return order;
         }
         else if(assignOrderDTO.getStatus().toLowerCase().equals("delivery")){
             Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
@@ -343,17 +345,17 @@ public class OrderRestController {
             staff.setStaffActivityStatus("busy");
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
-            return ResponseEntity.ok("Cập nhật trạng thái đơn hàng thành công");
+            return order;
         }
         else if(assignOrderDTO.getStatus().toLowerCase().equals("done")){
             Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
+            Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
             order.setReceiveTime(LocalDateTime.now());
             order.setStatus(assignOrderDTO.getStatus());
-            Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
             staff.setStaffActivityStatus("available");
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
-            return ResponseEntity.ok("Cập nhật trạng thái đơn hàng thành công");
+            return order;
         }
         else
         {
@@ -367,7 +369,7 @@ public class OrderRestController {
             staff.setStaffActivityStatus("busy");
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
-            return ResponseEntity.ok("Cập nhật trạng thái đơn hàng thành công");
+            return order;
         }
     }
 

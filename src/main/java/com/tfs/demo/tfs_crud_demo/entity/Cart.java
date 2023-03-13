@@ -38,6 +38,9 @@ public class Cart {
     @OrderBy(value = "id desc")
     private List<CartComboDetail> comboList = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "party_id")
+    private Party party;
 
     public Cart(){
 
@@ -95,6 +98,14 @@ public class Cart {
 
     public void setComboList(List<CartComboDetail> comboList) {
         this.comboList = comboList;
+    }
+
+    public Party getParty() {
+        return party;
+    }
+
+    public void setParty(Party party) {
+        this.party = party;
     }
 
     public void add(CartDetail item){

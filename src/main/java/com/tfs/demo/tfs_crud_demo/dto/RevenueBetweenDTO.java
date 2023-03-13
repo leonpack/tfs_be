@@ -1,35 +1,35 @@
 package com.tfs.demo.tfs_crud_demo.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class RevenueBetweenDTO {
 
-    private Date fromDate;
+    private LocalDate fromDate;
 
-    private Date toDate;
+    private LocalDate toDate;
 
     public RevenueBetweenDTO(){
 
     }
 
-    public RevenueBetweenDTO(Date fromDate, Date toDate) {
+    public RevenueBetweenDTO(LocalDate fromDate, LocalDate toDate) {
         this.fromDate = fromDate;
         this.toDate = toDate;
     }
 
-    public Date getFromDate() {
+    public LocalDate getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(Date fromDate) {
+    public void setFromDate(LocalDate fromDate) {
         this.fromDate = fromDate;
     }
 
-    public Date getToDate() {
+    public LocalDate getToDate() {
         return toDate;
     }
 
-    public void setToDate(Date toDate) {
+    public void setToDate(LocalDate toDate) {
         this.toDate = toDate;
     }
 }

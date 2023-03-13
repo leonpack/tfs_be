@@ -1,11 +1,14 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.dao.*;
+import com.tfs.demo.tfs_crud_demo.dto.PutPartyToCart;
 import com.tfs.demo.tfs_crud_demo.dto.RemoveComboFromCartDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Cart;
 import com.tfs.demo.tfs_crud_demo.entity.CartComboDetail;
 import com.tfs.demo.tfs_crud_demo.entity.Customer;
+import com.tfs.demo.tfs_crud_demo.entity.Party;
 import com.tfs.demo.tfs_crud_demo.service.CartService;
+import com.tfs.demo.tfs_crud_demo.service.PartyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +24,8 @@ public class CartRestController {
     private CartService cartService;
     private final CartRepository cartRepository;
     private final CartDetailRepository cartDetailRepository;
-
+    private PartyService partyService;
     private final CartComboDetailRepository cartComboDetailRepository;
-
     private final CustomerRepository customerRepository;
 
     @Autowired
@@ -31,12 +33,14 @@ public class CartRestController {
                               CartRepository cartRepository,
                               CartDetailRepository cartDetailRepository,
                               CartComboDetailRepository cartComboDetailRepository,
-                              CustomerRepository customerRepository){
+                              CustomerRepository customerRepository,
+                              PartyService thePartyService){
         cartService = theCartService;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.customerRepository = customerRepository;
         this.cartComboDetailRepository = cartComboDetailRepository;
+        partyService = thePartyService;
     }
 
     @GetMapping("/carts")
@@ -102,6 +106,17 @@ public class CartRestController {
             }
         }
         return ResponseEntity.ok("This place is forbidden");
+    }
+
+    @PostMapping("/carts/party")
+    public ResponseEntity<String> addPartyToCart(@RequestBody PutPartyToCart party){
+        Cart cart = cartService.getCartById(party.getCartId());
+        Party party1 = partyService.getById(party.getPartyId());
+        cart.setParty(party1);
+        party1.setCart(cart);
+        cartService.saveCart(cart);
+        partyService.save(party1);
+        return ResponseEntity.ok("Thêm tiệc vào giỏ hàng thành công");
     }
 
 }

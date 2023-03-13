@@ -1,24 +1,24 @@
 package com.tfs.demo.tfs_crud_demo.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class RevenueByDate {
 
-    private Date revenueDate;
+    private LocalDate revenueDate;
 
     public RevenueByDate(){
 
     }
 
-    public RevenueByDate(Date revenueDate) {
+    public RevenueByDate(LocalDate revenueDate) {
         this.revenueDate = revenueDate;
     }
 
-    public Date getRevenueDate() {
+    public LocalDate getRevenueDate() {
         return revenueDate;
     }
 
-    public void setRevenueDate(Date revenueDate) {
+    public void setRevenueDate(LocalDate revenueDate) {
         this.revenueDate = revenueDate;
     }
 }
