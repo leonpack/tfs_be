@@ -97,7 +97,7 @@ public class RestaurantRestController {
         Restaurant restaurant = restaurantService.getRestaurantById(theRestaurant.getRestaurantId());
 
         if(theRestaurant.getRestaurantLocation()==null){
-            theRestaurant.setRestaurantLocation(restaurant.getRestaurantName());
+            theRestaurant.setRestaurantLocation(restaurant.getRestaurantLocation());
         }
         if(theRestaurant.getRestaurantName()==null){
             theRestaurant.setRestaurantName(restaurant.getRestaurantName());

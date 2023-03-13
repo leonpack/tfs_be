@@ -65,8 +65,9 @@ public class OrderRestController {
     private final OrderDetailRepository orderDetailRepository;
     private StaffService staffService;
     private EventService eventService;
-
+    private CustomerService customerService;
     private RestaurantService restaurantService;
+    private NotificationService notificationService;
 
     @Autowired
     public OrderRestController(OrderService theOrderService,
@@ -75,7 +76,9 @@ public class OrderRestController {
                                FoodService theFoodService,
                                EventService theEventService,
                                StaffService theStaffService,
-                               RestaurantService theRestaurantService){
+                               RestaurantService theRestaurantService,
+                               CustomerService theCustomerService,
+                               NotificationService theNotificationService){
         orderService = theOrderService;
         this.orderDetailRepository = orderDetailRepository;
         promotionService = thePromotionService;
@@ -83,6 +86,8 @@ public class OrderRestController {
         eventService = theEventService;
         staffService = theStaffService;
         restaurantService = theRestaurantService;
+        customerService = theCustomerService;
+        notificationService = theNotificationService;
     }
 
     @GetMapping("/orders")
@@ -145,6 +150,8 @@ public class OrderRestController {
             for(Staff item: restaurant.getStaffList()){
                 if(item.getStaffActivityStatus().equals("available")){
                     order.setStaffId(item.getStaffId());
+                    Notification staffNoti = new Notification("Bạn có một đơn hàng mới cần xử lý, mã đơn hàng là " +order.getId(),item.getTheAccountForStaff().getAccountId());
+                    notificationService.save(staffNoti);
                     staffService.getStaffById(item.getStaffId()).setStaffActivityStatus("busy");
                 }
             }
@@ -152,11 +159,25 @@ public class OrderRestController {
                 Random rd = new Random();
                 Integer randomDude = rd.nextInt(restaurant.getStaffList().size()+1);
                 order.setStaffId(restaurant.getStaffList().get(randomDude).getStaffId());
+                Notification staffNoti = new Notification("Bạn có một đơn hàng mới cần xử lý, mã đơn hàng là " +order.getId()
+                        , restaurant.getStaffList().get(randomDude).getTheAccountForStaff().getAccountId());
+                notificationService.save(staffNoti);
                 staffService.getStaffById(restaurant.getStaffList().get(randomDude).getStaffId()).setStaffActivityStatus("busy");
             }
         }
 
+        String managerId = "";
+        for(Staff item: restaurant.getStaffList()){
+            if(item.getTheAccountForStaff().getRoleId().toString().equals("3")){
+                managerId = item.getTheAccountForStaff().getAccountId();
+            }
+        }
+
         orderService.saveOrder(order);
+        Notification userNoti = new Notification("Đơn hàng " +order.getId() + " vừa được tạo thành công", customerService.getCustomerById(order.getCustomerId()).getTheAccount().getAccountId());
+        Notification managerNoti = new Notification("Khách hàng " + customerService.getCustomerById(order.getCustomerId()).getCustomerName() + " vừa đặt đơn hàng " +order.getId(), managerId);
+        notificationService.save(userNoti);
+        notificationService.save(managerNoti);
 
 //        auto increase num of purchase if order has been successfully saved
         for(OrderDetail item : order.getItemList()){
@@ -320,6 +341,13 @@ public class OrderRestController {
 
         Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
         Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
+        Restaurant restaurant = restaurantService.getRestaurantById(order.getRestaurantId());
+        String managerId = "";
+        for(Staff item: restaurant.getStaffList()){
+            if(item.getTheAccountForStaff().getRoleId().toString().equals("3")){
+                managerId = item.getTheAccountForStaff().getAccountId();
+            }
+        }
 
         if(restaurantService.getRestaurantById(order.getRestaurantId()).getStaffList().stream().anyMatch(s -> s.equals(staff))){
             System.out.println("good");
@@ -330,32 +358,73 @@ public class OrderRestController {
         if(assignOrderDTO.getStatus().toLowerCase().equals("deny")){
             order.setStatus(assignOrderDTO.getStatus());
             order.setStaffId(null);
+
+
             staff.setStaffActivityStatus("available");
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
+
+            //create notification to in-form user about denied's order
+            Notification userNoti = new Notification("Đơn hàng " +order.getId() + " đã bị huỷ", customerService.getCustomerById(order.getCustomerId()).getTheAccount().getAccountId());
+            notificationService.save(userNoti);
+
             return order;
         }
         else if(assignOrderDTO.getStatus().toLowerCase().equals("accept")){
             order.setStatus(assignOrderDTO.getStatus());
+            order.setStaffId(assignOrderDTO.getStaffId());
+
             staff.setStaffActivityStatus("busy");
+
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
+
+            //create notification for customer to inform that their order has been accepted
+            Notification userNoti = new Notification("Đơn hàng " +order.getId() + " của quý khách đã được xác nhận", customerService.getCustomerById(order.getCustomerId()).getTheAccount().getAccountId());
+            notificationService.save(userNoti);
+
+            //create notification for staff to inform that an order has been assigned for them
+            Notification staffNoti = new Notification("Bạn có một đơn hàng mới cần xử lý, mã đơn hàng là " +order.getId(), staff.getTheAccountForStaff().getAccountId());
+            notificationService.save(staffNoti);
+
             return order;
         }
         else if(assignOrderDTO.getStatus().toLowerCase().equals("delivery")){
             order.setStatus(assignOrderDTO.getStatus());
             order.setDeliveryDate(LocalDateTime.now());
+            order.setStaffId(staff.getStaffId());
             staff.setStaffActivityStatus("busy");
+
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
+
+            //create notification for customer to inform that their order are being deliver
+            Notification userNoti = new Notification("Đơn hàng" + order.getId() + "của bạn đang được giao đến bạn bởi nhân viên " +staff.getStaffFullName()
+                    , customerService.getCustomerById(order.getCustomerId()).getTheAccount().getAccountId());
+            notificationService.save(userNoti);
+
+            //create notification for manager to inform that a staff are delivery an order to customer
+            Notification managerNoti = new Notification("Đơn hàng " + order.getId() + " đang được giao bởi nhân viên " +staff.getStaffFullName(), managerId);
+            notificationService.save(managerNoti);
+
             return order;
         }
         else if(assignOrderDTO.getStatus().toLowerCase().equals("done")){
             order.setReceiveTime(LocalDateTime.now());
             order.setStatus(assignOrderDTO.getStatus());
             staff.setStaffActivityStatus("available");
+
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
+
+            //create notification for customer to inform that their order has been finished
+            Notification userNoti = new Notification("Đơn hàng " +order.getId() + " đã được giao thành công, chúc bạn ngon miệng"
+                    , customerService.getCustomerById(order.getCustomerId()).getTheAccount().getAccountId());
+            notificationService.save(userNoti);
+
+            Notification managerNoti = new Notification("Đơn hàng " +order.getId() + " đã được giao thành công", managerId);
+            notificationService.save(managerNoti);
+
             return order;
         }
         else

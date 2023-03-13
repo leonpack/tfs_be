@@ -9,4 +9,5 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
+
 }

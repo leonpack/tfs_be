@@ -18,4 +18,5 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
     Staff getStaffByStaffEmail(String mail);
 
     List<Staff> getAllByTheRestaurant(Restaurant theRestaurant);
+
 }
