@@ -23,9 +23,6 @@ public class PartyDetail {
     @Column(name = "food_img")
     private String foodImage;
 
-    @Column(name = "food_quantity")
-    private Integer foodQuantity;
-
     @ManyToOne
     @JoinColumn(name = "party_id")
     @JsonBackReference
@@ -35,11 +32,10 @@ public class PartyDetail {
 
     }
 
-    public PartyDetail(Integer foodId, String foodName, String foodImage, Integer foodQuantity) {
+    public PartyDetail(Integer foodId, String foodName, String foodImage) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.foodImage = foodImage;
-        this.foodQuantity = foodQuantity;
     }
 
     public int getId() {
@@ -72,14 +68,6 @@ public class PartyDetail {
 
     public void setFoodImage(String foodImage) {
         this.foodImage = foodImage;
-    }
-
-    public Integer getFoodQuantity() {
-        return foodQuantity;
-    }
-
-    public void setFoodQuantity(Integer foodQuantity) {
-        this.foodQuantity = foodQuantity;
     }
 
     public Party getParty() {

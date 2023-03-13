@@ -1,5 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.dto;
 
+
 import java.time.LocalDate;
 
 public class RevenueByDate {

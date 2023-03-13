@@ -15,9 +15,13 @@ import com.tfs.demo.tfs_crud_demo.service.RestaurantService;
 import com.tfs.demo.tfs_crud_demo.service.StaffService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -41,8 +45,8 @@ public class StatisticRestController {
     }
 
     @PostMapping("/revenues/bydate")
-    public Map<String, Object> getRevenueByDate(@RequestBody RevenueByDate revenueByDate){
-        List<Order> listOrder = revenueRepository.getOrdersByOrderDate(revenueByDate.getRevenueDate());
+    public Map<String, Object> getRevenueByDate(@RequestBody RevenueByDate revenueByDate) throws ParseException {
+        List<Order> listOrder = revenueRepository.getOrdersByOrderDate(revenueByDate.getRevenueDate().atStartOfDay());
         Map<String, Object> returnValue = new HashMap<>();
         Double revenue = (double) 0;
         Integer quantity = 0;
@@ -59,7 +63,7 @@ public class StatisticRestController {
 
     @PostMapping("/revenues/bydate/restaurant")
     public Map<String, Object> getRevenueByDateAndRestaurant(@RequestBody RevenueByDateByRestaurant revenue){
-        List<Order> listOrder = revenueRepository.getOrdersByOrderDateAndRestaurantId(revenue.getRevenueDate(), revenue.getRestaurantId());
+        List<Order> listOrder = revenueRepository.getOrdersByOrderDateAndRestaurantId(revenue.getRevenueDate().atStartOfDay(), revenue.getRestaurantId());
         Restaurant restaurant = restaurantService.getRestaurantById(revenue.getRestaurantId());
         Map<String, Object> returnValue = new HashMap<>();
         Double revenues = (double) 0;
@@ -80,7 +84,7 @@ public class StatisticRestController {
 
     @PostMapping("/revenues/between")
     public Map<String, Object> getRevenueBetween(@RequestBody RevenueBetweenDTO revenueBetweenDTO){
-        List<Order> listOrder = revenueRepository.getOrdersByOrderDateBetween(revenueBetweenDTO.getFromDate(), revenueBetweenDTO.getToDate());
+        List<Order> listOrder = revenueRepository.getOrdersByOrderDateBetween(revenueBetweenDTO.getFromDate().atStartOfDay(), revenueBetweenDTO.getToDate().atStartOfDay());
         Map<String, Object> returnValue = new HashMap<>();
         Double revenue = (double) 0;
         Integer quantity = 0;
@@ -99,7 +103,7 @@ public class StatisticRestController {
 
     @PostMapping("/revenues/between/restaurant")
     public Map<String, Object> getRevenueBetweenByRestaurant(@RequestBody RevenueBetweenByRestaurantDTO revenue){
-        List<Order> listOrder = revenueRepository.getOrdersByOrderDateBetweenAndRestaurantId(revenue.getFromDate(), revenue.getToDate(), revenue.getRestaurantId());
+        List<Order> listOrder = revenueRepository.getOrdersByOrderDateBetweenAndRestaurantId(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay(), revenue.getRestaurantId());
         Restaurant restaurant = restaurantService.getRestaurantById(revenue.getRestaurantId());
         Map<String, Object> returnValue = new HashMap<>();
         Double revenues = (double) 0;

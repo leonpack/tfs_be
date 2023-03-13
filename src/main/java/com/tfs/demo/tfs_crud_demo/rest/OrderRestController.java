@@ -318,10 +318,17 @@ public class OrderRestController {
     @PutMapping("/orders/status")
     public Order updateOrderStatus(@RequestBody AssignOrderDTO assignOrderDTO){
 
+        Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
+        Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
+
+        if(restaurantService.getRestaurantById(order.getRestaurantId()).getStaffList().stream().anyMatch(s -> s.equals(staff))){
+            System.out.println("good");
+        } else {
+            throw new RuntimeException("This staff is not belong to this restaurant!");
+        }
+
         if(assignOrderDTO.getStatus().toLowerCase().equals("deny")){
-            Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
             order.setStatus(assignOrderDTO.getStatus());
-            Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
             order.setStaffId(null);
             staff.setStaffActivityStatus("available");
             staffService.saveStaff(staff);
@@ -329,27 +336,21 @@ public class OrderRestController {
             return order;
         }
         else if(assignOrderDTO.getStatus().toLowerCase().equals("accept")){
-            Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
             order.setStatus(assignOrderDTO.getStatus());
-            Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
             staff.setStaffActivityStatus("busy");
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
             return order;
         }
         else if(assignOrderDTO.getStatus().toLowerCase().equals("delivery")){
-            Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
             order.setStatus(assignOrderDTO.getStatus());
             order.setDeliveryDate(LocalDateTime.now());
-            Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
             staff.setStaffActivityStatus("busy");
             staffService.saveStaff(staff);
             orderService.saveOrder(order);
             return order;
         }
         else if(assignOrderDTO.getStatus().toLowerCase().equals("done")){
-            Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
-            Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
             order.setReceiveTime(LocalDateTime.now());
             order.setStatus(assignOrderDTO.getStatus());
             staff.setStaffActivityStatus("available");
@@ -359,12 +360,10 @@ public class OrderRestController {
         }
         else
         {
-            Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
-            order.setStatus(assignOrderDTO.getStatus());
-            Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
             if (staff.getStaffActivityStatus().equals("busy")) {
                 throw new RuntimeException("This staff can't be assign to an order right now");
             }
+            order.setStatus(assignOrderDTO.getStatus());
             order.setStaffId(assignOrderDTO.getStaffId());
             staff.setStaffActivityStatus("busy");
             staffService.saveStaff(staff);

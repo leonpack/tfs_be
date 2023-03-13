@@ -28,6 +28,9 @@ public class Party {
     @OneToOne(mappedBy = "party")
     private Cart cart;
 
+    @OneToOne(mappedBy = "party")
+    private Order order;
+
     public Party(){
 
     }
@@ -75,5 +78,13 @@ public class Party {
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

@@ -77,6 +77,10 @@ public class Order {
     @JsonManagedReference
     private List<OrderComboDetail> comboList = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "party_id")
+    private Party party;
+
     public Order(){
 
     }
@@ -249,5 +253,13 @@ public class Order {
 
     public void setComboList(List<OrderComboDetail> comboList) {
         this.comboList = comboList;
+    }
+
+    public Party getParty() {
+        return party;
+    }
+
+    public void setParty(Party party) {
+        this.party = party;
     }
 }
