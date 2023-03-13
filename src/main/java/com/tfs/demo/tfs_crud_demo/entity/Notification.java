@@ -1,6 +1,9 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "notification")
@@ -16,6 +19,10 @@ public class Notification {
 
     @Column(name = "account_id")
     private String accountId;
+
+    @Column(name = "created")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     public Notification(){
 
@@ -48,5 +55,13 @@ public class Notification {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

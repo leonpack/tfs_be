@@ -11,6 +11,6 @@ import java.util.List;
 @CrossOrigin
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
 
-    List<Notification> findNotificationsByAccountIdOrderByIdDesc(String accountId);
+    List<Notification> findNotificationsByAccountIdOrderByCreatedAtDesc(String accountId);
 
 }
