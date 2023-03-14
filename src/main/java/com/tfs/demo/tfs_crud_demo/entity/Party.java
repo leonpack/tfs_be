@@ -21,6 +21,9 @@ public class Party {
     @Column(name = "note")
     private String note;
 
+    @Column(name = "total_price")
+    private Double totalPrice;
+
     @OneToMany(mappedBy = "party", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<PartyDetail> itemList = new ArrayList<>();
@@ -35,9 +38,10 @@ public class Party {
 
     }
 
-    public Party(Integer quantity, String note) {
+    public Party(Integer quantity, String note, Double totalPrice) {
         this.quantity = quantity;
         this.note = note;
+        this.totalPrice = totalPrice;
     }
 
     public int getId() {
@@ -86,5 +90,13 @@ public class Party {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

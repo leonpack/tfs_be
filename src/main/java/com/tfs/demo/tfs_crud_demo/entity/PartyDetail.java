@@ -23,6 +23,9 @@ public class PartyDetail {
     @Column(name = "food_img")
     private String foodImage;
 
+    @Column(name = "food_price")
+    private Double price;
+
     @ManyToOne
     @JoinColumn(name = "party_id")
     @JsonBackReference
@@ -32,10 +35,11 @@ public class PartyDetail {
 
     }
 
-    public PartyDetail(Integer foodId, String foodName, String foodImage) {
+    public PartyDetail(Integer foodId, String foodName, String foodImage, Double price) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.foodImage = foodImage;
+        this.price = price;
     }
 
     public int getId() {
@@ -76,5 +80,13 @@ public class PartyDetail {
 
     public void setParty(Party party) {
         this.party = party;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

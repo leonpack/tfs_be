@@ -1,5 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.dao;
 
+import com.tfs.demo.tfs_crud_demo.dto.OrderDateForOwnerResponse;
+import com.tfs.demo.tfs_crud_demo.dto.OrderDateResponse;
 import com.tfs.demo.tfs_crud_demo.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,5 +30,23 @@ public interface RevenueRepository extends JpaRepository<Order, Integer> {
 
     List<Order> getOrdersByOrderDateBetweenAndRestaurantId(LocalDateTime fromDate, LocalDateTime toDate, int restaurantId);
 
+    @Query(value = "SELECT DATE_FORMAT(order_date,'%Y-%m-%d') as orderDay, \n" +
+            "       SUM(total_price) as totalPrice, \n" +
+            "       SUM(total_quantity) as totalQuantity \n" +
+            "FROM orders \n" +
+            "WHERE order_date BETWEEN ?1 AND ?2 AND restaurant_id = ?3\n" +
+            "GROUP BY orderDay \n" +
+            "ORDER BY orderDay ASC;\n", nativeQuery = true)
+    Collection<OrderDateResponse> getOrdersFilterByDate(LocalDateTime fromDate, LocalDateTime toDate, int restaurantId);
+
+
+    @Query(value = "SELECT DATE_FORMAT(order_date,'%Y-%m-%d') as orderDay, \n" +
+            "       SUM(total_price) as totalPrice, \n" +
+            "       SUM(total_quantity) as totalQuantity \n" +
+            "FROM orders \n" +
+            "WHERE order_date BETWEEN ?1 AND ?2\n" +
+            "GROUP BY orderDay \n" +
+            "ORDER BY orderDay ASC;\n", nativeQuery = true)
+    Collection<OrderDateForOwnerResponse> getOrdersFilterByDateForOwner(LocalDateTime fromDate, LocalDateTime toDate);
 
 }

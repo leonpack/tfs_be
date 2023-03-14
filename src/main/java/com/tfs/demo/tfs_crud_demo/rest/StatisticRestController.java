@@ -1,10 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.dao.RevenueRepository;
-import com.tfs.demo.tfs_crud_demo.dto.RevenueBetweenByRestaurantDTO;
-import com.tfs.demo.tfs_crud_demo.dto.RevenueBetweenDTO;
-import com.tfs.demo.tfs_crud_demo.dto.RevenueByDate;
-import com.tfs.demo.tfs_crud_demo.dto.RevenueByDateByRestaurant;
+import com.tfs.demo.tfs_crud_demo.dto.*;
 import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.entity.Order;
 import com.tfs.demo.tfs_crud_demo.entity.Restaurant;
@@ -82,46 +79,46 @@ public class StatisticRestController {
         return returnValue;
     }
 
-    @PostMapping("/revenues/between")
-    public Map<String, Object> getRevenueBetween(@RequestBody RevenueBetweenDTO revenueBetweenDTO){
-        List<Order> listOrder = revenueRepository.getOrdersByOrderDateBetween(revenueBetweenDTO.getFromDate().atStartOfDay(), revenueBetweenDTO.getToDate().atStartOfDay());
-        Map<String, Object> returnValue = new HashMap<>();
-        Double revenue = (double) 0;
-        Integer quantity = 0;
-        for(Order item: listOrder){
-            revenue += item.getTotalPrice();
-            quantity += item.getTotalQuantity();
-        }
+//    @PostMapping("/revenues/between")
+//    public Map<String, Object> getRevenueBetween(@RequestBody RevenueBetweenDTO revenueBetweenDTO){
+//        List<Order> listOrder = revenueRepository.getOrdersByOrderDateBetween(revenueBetweenDTO.getFromDate().atStartOfDay(), revenueBetweenDTO.getToDate().atStartOfDay());
+//        Map<String, Object> returnValue = new HashMap<>();
+//        Double revenue = (double) 0;
+//        Integer quantity = 0;
+//        for(Order item: listOrder){
+//            revenue += item.getTotalPrice();
+//            quantity += item.getTotalQuantity();
+//        }
+//
+//        returnValue.put("fromdate", revenueBetweenDTO.getFromDate());
+//        returnValue.put("todate", revenueBetweenDTO.getToDate());
+//        returnValue.put("totalquantity",quantity);
+//        returnValue.put("totalrevenue", revenue);
+//
+//        return returnValue;
+//    }
 
-        returnValue.put("fromdate", revenueBetweenDTO.getFromDate());
-        returnValue.put("todate", revenueBetweenDTO.getToDate());
-        returnValue.put("totalquantity",quantity);
-        returnValue.put("totalrevenue", revenue);
-
-        return returnValue;
-    }
-
-    @PostMapping("/revenues/between/restaurant")
-    public Map<String, Object> getRevenueBetweenByRestaurant(@RequestBody RevenueBetweenByRestaurantDTO revenue){
-        List<Order> listOrder = revenueRepository.getOrdersByOrderDateBetweenAndRestaurantId(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay(), revenue.getRestaurantId());
-        Restaurant restaurant = restaurantService.getRestaurantById(revenue.getRestaurantId());
-        Map<String, Object> returnValue = new HashMap<>();
-        Double revenues = (double) 0;
-        Integer quantity = 0;
-        for(Order item: listOrder){
-            quantity += item.getTotalQuantity();
-            revenues += item.getTotalPrice();
-        }
-
-        returnValue.put("restaurantid", revenue.getRestaurantId());
-        returnValue.put("restaurantname", restaurant.getRestaurantName());
-        returnValue.put("fromdate", revenue.getFromDate());
-        returnValue.put("todate", revenue.getToDate());
-        returnValue.put("totalquantity", quantity);
-        returnValue.put("totalrevenue", revenue);
-
-        return returnValue;
-    }
+//    @PostMapping("/revenues/between/restaurant")
+//    public Map<String, Object> getRevenueBetweenByRestaurant(@RequestBody RevenueBetweenByRestaurantDTO revenue){
+//        List<Order> listOrder = revenueRepository.getOrdersByOrderDateBetweenAndRestaurantId(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay(), revenue.getRestaurantId());
+//        Restaurant restaurant = restaurantService.getRestaurantById(revenue.getRestaurantId());
+//        Map<String, Object> returnValue = new HashMap<>();
+//        Double revenues = (double) 0;
+//        Integer quantity = 0;
+//        for(Order item: listOrder){
+//            quantity += item.getTotalQuantity();
+//            revenues += item.getTotalPrice();
+//        }
+//
+//        returnValue.put("restaurantid", revenue.getRestaurantId());
+//        returnValue.put("restaurantname", restaurant.getRestaurantName());
+//        returnValue.put("fromdate", revenue.getFromDate());
+//        returnValue.put("todate", revenue.getToDate());
+//        returnValue.put("totalquantity", quantity);
+//        returnValue.put("totalrevenue", revenue);
+//
+//        return returnValue;
+//    }
 
     @GetMapping("/statistic")
     public Map<String, Object> getAllStatistic(){
@@ -164,4 +161,39 @@ public class StatisticRestController {
         return returnValue;
     }
 
+    //TODO ASAP
+//    @PostMapping("/statistic/detail/byrestaurant")
+//    public List<RevenueResponseDTO> getDetailRevenueBetweenByRestaurant(@RequestBody RevenueBetweenByRestaurantDTO revenue){
+//        List<Order> orderList = revenueRepository.getOrdersByOrderDateBetweenAndRestaurantId(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay(), revenue.getRestaurantId());
+//        List<RevenueResponseDTO> response = new ArrayList<>();
+//
+//        while(!revenue.getFromDate().isAfter(revenue.getToDate())){
+//            for(RevenueResponseDTO item: response){
+//                item.setDate(revenue.getFromDate());
+//                Double totalPrice = (double) 0;
+//                Integer totalQuantity = 0;
+//                List<Order> orderByDate = revenueRepository.getOrdersByOrderDateAndRestaurantId(revenue.getFromDate().atStartOfDay(), revenue.getRestaurantId());
+//                for(Order orderItem: orderByDate){
+//                    totalPrice += orderItem.getTotalPrice();
+//                    totalQuantity += orderItem.getTotalQuantity();
+//                }
+//                item.setTotalPrice(totalPrice);
+//                item.setTotalQuantity(totalQuantity);
+//                response.add(item);
+//            }
+//            revenue.getFromDate().plusDays(1);
+//        }
+//
+//        return response;
+//    }
+
+    @PostMapping("/statistic/detail")
+    public Collection<OrderDateResponse> getDetailFromRestaurant(@RequestBody RevenueBetweenByRestaurantDTO revenue){
+        return revenueRepository.getOrdersFilterByDate(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay(), revenue.getRestaurantId());
+    }
+
+    @PostMapping("statistic/detail/owner")
+    public Collection<OrderDateForOwnerResponse> getDetailForOwner(@RequestBody RevenueBetweenDTO revenue){
+        return revenueRepository.getOrdersFilterByDateForOwner(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay());
+    }
 }
