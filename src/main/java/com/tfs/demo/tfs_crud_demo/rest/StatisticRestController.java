@@ -161,39 +161,13 @@ public class StatisticRestController {
         return returnValue;
     }
 
-    //TODO ASAP
-//    @PostMapping("/statistic/detail/byrestaurant")
-//    public List<RevenueResponseDTO> getDetailRevenueBetweenByRestaurant(@RequestBody RevenueBetweenByRestaurantDTO revenue){
-//        List<Order> orderList = revenueRepository.getOrdersByOrderDateBetweenAndRestaurantId(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay(), revenue.getRestaurantId());
-//        List<RevenueResponseDTO> response = new ArrayList<>();
-//
-//        while(!revenue.getFromDate().isAfter(revenue.getToDate())){
-//            for(RevenueResponseDTO item: response){
-//                item.setDate(revenue.getFromDate());
-//                Double totalPrice = (double) 0;
-//                Integer totalQuantity = 0;
-//                List<Order> orderByDate = revenueRepository.getOrdersByOrderDateAndRestaurantId(revenue.getFromDate().atStartOfDay(), revenue.getRestaurantId());
-//                for(Order orderItem: orderByDate){
-//                    totalPrice += orderItem.getTotalPrice();
-//                    totalQuantity += orderItem.getTotalQuantity();
-//                }
-//                item.setTotalPrice(totalPrice);
-//                item.setTotalQuantity(totalQuantity);
-//                response.add(item);
-//            }
-//            revenue.getFromDate().plusDays(1);
-//        }
-//
-//        return response;
-//    }
-
     @PostMapping("/statistic/detail")
     public Collection<OrderDateResponse> getDetailFromRestaurant(@RequestBody RevenueBetweenByRestaurantDTO revenue){
         return revenueRepository.getOrdersFilterByDate(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay(), revenue.getRestaurantId());
     }
 
     @PostMapping("statistic/detail/owner")
-    public Collection<OrderDateForOwnerResponse> getDetailForOwner(@RequestBody RevenueBetweenDTO revenue){
+    public Collection<OrderDateResponse> getDetailForOwner(@RequestBody RevenueBetweenDTO revenue){
         return revenueRepository.getOrdersFilterByDateForOwner(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay());
     }
 }
