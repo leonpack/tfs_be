@@ -23,13 +23,13 @@ public class Customer {
     @Column(name = "avatar_url")
     private String avatarURL;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     @JsonManagedReference(value = "account-customer")
     @JsonIgnore
     private Account theAccount;
 
-    @OneToOne(mappedBy = "customer")
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private Cart cart;
 
     @Column(name = "address")

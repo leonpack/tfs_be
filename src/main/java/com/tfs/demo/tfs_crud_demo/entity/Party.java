@@ -24,6 +24,9 @@ public class Party {
     @Column(name = "total_price")
     private Double totalPrice;
 
+    @Column(name = "template")
+    private String partyTemplate;
+
     @OneToMany(mappedBy = "party", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<PartyDetail> itemList = new ArrayList<>();
@@ -38,10 +41,11 @@ public class Party {
 
     }
 
-    public Party(Integer quantity, String note, Double totalPrice) {
+    public Party(Integer quantity, String note, Double totalPrice, String partyTemplate) {
         this.quantity = quantity;
         this.note = note;
         this.totalPrice = totalPrice;
+        this.partyTemplate = partyTemplate;
     }
 
     public int getId() {
@@ -98,5 +102,13 @@ public class Party {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getPartyTemplate() {
+        return partyTemplate;
+    }
+
+    public void setPartyTemplate(String partyTemplate) {
+        this.partyTemplate = partyTemplate;
     }
 }

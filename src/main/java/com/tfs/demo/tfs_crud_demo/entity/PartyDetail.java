@@ -1,8 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.checkerframework.checker.units.qual.C;
-
 import javax.persistence.*;
 
 @Entity

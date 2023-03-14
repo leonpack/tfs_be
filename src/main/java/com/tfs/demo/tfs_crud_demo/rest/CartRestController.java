@@ -63,10 +63,24 @@ public class CartRestController {
     @PutMapping("/carts")
     public Cart UpdateItemToCart(@RequestBody Cart cart){
         Customer theCustomer = customerRepository.getCustomerByCartId(cart.getId());
+        Cart existCart = cartService.getCartById(cart.getId());
         if(cart.getCustomer()==null){
             cart.setCustomer(theCustomer);
         }
+        cart.setComboList(cart.getComboList());
+        if(cart.getComboList()==null || cart.getComboList().isEmpty()){
+            cart.setComboList(existCart.getComboList());
+        }
         cart.setCartItems(cart.getCartItems());
+        if(cart.getCartItems()==null || cart.getCartItems().isEmpty()){
+            cart.setCartItems(existCart.getCartItems());
+        }
+        if(cart.getNumberCart()==null){
+            cart.setNumberCart(existCart.getNumberCart());
+        }
+        if(cart.getTotalPrice()==null){
+            cart.setTotalPrice(existCart.getTotalPrice());
+        }
         cartService.saveCart(cart);
         return cart;
     }
@@ -117,6 +131,15 @@ public class CartRestController {
         cartService.saveCart(cart);
         partyService.save(party1);
         return ResponseEntity.ok("Thêm tiệc vào giỏ hàng thành công");
+    }
+
+    @PostMapping("/carts/removeparty")
+    public ResponseEntity<String> removePartyFromCart(@RequestBody PutPartyToCart party){
+        Cart cart = cartService.getCartById(party.getCartId());
+        cart.setParty(null);
+        cartService.saveCart(cart);
+        partyService.removeById(party.getPartyId());
+        return ResponseEntity.ok("Xoá tiệc khỏi giỏ hàng thành công");
     }
 
 }
