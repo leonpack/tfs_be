@@ -142,4 +142,12 @@ public class CartRestController {
         return ResponseEntity.ok("Xoá tiệc khỏi giỏ hàng thành công");
     }
 
+    @GetMapping("/carts/getparty/{cartId}")
+    public Party getPartyByCart(@PathVariable int cartId){
+        Cart cart = cartService.getCartById(cartId);
+        if(cart.getParty()==null){
+            throw new RuntimeException("This cart contain no party");
+        }
+        return cart.getParty();
+    }
 }

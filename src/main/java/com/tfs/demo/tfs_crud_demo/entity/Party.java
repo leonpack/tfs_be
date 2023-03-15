@@ -1,5 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -32,9 +33,11 @@ public class Party {
     private List<PartyDetail> itemList = new ArrayList<>();
 
     @OneToOne(mappedBy = "party")
+    @JsonIgnore
     private Cart cart;
 
     @OneToOne(mappedBy = "party")
+    @JsonIgnore
     private Order order;
 
     public Party(){

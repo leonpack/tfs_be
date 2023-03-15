@@ -33,13 +33,13 @@ public class PartyRestController {
     }
 
     @PostMapping("/parties")
-    public ResponseEntity<String> addNewParty(@RequestBody Party party){
+    public Party addNewParty(@RequestBody Party party){
         partyService.save(party);
-        return ResponseEntity.ok("Tạo bàn tiệc thành công");
+        return party;
     }
 
     @PutMapping("/parties")
-    public ResponseEntity<String> updateParty(@RequestBody Party party){
+    public Party updateParty(@RequestBody Party party){
         Party existParty = partyService.getById(party.getId());
 
         if(party.getNote()==null || party.getNote().isEmpty()){
@@ -54,11 +54,19 @@ public class PartyRestController {
             party.setItemList(existParty.getItemList());
         }
 
+        if(party.getPartyTemplate()==null || party.getPartyTemplate().isEmpty()){
+            party.setPartyTemplate(existParty.getPartyTemplate());
+        }
+
+        if(party.getOrder()==null){
+            party.setOrder(existParty.getOrder());
+        }
+
         party.setItemList(party.getItemList());
 
         partyService.save(party);
 
-        return ResponseEntity.ok("Cập nhật bàn tiệc thành công");
+        return party;
     }
 
     @DeleteMapping("/parties/{partiesId}")
