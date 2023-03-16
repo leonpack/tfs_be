@@ -77,17 +77,17 @@ public class AccountRestController {
         return theAccount.getTheCustomer();
     }
 
-    @PostMapping("/accounts")
-    public String addNewAccount(@RequestBody Account theAccount){
-        if(!accountService.CheckDuplicateAccountId(theAccount.getAccountId())){
-            return "Duplicate with accountId: "+theAccount.getAccountId() +" has been found,please try again!";
-        }
-        if(!accountService.checkDuplicatePhoneNumber(theAccount.getPhoneNumber())){
-            return "This phone number is already linked with another account, please try again!";
-        }
-        accountService.saveAccount(theAccount);
-        return "Saved account: "+theAccount;
-    }
+//    @PostMapping("/accounts")
+//    public String addNewAccount(@RequestBody Account theAccount){
+//        if(!accountService.CheckDuplicateAccountId(theAccount.getAccountId())){
+//            return "Duplicate with accountId: "+theAccount.getAccountId() +" has been found,please try again!";
+//        }
+//        if(!accountService.checkDuplicatePhoneNumber(theAccount.getPhoneNumber())){
+//            return "This phone number is already linked with another account, please try again!";
+//        }
+//        accountService.saveAccount(theAccount);
+//        return "Saved account: "+theAccount;
+//    }
 //
 //    @PutMapping("/accounts")
 //    public Account updateAccount(@RequestBody Account theAccount){

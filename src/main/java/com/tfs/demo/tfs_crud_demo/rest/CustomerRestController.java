@@ -85,6 +85,7 @@ public class CustomerRestController {
     @PostMapping("/customers")
     public Customer registerAccountForCustomer(@RequestBody Customer customer){
         customerService.saveCustomer(customer);
+
         Cart cart = new Cart((double) 0, 0, customer);
         return customer;
     }
