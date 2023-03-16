@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+!**/src/main/**/config/
 
 ### STS ###
 .apt_generated
@@ -34,4 +35,3 @@ build/
 
 ### Ignore all properties files ###
 *.properties
-!/src/main/java/com/tfs/demo/tfs_crud_demo/config/TwilioInitializer.java
