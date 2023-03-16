@@ -4,6 +4,10 @@ public class SMSRequestDTO {
 
     private final String phoneNumber;
 
+    public SMSRequestDTO(){
+        phoneNumber = null;
+    }
+
     public SMSRequestDTO(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
