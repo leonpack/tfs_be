@@ -35,3 +35,4 @@ build/
 
 ### Ignore all properties files ###
 *.properties
+!/src/main/java/com/tfs/demo/tfs_crud_demo/config/TwilioInitializer.java
