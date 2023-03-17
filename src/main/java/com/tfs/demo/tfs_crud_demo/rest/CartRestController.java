@@ -71,8 +71,7 @@ public class CartRestController {
         if(cart.getComboList()==null || cart.getComboList().isEmpty()){
             cart.setComboList(existCart.getComboList());
         }
-        cart.setCartItems(cart.getCartItems());
-        if(cart.getCartItems()==null || cart.getCartItems().isEmpty()){
+        if(cart.getCartItems()==null){
             cart.setCartItems(existCart.getCartItems());
         }
         if(cart.getNumberCart()==null){
@@ -81,6 +80,7 @@ public class CartRestController {
         if(cart.getTotalPrice()==null){
             cart.setTotalPrice(existCart.getTotalPrice());
         }
+        cart.setCartItems(cart.getCartItems());
         cartService.saveCart(cart);
         return cart;
     }

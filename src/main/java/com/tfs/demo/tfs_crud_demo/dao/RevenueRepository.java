@@ -57,7 +57,7 @@ public interface RevenueRepository extends JpaRepository<Order, Integer> {
             "\tAND orders.restaurant_id = ?3 \n" +
             "    AND orders.activity_status = 'done'\n" +
             "WHERE date_table.date BETWEEN ?1 AND ?2 \n" +
-            "GROUP BY orderDay \n" +
+            "GROUP BY orderDayS \n" +
             "ORDER BY orderDay ASC", nativeQuery = true)
     Collection<OrderDateResponse> getOrdersFilterByDate(LocalDateTime fromDate, LocalDateTime toDate, int restaurantId);
 
