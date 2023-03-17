@@ -24,6 +24,9 @@ public class Notification {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Column(name = "is_checked")
+    private Boolean isChecked = false;
+
     public Notification(){
 
     }
@@ -63,5 +66,13 @@ public class Notification {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(Boolean checked) {
+        isChecked = checked;
     }
 }

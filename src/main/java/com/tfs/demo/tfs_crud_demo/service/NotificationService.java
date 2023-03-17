@@ -10,6 +10,8 @@ public interface NotificationService {
 
     List<Notification> getAllByAccountId(String accountId);
 
+    Notification getById(int notificationId);
+
     Notification save(Notification notification);
 
     void remove(int id);

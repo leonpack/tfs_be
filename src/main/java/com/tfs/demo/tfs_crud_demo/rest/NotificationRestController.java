@@ -34,6 +34,17 @@ public class NotificationRestController {
         return notificationService.getAllByAccountId(accountId);
     }
 
+    @PutMapping("/notifications/checked/{notificationId}")
+    public Notification setNotificationStatus(@PathVariable int notificationId){
+        Notification notification = notificationService.getById(notificationId);
+        if(notification.getChecked().toString().equals("false")){
+            notification.setChecked(true);
+        } else if (notification.getChecked().toString().equals("true")){
+            notification.setChecked(false);
+        }
+        return notification;
+    }
+
     @DeleteMapping("/notification/delete/{notificationId}")
     public ResponseEntity<String> deleteNotification(@PathVariable int notificationId){
         notificationService.remove(notificationId);

@@ -399,7 +399,7 @@ public class OrderRestController {
             orderService.saveOrder(order);
 
             //create notification for customer to inform that their order are being deliver
-            Notification userNoti = new Notification("Đơn hàng" + order.getId() + "của bạn đang được giao đến bạn bởi nhân viên " +staff.getStaffFullName()
+            Notification userNoti = new Notification("Đơn hàng " + order.getId() + " của bạn đang được giao đến bạn bởi nhân viên " +staff.getStaffFullName()
                     , customerService.getCustomerById(order.getCustomerId()).getTheAccount().getAccountId());
             notificationService.save(userNoti);
 

@@ -27,6 +27,18 @@ public class NotificationServiceImplementation implements NotificationService{
     }
 
     @Override
+    public Notification getById(int notificationId) {
+        Optional<Notification> result = notificationRepository.findById(notificationId);
+        Notification notification = null;
+        if(result.isPresent()){
+            notification = result.get();
+        } else {
+            throw new RuntimeException("Notification not found");
+        }
+        return notification;
+    }
+
+    @Override
     public Notification save(Notification notification) {
         return notificationRepository.save(notification);
     }
