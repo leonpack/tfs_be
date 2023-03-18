@@ -2,6 +2,7 @@ package com.tfs.demo.tfs_crud_demo.service;
 
 import com.tfs.demo.tfs_crud_demo.dao.FeedbackRepository;
 import com.tfs.demo.tfs_crud_demo.entity.Feedback;
+import com.tfs.demo.tfs_crud_demo.entity.Food;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,7 +28,12 @@ public class FeedbackServiceImplementation implements FeedbackService{
 
     @Override
     public List<Feedback> getALlByAccountId(String accountId) {
-        return feedbackRepository.getFeedbacksByAccountId(accountId);
+        return feedbackRepository.getFeedbacksByAccountIdOrderByCreatedAtDesc(accountId);
+    }
+
+    @Override
+    public List<Feedback> getAllByFood(Food food) {
+        return feedbackRepository.getFeedbacksByFoodOrderByCreatedAtDesc(food);
     }
 
 

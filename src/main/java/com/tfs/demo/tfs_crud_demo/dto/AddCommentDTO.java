@@ -4,18 +4,20 @@ public class AddCommentDTO {
 
     private int foodId;
     private String accountId;
+    private String avatarUrl;
     private String comment;
-    private Integer point;
+    private Integer rate;
 
     public AddCommentDTO(){
 
     }
 
-    public AddCommentDTO(int foodId, String accountId, String comment, Integer point) {
+    public AddCommentDTO(int foodId, String accountId, String avatarUrl, String comment, Integer rate) {
         this.foodId = foodId;
         this.accountId = accountId;
+        this.avatarUrl = avatarUrl;
         this.comment = comment;
-        this.point = point;
+        this.rate = rate;
     }
 
     public int getFoodId() {
@@ -42,11 +44,19 @@ public class AddCommentDTO {
         this.comment = comment;
     }
 
-    public Integer getPoint() {
-        return point;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setPoint(Integer point) {
-        this.point = point;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public Integer getRate() {
+        return rate;
+    }
+
+    public void setRate(Integer rate) {
+        this.rate = rate;
     }
 }

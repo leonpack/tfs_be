@@ -36,6 +36,12 @@ public class FeedbackRestController {
         return feedbackService.getALlByAccountId(accountId);
     }
 
+    @GetMapping("/feedbacks/food/{foodId}")
+    public List<Feedback> getByFood(@PathVariable int foodId){
+        Food food = foodService.getFoodById(foodId);
+        return feedbackService.getAllByFood(food);
+    }
+
 //    @PostMapping("/feedbacks")
 //    public Feedback addNewFeedback(@RequestBody Feedback feedback){
 //        if(feedback.getPoint()<0 || feedback.getPoint()>100){
@@ -46,13 +52,13 @@ public class FeedbackRestController {
 //    }
 
     @PostMapping("/feedbacks")
-    public ResponseEntity<String> addNewComment(@RequestBody AddCommentDTO addCommentDTO){
+    public Feedback addNewComment(@RequestBody AddCommentDTO addCommentDTO){
         Food food = foodService.getFoodById(addCommentDTO.getFoodId());
-        Feedback feedback = new Feedback(food, addCommentDTO.getAccountId(), addCommentDTO.getComment(), addCommentDTO.getPoint(), true);
+        Feedback feedback = new Feedback(food, addCommentDTO.getAccountId(), addCommentDTO.getAvatarUrl(), addCommentDTO.getComment(), addCommentDTO.getRate(), true);
         feedbackService.save(feedback);
         food.addComment(feedback);
         foodService.saveFood(food);
-        return ResponseEntity.ok("Thêm comment thành công");
+        return feedback;
     }
 
     @PutMapping("/feedbacks")
@@ -73,8 +79,10 @@ public class FeedbackRestController {
         if(feedback.getStatus()==null){
             feedback.setStatus(feedback.getStatus());
         }
+        if(feedback.getAvatarUrl()==null){
+            feedback.setAvatarUrl(existFeedback.getAvatarUrl());
+        }
         feedbackService.save(feedback);
-
         return feedback;
     }
 

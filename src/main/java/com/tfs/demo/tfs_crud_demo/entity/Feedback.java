@@ -3,8 +3,10 @@ package com.tfs.demo.tfs_crud_demo.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -24,11 +26,18 @@ public class Feedback {
     @Column(name = "account_id")
     private String accountId;
 
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
     @Column(name = "comment")
     private String comment;
 
     @Column(name = "rate")
     private Integer rate;
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     @Column(name = "status")
     private Boolean status;
@@ -38,9 +47,10 @@ public class Feedback {
 
     }
 
-    public Feedback(Food food, String accountId, String comment, Integer rate, Boolean status) {
+    public Feedback(Food food, String accountId, String avatarUrl, String comment, Integer rate, Boolean status) {
         this.food = food;
         this.accountId = accountId;
+        this.avatarUrl = avatarUrl;
         this.comment = comment;
         this.rate = rate;
         this.status = status;
@@ -92,5 +102,21 @@ public class Feedback {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
