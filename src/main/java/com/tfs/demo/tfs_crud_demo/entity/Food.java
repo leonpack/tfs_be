@@ -1,5 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -54,8 +55,8 @@ public class Food {
     private Set<Event> eventList = new HashSet<Event>();
 
 
-    @OneToMany(mappedBy = "foodComment", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Feedback> listComment = new ArrayList<>();
 
     public Food(){
@@ -189,7 +190,7 @@ public class Food {
             listComment = new ArrayList<>();
         }
         listComment.add(feedback);
-        feedback.setFoodComment(this);
+        feedback.setFood(this);
     }
 
 }

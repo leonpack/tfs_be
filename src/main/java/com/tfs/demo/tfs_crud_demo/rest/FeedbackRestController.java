@@ -61,8 +61,8 @@ public class FeedbackRestController {
         if(feedback.getComment()==null){
             feedback.setComment(existFeedback.getComment());
         }
-        if(feedback.getFoodComment()==null){
-            feedback.setFoodComment(existFeedback.getFoodComment());
+        if(feedback.getFood()==null){
+            feedback.setFood(existFeedback.getFood());
         }
         if(feedback.getAccountId()==null){
             feedback.setAccountId(existFeedback.getAccountId());
@@ -81,7 +81,7 @@ public class FeedbackRestController {
     @DeleteMapping("/feedbacks/{feedbackId}")
     public ResponseEntity<String> disableFeedback(@PathVariable int feedbackId){
         Feedback feedback = feedbackService.getById(feedbackId);
-        feedback.setFoodComment(null);
+        feedback.setFood(null);
         feedbackService.disableFeedback(feedbackId);
         return ResponseEntity.ok("Deleted!");
     }

@@ -1,6 +1,8 @@
 package com.tfs.demo.tfs_crud_demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -16,8 +18,8 @@ public class Feedback {
 
     @ManyToOne()
     @JoinColumn(name = "food_id")
-    @JsonBackReference
-    private Food foodComment;
+    @JsonIgnoreProperties({"listComment","description","imgUrl","theCategory","theRegion","status","purchaseNum","eventList","price"})
+    private Food food;
 
     @Column(name = "account_id")
     private String accountId;
@@ -36,8 +38,8 @@ public class Feedback {
 
     }
 
-    public Feedback(Food foodComment, String accountId, String comment, Integer point, Boolean status) {
-        this.foodComment = foodComment;
+    public Feedback(Food food, String accountId, String comment, Integer point, Boolean status) {
+        this.food = food;
         this.accountId = accountId;
         this.comment = comment;
         this.point = point;
@@ -52,12 +54,12 @@ public class Feedback {
         this.id = id;
     }
 
-    public Food getFoodComment() {
-        return foodComment;
+    public Food getFood() {
+        return food;
     }
 
-    public void setFoodComment(Food foodComment) {
-        this.foodComment = foodComment;
+    public void setFood(Food food) {
+        this.food = food;
     }
 
     public String getAccountId() {
