@@ -62,6 +62,10 @@ public class PartyRestController {
             party.setOrder(existParty.getOrder());
         }
 
+        if(party.getPartyName()==null){
+            party.setPartyName(existParty.getPartyName());
+        }
+
         party.setItemList(party.getItemList());
 
         partyService.save(party);

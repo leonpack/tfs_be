@@ -16,6 +16,9 @@ public class Party {
     @Column(name = "id")
     private int id;
 
+    @Column(name = "name")
+    private String partyName;
+
     @Column(name = "quantity")
     private Integer quantity;
 
@@ -44,7 +47,8 @@ public class Party {
 
     }
 
-    public Party(Integer quantity, String note, Double totalPrice, String partyTemplate) {
+    public Party(String partyName, Integer quantity, String note, Double totalPrice, String partyTemplate) {
+        this.partyName = partyName;
         this.quantity = quantity;
         this.note = note;
         this.totalPrice = totalPrice;
@@ -57,6 +61,14 @@ public class Party {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getPartyName() {
+        return partyName;
+    }
+
+    public void setPartyName(String partyName) {
+        this.partyName = partyName;
     }
 
     public Integer getQuantity() {
