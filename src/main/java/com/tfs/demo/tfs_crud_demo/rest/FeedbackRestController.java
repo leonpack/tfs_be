@@ -31,9 +31,9 @@ public class FeedbackRestController {
         return feedbackService.getAllFeedbacks();
     }
 
-    @GetMapping("/feedbacks/account/{accountId}")
-    public List<Feedback> getByCustomer(@PathVariable String accountId){
-        return feedbackService.getALlByAccountId(accountId);
+    @GetMapping("/feedbacks/account/{customerId}")
+    public List<Feedback> getByCustomer(@PathVariable int customerId){
+        return feedbackService.getAllByCustomerId(customerId);
     }
 
     @GetMapping("/feedbacks/food/{foodId}")
@@ -54,7 +54,7 @@ public class FeedbackRestController {
     @PostMapping("/feedbacks")
     public Feedback addNewComment(@RequestBody AddCommentDTO addCommentDTO){
         Food food = foodService.getFoodById(addCommentDTO.getFoodId());
-        Feedback feedback = new Feedback(food, addCommentDTO.getAccountId(), addCommentDTO.getAvatarUrl(), addCommentDTO.getComment(), addCommentDTO.getRate(), true);
+        Feedback feedback = new Feedback(food, addCommentDTO.getCustomerId(), addCommentDTO.getAvatarUrl(), addCommentDTO.getComment(), addCommentDTO.getRate(), true);
         feedbackService.save(feedback);
         food.addComment(feedback);
         foodService.saveFood(food);
@@ -70,8 +70,8 @@ public class FeedbackRestController {
         if(feedback.getFood()==null){
             feedback.setFood(existFeedback.getFood());
         }
-        if(feedback.getAccountId()==null){
-            feedback.setAccountId(existFeedback.getAccountId());
+        if(feedback.getCustomerId()==null){
+            feedback.setCustomerId(existFeedback.getCustomerId());
         }
         if(feedback.getRate()==null){
             feedback.setRate(existFeedback.getRate());

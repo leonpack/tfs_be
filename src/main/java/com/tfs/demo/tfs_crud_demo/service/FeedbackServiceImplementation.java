@@ -27,8 +27,8 @@ public class FeedbackServiceImplementation implements FeedbackService{
     }
 
     @Override
-    public List<Feedback> getALlByAccountId(String accountId) {
-        return feedbackRepository.getFeedbacksByAccountIdOrderByCreatedAtDesc(accountId);
+    public List<Feedback> getAllByCustomerId(int customerId) {
+        return feedbackRepository.getFeedbacksByCustomerIdOrderByCreatedAtDesc(customerId);
     }
 
     @Override

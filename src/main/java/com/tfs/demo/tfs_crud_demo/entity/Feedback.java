@@ -23,8 +23,8 @@ public class Feedback {
     @JsonIgnoreProperties({"listComment","description","imgUrl","theCategory","theRegion","status","purchaseNum","eventList","price"})
     private Food food;
 
-    @Column(name = "account_id")
-    private String accountId;
+    @Column(name = "customer_id")
+    private Integer customerId;
 
     @Column(name = "avatar_url")
     private String avatarUrl;
@@ -47,9 +47,9 @@ public class Feedback {
 
     }
 
-    public Feedback(Food food, String accountId, String avatarUrl, String comment, Integer rate, Boolean status) {
+    public Feedback(Food food, Integer customerId, String avatarUrl, String comment, Integer rate, Boolean status) {
         this.food = food;
-        this.accountId = accountId;
+        this.customerId = customerId;
         this.avatarUrl = avatarUrl;
         this.comment = comment;
         this.rate = rate;
@@ -72,12 +72,12 @@ public class Feedback {
         this.food = food;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
     public String getComment() {

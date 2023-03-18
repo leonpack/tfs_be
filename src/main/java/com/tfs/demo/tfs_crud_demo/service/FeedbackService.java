@@ -9,7 +9,7 @@ public interface FeedbackService {
 
     public List<Feedback> getAllFeedbacks();
 
-    public List<Feedback> getALlByAccountId(String accountId);
+    public List<Feedback> getAllByCustomerId(int customerId);
 
     public List<Feedback> getAllByFood(Food food);
 

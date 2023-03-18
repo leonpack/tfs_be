@@ -3,7 +3,7 @@ package com.tfs.demo.tfs_crud_demo.dto;
 public class AddCommentDTO {
 
     private int foodId;
-    private String accountId;
+    private Integer customerId;
     private String avatarUrl;
     private String comment;
     private Integer rate;
@@ -12,9 +12,9 @@ public class AddCommentDTO {
 
     }
 
-    public AddCommentDTO(int foodId, String accountId, String avatarUrl, String comment, Integer rate) {
+    public AddCommentDTO(int foodId, Integer customerId, String avatarUrl, String comment, Integer rate) {
         this.foodId = foodId;
-        this.accountId = accountId;
+        this.customerId = customerId;
         this.avatarUrl = avatarUrl;
         this.comment = comment;
         this.rate = rate;
@@ -28,12 +28,12 @@ public class AddCommentDTO {
         this.foodId = foodId;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
     public String getComment() {
