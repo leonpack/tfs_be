@@ -38,10 +38,13 @@ public class NotificationRestController {
     @PutMapping("/notifications/checked/{notificationId}")
     public Notification setNotificationStatus(@PathVariable int notificationId){
         Notification notification = notificationService.getById(notificationId);
-        if(notification.getChecked().toString().equals("false")){
+        if(notification.getChecked().equals(false)){
             notification.setChecked(true);
-        } else if (notification.getChecked().toString().equals("true")){
+            notificationService.save(notification);
+        }
+        else if (notification.getChecked().equals(true)){
             notification.setChecked(false);
+            notificationService.save(notification);
         }
         return notification;
     }
