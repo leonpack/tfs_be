@@ -67,8 +67,8 @@ public class FeedbackRestController {
         if(feedback.getAccountId()==null){
             feedback.setAccountId(existFeedback.getAccountId());
         }
-        if(feedback.getPoint()==null){
-            feedback.setPoint(existFeedback.getPoint());
+        if(feedback.getRate()==null){
+            feedback.setRate(existFeedback.getRate());
         }
         if(feedback.getStatus()==null){
             feedback.setStatus(feedback.getStatus());

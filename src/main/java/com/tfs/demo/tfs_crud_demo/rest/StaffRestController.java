@@ -99,9 +99,6 @@ public class StaffRestController {
                 if(theStaff.getStaffEmail()==null){
                     theStaff.setStaffEmail(theStaffFix.getStaffEmail());
                 }
-                if(theStaff.getStaffActivityStatus()==null){
-                    theStaff.setStaffActivityStatus(theStaffFix.getStaffActivityStatus());
-                }
                 if(theStaff.getStaffAvatarUrl()==null){
                     theStaff.setStaffAvatarUrl(theStaffFix.getStaffAvatarUrl());
                 }
@@ -126,9 +123,6 @@ public class StaffRestController {
         }
         if(theStaff.getStaffEmail()==null){
             theStaff.setStaffEmail(theStaffFix.getStaffEmail());
-        }
-        if(theStaff.getStaffActivityStatus()==null){
-            theStaff.setStaffActivityStatus(theStaffFix.getStaffActivityStatus());
         }
         if(theStaff.getStaffAvatarUrl()==null){
             theStaff.setStaffAvatarUrl(theStaffFix.getStaffAvatarUrl());

@@ -147,23 +147,23 @@ public class OrderRestController {
         //auto assign order staff
         Restaurant restaurant = restaurantService.getRestaurantById(order.getRestaurantId());
         if(order.getStatus().equals("accept") && (order.getStaffId()==null || order.getStaffId().toString().isEmpty())){
-            for(Staff item: restaurant.getStaffList()){
-                if(item.getStaffActivityStatus().equals("available")){
-                    order.setStaffId(item.getStaffId());
-                    Notification staffNoti = new Notification("Bạn có một đơn hàng mới cần xử lý, mã đơn hàng là " +order.getId(),item.getTheAccountForStaff().getAccountId());
-                    notificationService.save(staffNoti);
-                    staffService.getStaffById(item.getStaffId()).setStaffActivityStatus("busy");
-                }
-            }
-            if(order.getStaffId()==null || order.getStaffId().toString().isEmpty()){
+//            for(Staff item: restaurant.getStaffList()){
+//                if(item.getStaffActivityStatus().equals("available")){
+//                    order.setStaffId(item.getStaffId());
+//                    Notification staffNoti = new Notification("Bạn có một đơn hàng mới cần xử lý, mã đơn hàng là " +order.getId(),item.getTheAccountForStaff().getAccountId());
+//                    notificationService.save(staffNoti);
+//                    staffService.getStaffById(item.getStaffId()).setStaffActivityStatus("busy");
+//                }
+//            }
+//            if(order.getStaffId()==null || order.getStaffId().toString().isEmpty()){
                 Random rd = new Random();
                 Integer randomDude = rd.nextInt(restaurant.getStaffList().size()+1);
                 order.setStaffId(restaurant.getStaffList().get(randomDude).getStaffId());
                 Notification staffNoti = new Notification("Bạn có một đơn hàng mới cần xử lý, mã đơn hàng là " +order.getId()
                         , restaurant.getStaffList().get(randomDude).getTheAccountForStaff().getAccountId());
                 notificationService.save(staffNoti);
-                staffService.getStaffById(restaurant.getStaffList().get(randomDude).getStaffId()).setStaffActivityStatus("busy");
-            }
+//                staffService.getStaffById(restaurant.getStaffList().get(randomDude).getStaffId()).setStaffActivityStatus("busy");
+//            }
         }
 
         String managerId = "";
@@ -359,9 +359,6 @@ public class OrderRestController {
             order.setStatus(assignOrderDTO.getStatus());
             order.setStaffId(null);
 
-
-            staff.setStaffActivityStatus("available");
-            staffService.saveStaff(staff);
             orderService.saveOrder(order);
 
             //create notification to in-form user about denied's order
@@ -374,9 +371,6 @@ public class OrderRestController {
             order.setStatus(assignOrderDTO.getStatus());
             order.setStaffId(assignOrderDTO.getStaffId());
 
-            staff.setStaffActivityStatus("busy");
-
-            staffService.saveStaff(staff);
             orderService.saveOrder(order);
 
             //create notification for customer to inform that their order has been accepted
@@ -393,9 +387,6 @@ public class OrderRestController {
             order.setStatus(assignOrderDTO.getStatus());
             order.setDeliveryDate(LocalDateTime.now());
             order.setStaffId(staff.getStaffId());
-            staff.setStaffActivityStatus("busy");
-
-            staffService.saveStaff(staff);
             orderService.saveOrder(order);
 
             //create notification for customer to inform that their order are being deliver
@@ -412,9 +403,6 @@ public class OrderRestController {
         else if(assignOrderDTO.getStatus().toLowerCase().equals("done")){
             order.setReceiveTime(LocalDateTime.now());
             order.setStatus(assignOrderDTO.getStatus());
-            staff.setStaffActivityStatus("available");
-
-            staffService.saveStaff(staff);
             orderService.saveOrder(order);
 
             //create notification for customer to inform that their order has been finished
@@ -429,13 +417,8 @@ public class OrderRestController {
         }
         else
         {
-            if (staff.getStaffActivityStatus().equals("busy")) {
-                throw new RuntimeException("This staff can't be assign to an order right now");
-            }
             order.setStatus(assignOrderDTO.getStatus());
             order.setStaffId(assignOrderDTO.getStaffId());
-            staff.setStaffActivityStatus("busy");
-            staffService.saveStaff(staff);
             orderService.saveOrder(order);
             return order;
         }

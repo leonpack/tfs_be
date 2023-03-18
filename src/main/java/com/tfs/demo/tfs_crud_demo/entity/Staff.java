@@ -33,9 +33,6 @@ public class Staff {
     @JsonIgnoreProperties({"staffList","restaurantLocation","latitude","longitude","status","restaurantNumber"})
     private Restaurant theRestaurant;
 
-    @Column(name = "activity_status")
-    private String staffActivityStatus;
-
     @Column(name = "status")
     private boolean staffStatus;
 
@@ -43,13 +40,12 @@ public class Staff {
 
     }
 
-    public Staff(String staffFullName, String staffEmail, String staffAvatarUrl, Account theAccountForStaff, Restaurant theRestaurant, String staffActivityStatus, boolean staffStatus) {
+    public Staff(String staffFullName, String staffEmail, String staffAvatarUrl, Account theAccountForStaff, Restaurant theRestaurant, boolean staffStatus) {
         this.staffFullName = staffFullName;
         this.staffEmail = staffEmail;
         this.staffAvatarUrl = staffAvatarUrl;
         this.theAccountForStaff = theAccountForStaff;
         this.theRestaurant = theRestaurant;
-        this.staffActivityStatus = staffActivityStatus;
         this.staffStatus = staffStatus;
     }
 
@@ -99,14 +95,6 @@ public class Staff {
 
     public void setTheRestaurant(Restaurant theRestaurant) {
         this.theRestaurant = theRestaurant;
-    }
-
-    public String getStaffActivityStatus() {
-        return staffActivityStatus;
-    }
-
-    public void setStaffActivityStatus(String staffActivityStatus) {
-        this.staffActivityStatus = staffActivityStatus;
     }
 
     public boolean isStaffStatus() {

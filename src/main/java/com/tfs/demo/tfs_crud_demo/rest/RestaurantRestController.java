@@ -71,17 +71,17 @@ public class RestaurantRestController {
 
 
 
-    @GetMapping("/restaurants/available/{restaurantId}")
-    public List<Staff> getAllFreeStaffs(@PathVariable int restaurantId){
-        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
-        List<Staff> freeStaffs = new ArrayList<>();
-        for(Staff item : restaurant.getStaffList()){
-            if(item.getStaffActivityStatus().equals("available") && item.getTheAccountForStaff().getRoleId().toString().equals("4")){
-                freeStaffs.add(item);
-            }
-        }
-        return freeStaffs;
-    }
+//    @GetMapping("/restaurants/available/{restaurantId}")
+//    public List<Staff> getAllFreeStaffs(@PathVariable int restaurantId){
+//        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+//        List<Staff> freeStaffs = new ArrayList<>();
+//        for(Staff item : restaurant.getStaffList()){
+//            if(item.getStaffActivityStatus().equals("available") && item.getTheAccountForStaff().getRoleId().toString().equals("4")){
+//                freeStaffs.add(item);
+//            }
+//        }
+//        return freeStaffs;
+//    }
 
     @PostMapping("/restaurants")
     public String AddNewRestaurant(@RequestBody Restaurant theRestaurant){

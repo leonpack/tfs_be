@@ -27,8 +27,8 @@ public class Feedback {
     @Column(name = "comment")
     private String comment;
 
-    @Column(name = "point")
-    private Integer point;
+    @Column(name = "rate")
+    private Integer rate;
 
     @Column(name = "status")
     private Boolean status;
@@ -38,11 +38,11 @@ public class Feedback {
 
     }
 
-    public Feedback(Food food, String accountId, String comment, Integer point, Boolean status) {
+    public Feedback(Food food, String accountId, String comment, Integer rate, Boolean status) {
         this.food = food;
         this.accountId = accountId;
         this.comment = comment;
-        this.point = point;
+        this.rate = rate;
         this.status = status;
     }
 
@@ -78,12 +78,12 @@ public class Feedback {
         this.comment = comment;
     }
 
-    public Integer getPoint() {
-        return point;
+    public Integer getRate() {
+        return rate;
     }
 
-    public void setPoint(Integer point) {
-        this.point = point;
+    public void setRate(Integer rate) {
+        this.rate = rate;
     }
 
     public Boolean getStatus() {
