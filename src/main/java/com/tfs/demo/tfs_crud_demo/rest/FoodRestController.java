@@ -8,8 +8,12 @@ import com.tfs.demo.tfs_crud_demo.entity.Food;
 import com.tfs.demo.tfs_crud_demo.service.EventService;
 import com.tfs.demo.tfs_crud_demo.service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,10 +40,22 @@ public class FoodRestController {
         return foodService.getAllFood();
     }
 
-    @GetMapping("/foods/paging")
-    public List<Food> getAllFood(@RequestParam int size){
-        return foodService.getAllFoodWithPaging(size);
+//    @GetMapping("/foods/paging")
+//    public List<Food> getAllFood(@RequestParam int size){
+//        return foodService.getAllFoodWithPaging(size);
+//    }
+
+    @GetMapping("/foods/pagination")
+    public List<Food> getAllFoodsWithPagenation(@RequestParam int page, @RequestParam int size){
+        Pageable paging = PageRequest.of(page, size);
+        Page<Food> pagedResult = foodRepository.findAll(paging);
+        if(pagedResult.hasContent()){
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Food>();
+        }
     }
+
 
     @GetMapping("/foods/bestseller")
     public List<Food> getBestSellers(){
