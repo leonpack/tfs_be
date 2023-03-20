@@ -71,6 +71,9 @@ public class CartRestController {
         if(cart.getComboList()==null || cart.getComboList().isEmpty()){
             cart.setComboList(existCart.getComboList());
         }
+        if(cart.getParty()==null){
+            cart.setParty(existCart.getParty());
+        }
         if(cart.getCartItems()==null){
             cart.setCartItems(existCart.getCartItems());
         }
@@ -133,9 +136,21 @@ public class CartRestController {
         return ResponseEntity.ok("Thêm tiệc vào giỏ hàng thành công");
     }
 
+    @PostMapping("/carts/party/new/{cartId}")
+    public ResponseEntity<String> addPartyToCartNewVersion(@PathVariable int cartId,@RequestBody Party party){
+        Cart cart = cartService.getCartById(cartId);
+        partyService.save(party);
+        cart.setParty(party);
+        party.setCart(cart);
+        cartService.saveCart(cart);
+        partyService.save(party);
+        return ResponseEntity.ok("Thêm tiệc vào giỏ hàng thành công");
+    }
+
     @PostMapping("/carts/removeparty")
     public ResponseEntity<String> removePartyFromCart(@RequestBody PutPartyToCart party){
         Cart cart = cartService.getCartById(party.getCartId());
+        Party party1 = partyService.getById(party.getPartyId());
         cart.setParty(null);
         cartService.saveCart(cart);
         partyService.removeById(party.getPartyId());
@@ -147,4 +162,5 @@ public class CartRestController {
         Cart cart = cartService.getCartById(cartId);
         return cart.getParty();
     }
+
 }

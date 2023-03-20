@@ -69,6 +69,8 @@ public class OrderRestController {
     private RestaurantService restaurantService;
     private NotificationService notificationService;
 
+    private PartyService partyService;
+
     @Autowired
     public OrderRestController(OrderService theOrderService,
                                OrderDetailRepository orderDetailRepository,
@@ -78,7 +80,8 @@ public class OrderRestController {
                                StaffService theStaffService,
                                RestaurantService theRestaurantService,
                                CustomerService theCustomerService,
-                               NotificationService theNotificationService){
+                               NotificationService theNotificationService,
+                               PartyService thePartyService){
         orderService = theOrderService;
         this.orderDetailRepository = orderDetailRepository;
         promotionService = thePromotionService;
@@ -137,6 +140,14 @@ public class OrderRestController {
 
         if(orderService.CheckDuplicateOrderId(order.getId())){
             throw new RuntimeException("Order with id -" +order.getId() + " already exist, please try again!");
+        }
+
+        if(order.getParty()!=null){
+            if(order.getParty().getOrder()!=null){
+                throw new RuntimeException("This party already attach to other order");
+            }else {
+                order.getParty().setOrder(order);
+            }
         }
 
         //try catch restaurant null value

@@ -3,6 +3,7 @@ package com.tfs.demo.tfs_crud_demo.service;
 import com.tfs.demo.tfs_crud_demo.dao.NotificationRepository;
 import com.tfs.demo.tfs_crud_demo.entity.Notification;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class NotificationServiceImplementation implements NotificationService{
 
     @Override
     public List<Notification> getAllByAccountId(String accountId) {
-        return notificationRepository.findNotificationsByAccountIdOrderByCreatedAtDesc(accountId);
+        return notificationRepository.findNotificationsByAccountId(accountId);
     }
 
     @Override

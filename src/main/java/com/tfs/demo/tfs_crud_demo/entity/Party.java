@@ -28,6 +28,9 @@ public class Party {
     @Column(name = "total_price")
     private Double totalPrice;
 
+    @Column(name = "sub_total")
+    private Double subTotal;
+
     @Column(name = "template")
     private String partyTemplate;
 
@@ -47,11 +50,12 @@ public class Party {
 
     }
 
-    public Party(String partyName, Integer quantity, String note, Double totalPrice, String partyTemplate) {
+    public Party(String partyName, Integer quantity, String note, Double totalPrice, Double subTotal, String partyTemplate) {
         this.partyName = partyName;
         this.quantity = quantity;
         this.note = note;
         this.totalPrice = totalPrice;
+        this.subTotal = subTotal;
         this.partyTemplate = partyTemplate;
     }
 
@@ -125,5 +129,13 @@ public class Party {
 
     public void setPartyTemplate(String partyTemplate) {
         this.partyTemplate = partyTemplate;
+    }
+
+    public Double getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(Double subTotal) {
+        this.subTotal = subTotal;
     }
 }

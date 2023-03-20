@@ -4,6 +4,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "notification")
@@ -74,5 +75,26 @@ public class Notification {
 
     public void setChecked(Boolean checked) {
         isChecked = checked;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, message, accountId, createdAt, isChecked);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj){
+            return true;
+        }
+        if(obj == null || getClass() != obj.getClass()){
+            return false;
+        }
+        Notification notification = (Notification) obj;
+        return Objects.equals(id, notification.id) &&
+                Objects.equals(message, notification.message) &&
+                Objects.equals(accountId, notification.accountId) &&
+                Objects.equals(createdAt, notification.createdAt) &&
+                Objects.equals(isChecked, notification.isChecked);
     }
 }
