@@ -68,8 +68,9 @@ public class OrderRestController {
     private CustomerService customerService;
     private RestaurantService restaurantService;
     private NotificationService notificationService;
-
+    private AccountService accountService;
     private PartyService partyService;
+    private CartService cartService;
 
     @Autowired
     public OrderRestController(OrderService theOrderService,
@@ -81,7 +82,9 @@ public class OrderRestController {
                                RestaurantService theRestaurantService,
                                CustomerService theCustomerService,
                                NotificationService theNotificationService,
-                               PartyService thePartyService){
+                               PartyService thePartyService,
+                               AccountService theAccountService,
+                               CartService theCartService){
         orderService = theOrderService;
         this.orderDetailRepository = orderDetailRepository;
         promotionService = thePromotionService;
@@ -91,6 +94,8 @@ public class OrderRestController {
         restaurantService = theRestaurantService;
         customerService = theCustomerService;
         notificationService = theNotificationService;
+        accountService = theAccountService;
+        cartService = theCartService;
     }
 
     @GetMapping("/orders")
@@ -122,6 +127,12 @@ public class OrderRestController {
     //original working addNewOrder method without ZaloAPI
     @PostMapping("/orders")
     public Order addNewOrder(@RequestBody Order order) throws ParseException {
+
+        //remove party from cart before saving new order
+        Customer customer = customerService.getCustomerById(order.getCustomerId());
+        Cart cart = customer.getCart();
+        cart.setParty(null);
+        cartService.saveCart(cart);
 
         //check valid promotion
         if(order.getPromotionId()!=null){
