@@ -56,9 +56,9 @@ public class RestaurantRestController {
         return manager;
     }
 
-    @GetMapping("/manager/{managerId}")
-    public Restaurant getRestaurantByManagerId(@PathVariable String managerId){
-        Staff manager = staffService.getStaffByTheAccount(accountService.getAccountById(managerId));
+    @GetMapping("/manager/{staffId}")
+    public Restaurant getRestaurantByManagerId(@PathVariable int staffId){
+        Staff manager = staffService.getStaffById(staffId);
         if(manager == null){
             throw new RuntimeException("This manager information is not found!");
         }
