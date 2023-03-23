@@ -2,6 +2,7 @@ package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.dao.OrderDetailRepository;
 import com.tfs.demo.tfs_crud_demo.dto.AssignOrderDTO;
+import com.tfs.demo.tfs_crud_demo.dto.FeedbackStatusDTO;
 import com.tfs.demo.tfs_crud_demo.dto.OrderStatusDTO;
 import com.tfs.demo.tfs_crud_demo.dto.RefundDTO;
 import com.tfs.demo.tfs_crud_demo.entity.*;
@@ -637,5 +638,13 @@ public class OrderRestController {
 //        }
 //        return order;
 //    }
+
+    @PutMapping("/orders/feedback/status")
+    public ResponseEntity<String> updateOrderFeedback(@RequestBody FeedbackStatusDTO feedbackStatusDTO){
+        Order order = orderService.getOrderById(feedbackStatusDTO.getOrderId());
+        order.setFeedbackStatus(feedbackStatusDTO.getFeedbackStatus());
+        orderService.saveOrder(order);
+        return ResponseEntity.ok("Lưu feedback status của order thành công");
+    }
 
 }
