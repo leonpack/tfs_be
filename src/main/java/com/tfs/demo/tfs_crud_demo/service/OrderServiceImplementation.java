@@ -2,6 +2,7 @@ package com.tfs.demo.tfs_crud_demo.service;
 
 import com.tfs.demo.tfs_crud_demo.dao.OrderRepository;
 import com.tfs.demo.tfs_crud_demo.entity.Order;
+import com.tfs.demo.tfs_crud_demo.entity.Party;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,11 @@ public class OrderServiceImplementation implements OrderService{
     @Override
     public List<Order> getAllOrderByRestaurantId(int restaurantId) {
         return orderRepository.getAllByRestaurantId(restaurantId);
+    }
+
+    @Override
+    public Order getByParty(Party party) {
+        return orderRepository.getOrderByParty(party);
     }
 
     @Override

@@ -130,9 +130,15 @@ public class OrderRestController {
 
         //remove party from cart before saving new order
         Customer customer = customerService.getCustomerById(order.getCustomerId());
-        Cart cart = customer.getCart();
-        cart.setParty(null);
-        cartService.saveCart(cart);
+        if(customer.getCart()!=null){
+            Cart cart = customer.getCart();
+            cart.setParty(null);
+            cart.setNumberCart(0);
+            cart.getCartItems().removeAll(cart.getCartItems());
+            cart.setTotalPrice((double) 0);
+            cart.getComboList().removeAll(cart.getComboList());
+            cartService.saveCart(cart);
+        }
 
         //check valid promotion
         if(order.getPromotionId()!=null){
@@ -154,10 +160,9 @@ public class OrderRestController {
         }
 
         if(order.getParty()!=null){
-            if(order.getParty().getOrder()!=null){
-                throw new RuntimeException("This party already attach to other order");
-            }else {
-                order.getParty().setOrder(order);
+            Order order1 = orderService.getByParty(order.getParty());
+            if( order1!=null && !order.equals(order1) ) {
+                throw new RuntimeException("This party is already belong to order " +order1.getId());
             }
         }
 

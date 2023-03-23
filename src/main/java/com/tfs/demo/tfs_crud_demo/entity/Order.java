@@ -81,11 +81,14 @@ public class Order {
     @JoinColumn(name = "party_id")
     private Party party;
 
+    @Column(name = "is_feedback")
+    private Boolean isFeedback;
+
     public Order(){
 
     }
 
-    public Order(Integer promotionId, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, LocalDateTime orderDate, LocalDateTime deliveryDate, LocalDateTime receiveTime, String status, String note, String reason, String deliveryMethod, Integer customerId, Integer restaurantId, Integer staffId) {
+    public Order(Integer promotionId, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, LocalDateTime orderDate, LocalDateTime deliveryDate, LocalDateTime receiveTime, String status, String note, String reason, String deliveryMethod, Integer customerId, Integer restaurantId, Integer staffId, Boolean isFeedback) {
         this.promotionId = promotionId;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
@@ -101,6 +104,7 @@ public class Order {
         this.customerId = customerId;
         this.restaurantId = restaurantId;
         this.staffId = staffId;
+        this.isFeedback = isFeedback;
     }
 
     public int getId() {
@@ -261,5 +265,13 @@ public class Order {
 
     public void setParty(Party party) {
         this.party = party;
+    }
+
+    public Boolean getFeedback() {
+        return isFeedback;
+    }
+
+    public void setFeedback(Boolean feedback) {
+        isFeedback = feedback;
     }
 }

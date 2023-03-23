@@ -1,6 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.service;
 
 import com.tfs.demo.tfs_crud_demo.entity.Order;
+import com.tfs.demo.tfs_crud_demo.entity.Party;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public interface OrderService {
     public List<Order> getAllOrderByStaffId(int staffId);
 
     public List<Order> getAllOrderByRestaurantId(int restaurantId);
+
+    public Order getByParty(Party party);
 
     public Order getOrderById(int orderId);
 

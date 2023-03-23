@@ -19,9 +19,7 @@ import java.util.List;
 public class CustomerRestController {
     private CustomerService customerService;
     private AccountService accountService;
-
     private StaffService staffService;
-
     private CartService cartService;
 
     @Autowired
@@ -161,6 +159,24 @@ public class CustomerRestController {
     public String disableCustomer(@PathVariable int customerId){
         customerService.disableCustomer(customerId);
         return "Disable customer with id " +customerId + " completed";
+    }
+
+    @GetMapping("/customers/checkByPhoneNumber/{phoneNumber}")
+    public Customer checkCustomerByPhoneNumber(@PathVariable String phoneNumber){
+        Account account = accountService.checkLoginByPhone(phoneNumber);
+        if(account!=null && !account.getRoleId().toString().equals("5")){
+            throw new RuntimeException("This phone number is belong to one of the staff of TFS");
+        }
+        if(account!=null && account.getRoleId().toString().equals("5")){
+            Customer customer = customerService.getCustomerByTheAccount(account);
+            if(customer==null){
+                throw new RuntimeException("This phone number is not link with any account");
+            }
+            else
+                return customer;
+        }
+        else
+            return null;
     }
 
 }
