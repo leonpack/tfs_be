@@ -61,6 +61,18 @@ public class FeedbackRestController {
         return feedback;
     }
 
+    @PostMapping("/feedbacks/pack")
+    public ResponseEntity<String> addListFeedBack(@RequestBody List<AddCommentDTO> list){
+        for(AddCommentDTO item: list){
+            Food food = foodService.getFoodById(item.getFoodId());
+            Feedback feedback = new Feedback(food, item.getCustomerId(), item.getAvatarUrl(), item.getComment(), item.getRate(), true);
+            feedbackService.save(feedback);
+            food.addComment(feedback);
+            foodService.saveFood(food);
+        }
+        return ResponseEntity.ok("Done");
+    }
+
     @PutMapping("/feedbacks")
     public Feedback updateFeedback(@RequestBody Feedback feedback){
         Feedback existFeedback = feedbackService.getById(feedback.getId());
