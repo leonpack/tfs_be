@@ -170,4 +170,33 @@ public class StatisticRestController {
     public Collection<OrderDateResponse> getDetailForOwner(@RequestBody RevenueBetweenDTO revenue){
         return revenueRepository.getOrdersFilterByDateForOwner(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay());
     }
+
+    @PostMapping("/statistic/detail/user")
+    public Map<String, Object> getUserBetween(@RequestBody RevenueBetweenByRestaurantDTO revenue){
+        Map<String, Object> result = new HashMap<>();
+        List<Order> orderList = revenueRepository.getOrdersByOrderDateBetweenAndRestaurantId(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay(), revenue.getRestaurantId());
+        int totalUser = 0;
+        for(Order item: orderList){
+            if(item.getStatus().equals("done")){
+                totalUser += 1;
+            }
+        }
+        result.put("totaluser", totalUser);
+        return result;
+    }
+
+    @PostMapping("/statistic/detail/owner/user")
+    public Map<String, Object> getUserForOwner(@RequestBody RevenueBetweenDTO revenue){
+        Map<String, Object> result = new HashMap<>();
+        List<Order> orderList = revenueRepository.getOrdersByOrderDateBetween(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay());
+        int totalUser = 0;
+        for(Order item: orderList){
+            if(item.getStatus().equals("done")){
+                totalUser += 1;
+            }
+        }
+        result.put("totaluser", totalUser);
+        return result;
+    }
+
 }
