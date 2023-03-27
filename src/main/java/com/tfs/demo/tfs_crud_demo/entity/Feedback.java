@@ -20,7 +20,7 @@ public class Feedback {
 
     @ManyToOne()
     @JoinColumn(name = "food_id")
-    @JsonIgnoreProperties({"listComment","description","imgUrl","theCategory","theRegion","status","purchaseNum","eventList","price"})
+    @JsonIgnoreProperties({"listComment","description","theCategory","theRegion","status","purchaseNum","eventList","price"})
     private Food food;
 
     @Column(name = "customer_id")

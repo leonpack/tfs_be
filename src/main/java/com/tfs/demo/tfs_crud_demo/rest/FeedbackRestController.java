@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -40,6 +41,48 @@ public class FeedbackRestController {
     public List<Feedback> getByFood(@PathVariable int foodId){
         Food food = foodService.getFoodById(foodId);
         return feedbackService.getAllByFood(food);
+    }
+
+
+    //additional get only status = true
+    @GetMapping("/feedbacks/allbystatus")
+    public List<Feedback> getAllPositiveFeedbacks(){
+        List<Feedback> origin = feedbackService.getAllFeedbacks();
+        List<Feedback> newList = new ArrayList<>();
+        for(Feedback item: origin){
+            if(item.getStatus().toString().equals("true")){
+                newList.add(item);
+            }
+        }
+        for(Feedback item: newList){
+            System.out.println(item);
+        }
+        return newList;
+    }
+
+    @GetMapping("/feedbacks/allbycustomer/{customerId}")
+    public List<Feedback> getAllPositiveByCustomer(@PathVariable int customerId){
+        List<Feedback> origin = feedbackService.getAllByCustomerId(customerId);
+        List<Feedback> newList = new ArrayList<>();
+        for(Feedback item: origin){
+            if(item.getStatus().toString().equals("true")){
+                newList.add(item);
+            }
+        }
+        return newList;
+    }
+
+    @GetMapping("/feedbacks/allbyfood/{foodId}")
+    public List<Feedback> getAllPositiveByFood(@PathVariable int foodId){
+        Food food = foodService.getFoodById(foodId);
+        List<Feedback> origin = feedbackService.getAllByFood(food);
+        List<Feedback> newList = new ArrayList<>();
+        for(Feedback item: origin){
+            if(item.getStatus().toString().equals("true")){
+                newList.add(item);
+            }
+        }
+        return newList;
     }
 
 //    @PostMapping("/feedbacks")
