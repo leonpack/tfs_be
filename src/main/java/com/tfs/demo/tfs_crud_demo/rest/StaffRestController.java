@@ -81,6 +81,9 @@ public class StaffRestController {
 //        && customerService.getCustomerByEmail(theStaff.getStaffEmail()).getTheAccount().getAccountId()!=theStaff.getTheAccountForStaff().getAccountId()){
 //            throw new RuntimeException("This email has already linked with another account, please try again");
 //        }
+        if(theStaff.getStaffAvatarUrl().isBlank() || theStaff.getStaffAvatarUrl()==null){
+            theStaff.setStaffAvatarUrl("https://live.staticflickr.com/65535/52719475105_ec5b21e417_w.jpg");
+        }
         accountService.saveAccount(theStaff.getTheAccountForStaff());
         staffService.saveStaff(theStaff);
         return theStaff;

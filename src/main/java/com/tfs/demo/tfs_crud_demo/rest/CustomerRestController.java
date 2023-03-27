@@ -82,8 +82,10 @@ public class CustomerRestController {
 
     @PostMapping("/customers")
     public Customer registerAccountForCustomer(@RequestBody Customer customer){
+        if(customer.getAvatarURL().isBlank() || customer.getAvatarURL()==null){
+            customer.setAvatarURL("https://live.staticflickr.com/65535/52719475105_ec5b21e417_w.jpg");
+        }
         customerService.saveCustomer(customer);
-
         Cart cart = new Cart((double) 0, 0, customer);
         return customer;
     }
