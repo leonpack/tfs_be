@@ -13,7 +13,7 @@ public interface CustomerService {
 
     public Customer getCustomerByEmail(String email);
 
-    public void saveCustomer(Customer theCustomer);
+    public Customer saveCustomer(Customer theCustomer);
 
     public void disableCustomer(int customerId);
 

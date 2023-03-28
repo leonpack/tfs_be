@@ -10,7 +10,7 @@ public interface AccountService {
 
     public Account getAccountById(String accountId);
 
-    public void saveAccount(Account theAccount);
+    public Account saveAccount(Account theAccount);
 
     public void disableAccount(String accountId);
 

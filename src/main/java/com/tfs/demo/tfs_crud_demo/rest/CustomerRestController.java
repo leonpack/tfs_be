@@ -1,5 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
+import com.tfs.demo.tfs_crud_demo.dto.SimpleResgitrationDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Cart;
 import com.tfs.demo.tfs_crud_demo.entity.Customer;
@@ -82,11 +83,29 @@ public class CustomerRestController {
 
     @PostMapping("/customers")
     public Customer registerAccountForCustomer(@RequestBody Customer customer){
+        if(!accountService.CheckDuplicateAccountId(customer.getTheAccount().getAccountId())){
+            throw new RuntimeException("This accountId is already exist, please try another one");
+        }
         if(customer.getAvatarURL().isBlank() || customer.getAvatarURL()==null){
             customer.setAvatarURL("https://live.staticflickr.com/65535/52719475105_ec5b21e417_w.jpg");
         }
         customerService.saveCustomer(customer);
         Cart cart = new Cart((double) 0, 0, customer);
+        return customer;
+    }
+
+    @PostMapping("/customers/registerforstaff")
+    public Customer registerAccountByStaff(@RequestBody SimpleResgitrationDTO simple){
+        if(!accountService.CheckDuplicateAccountId(simple.getPhoneNumber())){
+            throw new RuntimeException("This accountId is already exist, please try another one");
+        }
+        Account account = new Account(simple.getPhoneNumber(), simple.getPhoneNumber(), simple.getPhoneNumber(), 5, true);
+        Account account2 = accountService.saveAccount(account);
+        Customer customer = new Customer(simple.getFullName(), "changethis@gmail.com", "https://live.staticflickr.com/65535/52719475105_ec5b21e417_w.jpg"
+                ,account2 , "change this");
+        customerService.saveCustomer(customer);
+        Cart cart = new Cart((double) 0, 0, customer);
+        cartService.saveCart(cart);
         return customer;
     }
 

@@ -40,8 +40,8 @@ public class AccountServiceImplementation implements AccountService{
     }
 
     @Override
-    public void saveAccount(Account theAccount) {
-        accountRepository.save(theAccount);
+    public Account saveAccount(Account theAccount) {
+        return accountRepository.save(theAccount);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class AccountServiceImplementation implements AccountService{
         Account theAccount = null;
         if(result.isPresent()){
             throw new RuntimeException("Duplicate with accountId - " +accountId+ " has been found!, please try again!");
-        }
+        } else
         return true;
 
     }

@@ -39,12 +39,11 @@ public class Customer {
 
     }
 
-    public Customer(String customerName, String email, String avatarURL, Account theAccount, Cart cart, String address) {
+    public Customer(String customerName, String email, String avatarURL, Account theAccount, String address) {
         this.customerName = customerName;
         this.email = email;
         this.avatarURL = avatarURL;
         this.theAccount = theAccount;
-        this.cart = cart;
         this.address = address;
     }
 
