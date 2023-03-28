@@ -216,6 +216,41 @@ public class OrderRestController {
         return order;
     }
 
+    @PostMapping("/orders/forstaff")
+    public Order createOrderForStaff(@RequestBody Order order){
+        if(order.getDeliveryAddress()==null || order.getDeliveryAddress().isBlank()){
+            order.setDeliveryAddress(restaurantService.getRestaurantById(order.getRestaurantId()).getRestaurantName());
+        }
+        if(order.getNote()==null || order.getNote().isBlank()){
+            order.setNote("");
+        }
+        if(order.getReason()==null || order.getReason().isBlank()){
+            order.setReason("");
+        }
+        order.setFeedbackStatus(false);
+        if(order.getStatus()==null || order.getStatus().isBlank()){
+            order.setStatus("done");
+        }
+        if(order.getDeliveryMethod()==null || order.getDeliveryMethod().isBlank()){
+            order.setDeliveryMethod("takeaway");
+        }
+        if(order.getItemList()!=null || !order.getItemList().isEmpty()){
+            Integer quantity = 0;
+            Double price = (double) 0;
+            List<OrderDetail> itemList = order.getItemList();
+            for(OrderDetail item: itemList){
+                quantity += item.getQuantity();
+                price += item.getSubTotal();
+            }
+            order.setTotalPrice(price);
+            order.setTotalQuantity(quantity);
+        }
+        order.setDeliveryDate(LocalDateTime.now());
+        order.setReceiveTime(LocalDateTime.now());
+        Order order2 = orderService.saveOrder(order);
+        return order2;
+    }
+
     //addNewOrder with ZaloPay intergrated
     @PostMapping("/orders/zaloPay")
     public Map<String, Object> createZaloPayOrder(@RequestBody Order orderBody) throws IOException {

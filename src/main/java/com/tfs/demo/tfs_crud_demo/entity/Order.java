@@ -82,13 +82,15 @@ public class Order {
     private Party party;
 
     @Column(name = "is_feedback")
-    private Boolean feedbackStatus;
+    private Boolean feedbackStatus = false;
 
     public Order(){
 
     }
 
-    public Order(Integer promotionId, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress, LocalDateTime orderDate, LocalDateTime deliveryDate, LocalDateTime receiveTime, String status, String note, String reason, String deliveryMethod, Integer customerId, Integer restaurantId, Integer staffId, Boolean feedbackStatus) {
+    public Order(Integer promotionId, Double totalPrice, Integer totalQuantity, String paymentMethod,
+                 String deliveryAddress, LocalDateTime orderDate, LocalDateTime deliveryDate, LocalDateTime receiveTime,
+                 String status, String note, String reason, String deliveryMethod, Integer customerId, Integer restaurantId, Integer staffId, Boolean feedbackStatus) {
         this.promotionId = promotionId;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
