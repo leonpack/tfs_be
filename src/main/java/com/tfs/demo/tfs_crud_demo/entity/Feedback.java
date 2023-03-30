@@ -16,8 +16,6 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-
-
     @ManyToOne()
     @JoinColumn(name = "food_id")
     @JsonIgnoreProperties({"listComment","description","theCategory","theRegion","status","purchaseNum","eventList","price"})
@@ -25,10 +23,8 @@ public class Feedback {
 
     @Column(name = "customer_id")
     private Integer customerId;
-
     @Column(name = "avatar_url")
     private String avatarUrl;
-
     @Column(name = "comment")
     private String comment;
 

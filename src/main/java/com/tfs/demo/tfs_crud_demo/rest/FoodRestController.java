@@ -74,6 +74,9 @@ public class FoodRestController {
     @PostMapping("/foods")
     public Food addNewFood(@RequestBody Food food){
         food.setId(0);
+        if(food.getRatingNum()==null){
+            food.setRatingNum(0);
+        }
         foodService.saveFood(food);
         return food;
     }
@@ -105,6 +108,9 @@ public class FoodRestController {
         }
         if(food.getTheRegion()==null){
             food.setTheRegion(theFood1.getTheRegion());
+        }
+        if(food.getRatingNum()==null){
+            food.setRatingNum(theFood1.getRatingNum());
         }
         foodService.saveFood(food);
         return food;

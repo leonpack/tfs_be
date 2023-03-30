@@ -3,6 +3,7 @@ package com.tfs.demo.tfs_crud_demo.rest;
 import com.tfs.demo.tfs_crud_demo.dto.AddCommentDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Feedback;
 import com.tfs.demo.tfs_crud_demo.entity.Food;
+import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 import com.tfs.demo.tfs_crud_demo.service.FeedbackService;
 import com.tfs.demo.tfs_crud_demo.service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,21 +11,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
 public class FeedbackRestController {
 
-    private FeedbackService feedbackService;
-
-    private FoodService foodService;
+    private final FeedbackService feedbackService;
+    private final FoodService foodService;
+    private final CustomerService customerService;
 
     @Autowired
-    public FeedbackRestController(FeedbackService theFeedbackService, FoodService theFoodService){
+    public FeedbackRestController(FeedbackService theFeedbackService, FoodService theFoodService, CustomerService theCustomerService){
         feedbackService = theFeedbackService;
         foodService = theFoodService;
+        customerService = theCustomerService;
     }
 
     @GetMapping("/feedbacks")
@@ -73,7 +77,8 @@ public class FeedbackRestController {
     }
 
     @GetMapping("/feedbacks/allbyfood/{foodId}")
-    public List<Feedback> getAllPositiveByFood(@PathVariable int foodId){
+    public List<Map<String, Object>> getAllPositiveByFood(@PathVariable int foodId){
+        List<Map<String, Object>> listResult = new ArrayList<>();
         Food food = foodService.getFoodById(foodId);
         List<Feedback> origin = feedbackService.getAllByFood(food);
         List<Feedback> newList = new ArrayList<>();
@@ -82,7 +87,18 @@ public class FeedbackRestController {
                 newList.add(item);
             }
         }
-        return newList;
+        for(Feedback item: newList){
+            Map<String, Object> fb = new HashMap<>();
+            fb.put("id",item.getId());
+            fb.put("food",item.getFood());
+            fb.put("customerName", customerService.getCustomerById(item.getCustomerId()).getCustomerName());
+            fb.put("avatarUrl",item.getAvatarUrl());
+            fb.put("comment",item.getComment());
+            fb.put("rate",item.getRate());
+            fb.put("createdAt",item.getCreatedAt());
+            listResult.add(fb);
+        }
+        return listResult;
     }
 
 //    @PostMapping("/feedbacks")
@@ -111,6 +127,7 @@ public class FeedbackRestController {
             Feedback feedback = new Feedback(food, item.getCustomerId(), item.getAvatarUrl(), item.getComment(), item.getRate(), true);
             feedbackService.save(feedback);
             food.addComment(feedback);
+            food.setRatingNum(food.getRatingNum()+1);
             foodService.saveFood(food);
         }
         return ResponseEntity.ok("Done");

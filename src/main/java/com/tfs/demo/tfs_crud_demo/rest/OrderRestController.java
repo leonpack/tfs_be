@@ -160,6 +160,7 @@ public class OrderRestController {
             throw new RuntimeException("Order with id -" +order.getId() + " already exist, please try again!");
         }
 
+        //check if the party is in another order
         if(order.getParty()!=null){
             Order order1 = orderService.getByParty(order.getParty());
             if( order1!=null && !order.equals(order1) ) {
@@ -207,17 +208,24 @@ public class OrderRestController {
         notificationService.save(userNoti);
         notificationService.save(managerNoti);
 
+        //this one is wrong
 //        auto increase num of purchase if order has been successfully saved
-        for(OrderDetail item : order.getItemList()){
-            Food food = foodService.getFoodById(item.getId());
-            food.setPurchaseNum(food.getPurchaseNum()+item.getQuantity());
-        }
+//        for(OrderDetail item : order.getItemList()){
+//            Food food = foodService.getFoodById(item.getId());
+//            food.setPurchaseNum(food.getPurchaseNum()+item.getQuantity());
+//        }
 
         return order;
     }
 
     @PostMapping("/orders/forstaff")
     public Order createOrderForStaff(@RequestBody Order order){
+
+        //get list to get the latest item id + 1 to generate new order id;
+        List<Order> additionalList = orderService.getAllOrders();
+        if(order.getId()==0){
+            order.setId(additionalList.get(additionalList.size()-1).getId()+1);
+        }
         if(order.getDeliveryAddress()==null || order.getDeliveryAddress().isBlank()){
             order.setDeliveryAddress(restaurantService.getRestaurantById(order.getRestaurantId()).getRestaurantName());
         }
@@ -248,10 +256,18 @@ public class OrderRestController {
         order.setDeliveryDate(LocalDateTime.now());
         order.setReceiveTime(LocalDateTime.now());
         Order order2 = orderService.saveOrder(order);
+
+        for(OrderDetail item: order2.getItemList()){
+            Food food = foodService.getFoodById(item.getId());
+            food.setPurchaseNum(food.getPurchaseNum()+item.getQuantity());
+            foodService.saveFood(food);
+        }
+
         return order2;
+
     }
 
-    //addNewOrder with ZaloPay intergrated
+    //addNewOrder with ZaloPay intergrated for mobile app
     @PostMapping("/orders/zaloPay")
     public Map<String, Object> createZaloPayOrder(@RequestBody Order orderBody) throws IOException {
 //        Map<String, Object> normalReturn = new HashMap<>();
@@ -475,6 +491,12 @@ public class OrderRestController {
 
             Notification managerNoti = new Notification("Đơn hàng " +order.getId() + " đã được giao thành công", managerId);
             notificationService.save(managerNoti);
+
+            for(OrderDetail item: order.getItemList()){
+                Food food = foodService.getFoodById(item.getId());
+                food.setPurchaseNum(food.getPurchaseNum()+item.getQuantity());
+                foodService.saveFood(food);
+            }
 
             return order;
         }
