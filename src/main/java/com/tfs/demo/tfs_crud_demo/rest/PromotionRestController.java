@@ -43,14 +43,14 @@ public class PromotionRestController {
         return thePromotion;
     }
 
-//    @DeleteMapping("/promotions/{promotionCode}")
-//    public String disablePromotion(@PathVariable int promotionCode){
-//        Promotion thePromotion = promotionService.getPromotionByCode(promotionCode);
-//        if(thePromotion == null){
-//            throw new RuntimeException("Promotion code - " +promotionCode + " not found!!");
-//        }
-//        thePromotion.setStatus(false);
-//        promotionService.savePromotion(thePromotion);
-//        return "Disable promotion " +promotionCode + " successful!";
-//    }
+    @DeleteMapping("/promotions/{promotionId}")
+    public String disablePromotion(@PathVariable int promotionId){
+        Promotion thePromotion = promotionService.getPromotionById(promotionId);
+        if(thePromotion == null){
+            throw new RuntimeException("Promotion " +promotionId+ " not found!!");
+        }
+        thePromotion.setStatus(false);
+        promotionService.savePromotion(thePromotion);
+        return "Disable promotion " +promotionId + " successful!";
+    }
 }

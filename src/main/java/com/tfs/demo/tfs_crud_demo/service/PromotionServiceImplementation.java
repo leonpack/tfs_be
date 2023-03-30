@@ -26,7 +26,14 @@ public class PromotionServiceImplementation implements PromotionService{
 
     @Override
     public Promotion getPromotionById(int id) {
-        return null;
+        Optional<Promotion> result = promotionRepository.findById(id);
+        Promotion promotion = null;
+        if(result.isPresent()){
+            promotion = result.get();
+        } else {
+            throw new RuntimeException("Promotion " + id + " not found!");
+        }
+        return promotion;
     }
 
     public Promotion getPromotionByCode(String code){
