@@ -47,6 +47,9 @@ public class EventRestController {
 
     @PostMapping("/events")
     public String addNewEvent(@RequestBody Event theEvent){
+        if(theEvent.getImage_url()==null || theEvent.getImage_url().isBlank()){
+            theEvent.setImage_url("https://live.staticflickr.com/65535/52783059166_a951518a8d_h.jpg");
+        }
         eventService.saveEvent(theEvent);
         return "Saved " +theEvent;
     }
