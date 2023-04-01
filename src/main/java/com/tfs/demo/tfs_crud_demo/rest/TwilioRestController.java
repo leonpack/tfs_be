@@ -46,6 +46,25 @@ public class TwilioRestController {
         return result;
     }
 
+    @PostMapping("/registerOTP")
+    public Map<String, Object> getOtpForRegistration(@RequestBody SMSRequestDTO smsRequestDTO){
+        //check if phone number is valid
+        if(!twilioService.isPhoneNumberValid(smsRequestDTO.getPhoneNumber())){
+            throw new IllegalArgumentException("Phone number " + smsRequestDTO.getPhoneNumber()+" is not valid");
+        }
+
+        Account account = accountService.checkLoginByPhone(smsRequestDTO.getPhoneNumber());
+        Map<String, Object> result = new HashMap<>();
+        if(account!=null){
+            throw new RuntimeException("This phone number is already linked with another account");
+        }
+        else if(account==null){
+            String otp = twilioService.sendSMS(smsRequestDTO);
+            result.put("otp", otp);
+        }
+        return result;
+    }
+
     @PostMapping("/changepass")
     public Account changePassword(@RequestBody ChangePasswordDTO changePasswordDTO){
         Account account = accountService.checkLoginByPhone(changePasswordDTO.getPhoneNumber());
