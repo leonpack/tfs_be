@@ -1,10 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.dao.OrderDetailRepository;
-import com.tfs.demo.tfs_crud_demo.dto.AssignOrderDTO;
-import com.tfs.demo.tfs_crud_demo.dto.FeedbackStatusDTO;
-import com.tfs.demo.tfs_crud_demo.dto.OrderStatusDTO;
-import com.tfs.demo.tfs_crud_demo.dto.RefundDTO;
+import com.tfs.demo.tfs_crud_demo.dto.*;
 import com.tfs.demo.tfs_crud_demo.entity.*;
 import com.tfs.demo.tfs_crud_demo.library.vn.zalopay.crypto.HMACUtil;
 import com.tfs.demo.tfs_crud_demo.service.*;
@@ -72,6 +69,7 @@ public class OrderRestController {
     private AccountService accountService;
     private PartyService partyService;
     private CartService cartService;
+    private ZalopayDetailService zalopayDetailService;
 
     @Autowired
     public OrderRestController(OrderService theOrderService,
@@ -85,7 +83,8 @@ public class OrderRestController {
                                NotificationService theNotificationService,
                                PartyService thePartyService,
                                AccountService theAccountService,
-                               CartService theCartService){
+                               CartService theCartService,
+                               ZalopayDetailService theZalopayDetailService){
         orderService = theOrderService;
         this.orderDetailRepository = orderDetailRepository;
         promotionService = thePromotionService;
@@ -97,6 +96,7 @@ public class OrderRestController {
         notificationService = theNotificationService;
         accountService = theAccountService;
         cartService = theCartService;
+        zalopayDetailService = theZalopayDetailService;
     }
 
     @GetMapping("/orders")
@@ -262,7 +262,6 @@ public class OrderRestController {
             food.setPurchaseNum(food.getPurchaseNum()+item.getQuantity());
             foodService.saveFood(food);
         }
-
         return order2;
 
     }
@@ -333,7 +332,9 @@ public class OrderRestController {
             returnValue.put("apptransid", order.get("apptransid"));
             returnValue.put("zptranstoken", result.get("zptranstoken"));
             returnValue.put("zaloUrl", result.get("orderurl"));
-
+            if(zalopayDetailService.getDetailByOrderId(orderBody.getId())==null){
+                zalopayDetailService.save(new ZalopayDetail(orderBody.getId(),order.get("apptransid").toString(), 0L));
+            }
 //            return "apptransid: " + order.get("apptransid")+ " - zptranstoken: " +order.get("zptranstoken") + " - zaloUrl: " + result.get("orderurl").toString() ;
             return returnValue;
     }
@@ -570,7 +571,55 @@ public class OrderRestController {
         return returnMessage;
     }
 
-    @GetMapping("/orders/refund")
+    //new method for checking zalopayPayment
+    @GetMapping("/orders/checkZalopayPayment/{orderId}")
+    public Map<String, Object> checkZaloPayPaymentStatusVersion2(@PathVariable int orderId) throws URISyntaxException, IOException {
+        ZalopayDetail zalopayDetail = zalopayDetailService.getDetailByOrderId(orderId);
+        if(zalopayDetail==null){
+            throw new RuntimeException("This order is not found/ not using zalopay payment method");
+        }
+
+        String apptransid = zalopayDetail.getApptransid();
+        String data = config.get("appid") +"|"+ apptransid  +"|"+ config.get("key1"); // appid|apptransid|key1
+        String mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, config.get("key1"), data);
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("appid", config.get("appid")));
+        params.add(new BasicNameValuePair("apptransid", apptransid));
+        params.add(new BasicNameValuePair("mac", mac));
+
+        URIBuilder uri = new URIBuilder(config.get("endpointstatus"));
+        uri.addParameters(params);
+
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpGet get = new HttpGet(uri.build());
+
+        CloseableHttpResponse res = client.execute(get);
+        BufferedReader rd = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
+        StringBuilder resultJsonStr = new StringBuilder();
+        String line;
+
+        while ((line = rd.readLine()) != null) {
+            resultJsonStr.append(line);
+        }
+
+        JSONObject result = new JSONObject(resultJsonStr.toString());
+        for (String key : result.keySet()) {
+            System.out.format("%s = %s\n", key, result.get(key));
+        }
+
+        Map<String, Object> returnMessage = new HashMap<>();
+        returnMessage.put("returnCode",result.get("returncode"));
+        returnMessage.put("returnMessage",result.get("returnmessage"));
+        returnMessage.put("isProcessing?",result.get("isprocessing"));
+        returnMessage.put("zptransid",result.get("zptransid"));
+        zalopayDetail.setZptransid((Long) result.get("zptransid"));
+        zalopayDetailService.save(zalopayDetail);
+
+        return returnMessage;
+    }
+
+    @PostMapping("/orders/refund")
     public Map<String, Object> refundOrder(@RequestBody RefundDTO refundDTO) throws IOException {
         String appid = config.get("appid");
         Random rand = new Random();
@@ -580,6 +629,68 @@ public class OrderRestController {
         Map<String, Object> order = new HashMap<String, Object>(){{
             put("appid", appid);
             put("zptransid", refundDTO.getZptransid());
+            put("mrefundid", getCurrentTimeString("yyMMdd") +"_"+ appid +"_"+uid);
+            put("timestamp", timestamp);
+            put("amount", refundDTO.getAmount());
+            put("description", "ZaloPay Intergration Demo");
+        }};
+
+        // appid|zptransid|amount|description|timestamp
+        String data = order.get("appid") +"|"+ order.get("zptransid") +"|"+ order.get("amount")
+                +"|"+ order.get("description") +"|"+ order.get("timestamp");
+        order.put("mac", HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, config.get("key1"), data));
+
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost post = new HttpPost(config.get("refundendpoint"));
+
+        List<NameValuePair> params = new ArrayList<>();
+        for (Map.Entry<String, Object> e : order.entrySet()) {
+            params.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
+        }
+
+        post.setEntity(new UrlEncodedFormEntity(params));
+
+        CloseableHttpResponse res = client.execute(post);
+        BufferedReader rd = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
+        StringBuilder resultJsonStr = new StringBuilder();
+        String line;
+
+        while ((line = rd.readLine()) != null) {
+            resultJsonStr.append(line);
+        }
+
+        JSONObject result = new JSONObject(resultJsonStr.toString());
+        for (String key : result.keySet()) {
+            System.out.format("%s = %s\n", key, result.get(key));
+        }
+
+        Map<String, Object> returnMessage = new HashMap<>();
+        returnMessage.put("returncode",result.get("returncode"));
+        returnMessage.put("returnMessage",result.get("returnmessage"));
+        returnMessage.put("refundId",result.get("refundid"));
+        returnMessage.put("mrefundid",order.get("mrefundid"));
+
+        return returnMessage;
+    }
+
+    //new method to create refund from using zalopay payment method
+    @PostMapping("/orders/refundZalopay")
+    public Map<String, Object> refundOrderVersion2(@RequestBody NewRefundDTO refundDTO) throws IOException {
+
+        ZalopayDetail zalopayDetail = zalopayDetailService.getDetailByOrderId(refundDTO.getOrderId());
+
+        if(zalopayDetail==null){
+            throw new RuntimeException("This order is not capable of refund");
+        }
+
+        String appid = config.get("appid");
+        Random rand = new Random();
+        long timestamp = System.currentTimeMillis(); // miliseconds
+        String uid = timestamp + "" + (111 + rand.nextInt(888)); // unique id
+
+        Map<String, Object> order = new HashMap<String, Object>(){{
+            put("appid", appid);
+            put("zptransid", zalopayDetail.getZptransid());
             put("mrefundid", getCurrentTimeString("yyMMdd") +"_"+ appid +"_"+uid);
             put("timestamp", timestamp);
             put("amount", refundDTO.getAmount());
