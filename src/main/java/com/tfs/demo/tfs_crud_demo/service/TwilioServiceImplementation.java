@@ -22,7 +22,7 @@ public class TwilioServiceImplementation implements TwilioService{
         if(isPhoneNumberValid(smsRequestDTO.getPhoneNumber())){
             PhoneNumber from = new PhoneNumber(trialNumber);
             PhoneNumber to = new PhoneNumber("+84"+smsRequestDTO.getPhoneNumber());
-            String message = "Mã OTP để khôi phục mật khẩu của bạn là " + otp;
+            String message = "Mã OTP của bạn là " + otp;
             MessageCreator creator = Message.creator(to, from, message);
             creator.create();
         } else {
