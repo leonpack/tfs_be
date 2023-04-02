@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -183,21 +185,27 @@ public class CustomerRestController {
     }
 
     @GetMapping("/customers/checkByPhoneNumber/{phoneNumber}")
-    public Customer checkCustomerByPhoneNumber(@PathVariable String phoneNumber){
+    public Map<String, Object> checkCustomerByPhoneNumber(@PathVariable String phoneNumber){
+        Map<String, Object> result = new HashMap<>();
         Account account = accountService.checkLoginByPhone(phoneNumber);
         if(account!=null && !account.getRoleId().toString().equals("5")){
-            throw new RuntimeException("This phone number is belong to one of the staff of TFS");
+            result.put("status","this phone number is belong to staff account");
+            return result;
         }
         if(account!=null && account.getRoleId().toString().equals("5")){
             Customer customer = customerService.getCustomerByTheAccount(account);
             if(customer==null){
-                throw new RuntimeException("This phone number is not link with any account");
+                result.put("status","notfound");
+                return result;
             }
             else
-                return customer;
+                result.put("status","found");
+                result.put("data",account);
+                return result;
         }
         else
-            return null;
+            result.put("status","notfound");
+            return result;
     }
 
 }
