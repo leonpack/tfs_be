@@ -39,13 +39,9 @@ public class OrderRestController {
     //config for implementing ZalopayAPI
     private static final Map<String, String> config = new HashMap<String, String>(){{
         //version 1 key
-//        put("appid", "554");
-//        put("key1", "8NdU5pG5R2spGHGhyO99HN1OhD8IQJBn");
-//        put("key2", "uUfsWgfLkRLzq6W2uNXTCxrfxs51auny");
-        //version 2 key
-        put("appid", "2554");
-        put("key1", "sdngKKJmqEMzvh5QQcdD2A9XBSKUNaYn");
-        put("key2", "trMrHtvjo6myautxDUiAcYsVtaeQ8nhf");
+        put("appid", "554");
+        put("key1", "8NdU5pG5R2spGHGhyO99HN1OhD8IQJBn");
+        put("key2", "uUfsWgfLkRLzq6W2uNXTCxrfxs51auny");
         put("endpoint", "https://sandbox.zalopay.com.vn/v001/tpe/createorder");
         put("endpointstatus","https://sandbox.zalopay.com.vn/v001/tpe/getstatusbyapptransid");
         put("refundendpoint","https://sandbox.zalopay.com.vn/v001/tpe/partialrefund");
