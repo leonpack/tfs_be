@@ -17,11 +17,7 @@ public class ZalopayDetailServiceImplementation implements ZalopayDetailService{
 
     @Override
     public ZalopayDetail getDetailByOrderId(int orderId) {
-        ZalopayDetail zalopayDetail = zalopayDetailRepository.getZalopayDetailByOrderId(orderId);
-        if(zalopayDetail==null){
-            throw new RuntimeException("This order is not using zalopay payment method");
-        }
-        return zalopayDetail;
+        return zalopayDetailRepository.getZalopayDetailByOrderId(orderId);
     }
 
     @Override

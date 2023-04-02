@@ -333,7 +333,7 @@ public class OrderRestController {
             returnValue.put("zptranstoken", result.get("zptranstoken"));
             returnValue.put("zaloUrl", result.get("orderurl"));
             if(zalopayDetailService.getDetailByOrderId(orderBody.getId())==null){
-                zalopayDetailService.save(new ZalopayDetail(orderBody.getId(),order.get("apptransid").toString(), 0L));
+                zalopayDetailService.save(new ZalopayDetail(orderBody.getId(),order.get("apptransid").toString(), 0));
             }
 //            return "apptransid: " + order.get("apptransid")+ " - zptranstoken: " +order.get("zptranstoken") + " - zaloUrl: " + result.get("orderurl").toString() ;
             return returnValue;
@@ -608,12 +608,14 @@ public class OrderRestController {
             System.out.format("%s = %s\n", key, result.get(key));
         }
 
+        Integer value = (Integer) result.get("zptransid");
+
         Map<String, Object> returnMessage = new HashMap<>();
         returnMessage.put("returnCode",result.get("returncode"));
         returnMessage.put("returnMessage",result.get("returnmessage"));
         returnMessage.put("isProcessing?",result.get("isprocessing"));
         returnMessage.put("zptransid",result.get("zptransid"));
-        zalopayDetail.setZptransid((Long) result.get("zptransid"));
+        zalopayDetail.setZptransid(value);
         zalopayDetailService.save(zalopayDetail);
 
         return returnMessage;

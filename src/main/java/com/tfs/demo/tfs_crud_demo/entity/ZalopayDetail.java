@@ -18,13 +18,13 @@ public class ZalopayDetail {
     private String apptransid;
 
     @Column(name = "zptransid")
-    private Long zptransid;
+    private Integer zptransid;
 
     public ZalopayDetail(){
 
     }
 
-    public ZalopayDetail(Integer orderId, String apptransid, Long zptransid) {
+    public ZalopayDetail(Integer orderId, String apptransid, Integer zptransid) {
         this.orderId = orderId;
         this.apptransid = apptransid;
         this.zptransid = zptransid;
@@ -54,11 +54,11 @@ public class ZalopayDetail {
         this.apptransid = apptransid;
     }
 
-    public Long getZptransid() {
+    public Integer getZptransid() {
         return zptransid;
     }
 
-    public void setZptransid(Long zptransid) {
+    public void setZptransid(Integer zptransid) {
         this.zptransid = zptransid;
     }
 }
