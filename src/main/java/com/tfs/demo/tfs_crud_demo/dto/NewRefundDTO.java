@@ -4,14 +4,14 @@ public class NewRefundDTO {
 
     private int orderId;
 
-    private Double amount;
+    private Long amount;
 
 
     public NewRefundDTO(){
 
     }
 
-    public NewRefundDTO(int orderId, Double amount) {
+    public NewRefundDTO(int orderId, Long amount) {
         this.orderId = orderId;
         this.amount = amount;
     }
@@ -24,11 +24,11 @@ public class NewRefundDTO {
         this.orderId = orderId;
     }
 
-    public Double getAmount() {
+    public Long getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
 }
