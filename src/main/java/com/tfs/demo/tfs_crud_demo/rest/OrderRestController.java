@@ -609,14 +609,14 @@ public class OrderRestController {
             System.out.format("%s = %s\n", key, result.get(key));
         }
 
-        Integer value = (Integer) result.get("zptransid");
+        Long value = (Long) result.get("zptransid");
 
         Map<String, Object> returnMessage = new HashMap<>();
         returnMessage.put("returnCode",result.get("returncode"));
         returnMessage.put("returnMessage",result.get("returnmessage"));
         returnMessage.put("isProcessing?",result.get("isprocessing"));
         returnMessage.put("zptransid",result.get("zptransid"));
-        zalopayDetail.setZptransid(value);
+        zalopayDetail.setZptransid(value.intValue());
         zalopayDetailService.save(zalopayDetail);
 
         return returnMessage;
