@@ -136,9 +136,9 @@ public class CustomerRestController {
                 if(theCustomer.getTheAccount()==null){
                     theCustomer.setTheAccount(customer.getTheAccount());
                 }
-                accountService.saveAccount(theCustomer.getTheAccount());
-                customerService.saveCustomer(theCustomer);
-                return theCustomer;
+                Customer theSavedCustomer = customerService.saveCustomer(theCustomer);
+                Account theSavedAccount = accountService.saveAccount(theSavedCustomer.getTheAccount());
+                return theSavedCustomer;
             } else if (accountCheck!=null || !accountCheck.getAccountId().equals(theCustomer.getTheAccount().getAccountId())){
                 throw new RuntimeException("This phone number is already linked with another account!");
             }

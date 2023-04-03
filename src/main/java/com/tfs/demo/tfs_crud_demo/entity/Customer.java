@@ -23,7 +23,7 @@ public class Customer {
     @Column(name = "avatar_url")
     private String avatarURL;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "account_id")
     @JsonManagedReference(value = "account-customer")
     @JsonIgnore
