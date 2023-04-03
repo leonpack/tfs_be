@@ -71,6 +71,27 @@ public class FoodRestController {
         return theFood;
     }
 
+    @GetMapping("/foods/traditional")
+    public List<Food> getTraditionalFoodList(){
+        List<Food> newList = new ArrayList<>();
+        newList.add(foodService.getFoodById(1));
+        newList.add(foodService.getFoodById(6));
+        newList.add(foodService.getFoodById(10));
+        newList.add(foodService.getFoodById(12));
+        newList.add(foodService.getFoodById(13));
+        newList.add(foodService.getFoodById(21));
+        newList.add(foodService.getFoodById(28));
+        newList.add(foodService.getFoodById(32));
+        newList.add(foodService.getFoodById(36));
+        newList.add(foodService.getFoodById(39));
+        newList.add(foodService.getFoodById(41));
+        newList.add(foodService.getFoodById(49));
+        newList.add(foodService.getFoodById(50));
+        newList.add(foodService.getFoodById(52));
+        newList.add(foodService.getFoodById(53));
+        return newList;
+    }
+
     @PostMapping("/foods")
     public Food addNewFood(@RequestBody Food food){
         food.setId(0);
