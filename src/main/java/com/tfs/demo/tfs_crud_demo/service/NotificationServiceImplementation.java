@@ -24,7 +24,7 @@ public class NotificationServiceImplementation implements NotificationService{
 
     @Override
     public List<Notification> getAllByAccountId(String accountId) {
-        return notificationRepository.findNotificationsByAccountId(accountId);
+        return notificationRepository.findNotificationsByAccountIdOrderByCreatedAtDesc(accountId);
     }
 
     @Override

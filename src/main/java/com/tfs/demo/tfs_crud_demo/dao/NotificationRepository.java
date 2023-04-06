@@ -14,6 +14,6 @@ import java.util.concurrent.CompletableFuture;
 @CrossOrigin
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
 
-    List<Notification> findNotificationsByAccountId(String accountId);
+    List<Notification> findNotificationsByAccountIdOrderByCreatedAtDesc(String accountId);
 
 }
