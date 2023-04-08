@@ -1,10 +1,11 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.dao.RevenueRepository;
-import com.tfs.demo.tfs_crud_demo.dto.*;
+import com.tfs.demo.tfs_crud_demo.dto.OrderDateResponse;
+import com.tfs.demo.tfs_crud_demo.dto.RevenueBetweenByRestaurantDTO;
+import com.tfs.demo.tfs_crud_demo.dto.RevenueBetweenDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.entity.Order;
-import com.tfs.demo.tfs_crud_demo.entity.Restaurant;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
 import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 import com.tfs.demo.tfs_crud_demo.service.OrderService;
@@ -12,13 +13,10 @@ import com.tfs.demo.tfs_crud_demo.service.RestaurantService;
 import com.tfs.demo.tfs_crud_demo.service.StaffService;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")

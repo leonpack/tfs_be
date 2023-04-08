@@ -1,6 +1,5 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
-import com.tfs.demo.tfs_crud_demo.entity.Cart;
 import com.tfs.demo.tfs_crud_demo.entity.Party;
 import com.tfs.demo.tfs_crud_demo.service.CartService;
 import com.tfs.demo.tfs_crud_demo.service.PartyService;

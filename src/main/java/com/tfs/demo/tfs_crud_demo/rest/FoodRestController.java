@@ -40,11 +40,6 @@ public class FoodRestController {
         return foodService.getAllFood();
     }
 
-//    @GetMapping("/foods/paging")
-//    public List<Food> getAllFood(@RequestParam int size){
-//        return foodService.getAllFoodWithPaging(size);
-//    }
-
     @GetMapping("/foods/pagination")
     public List<Food> getAllFoodsWithPagenation(@RequestParam int page, @RequestParam int size){
         Pageable paging = PageRequest.of(page, size);

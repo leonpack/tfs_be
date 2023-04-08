@@ -10,8 +10,6 @@ public interface FoodService {
 
     public List<Food> getBestSellerFoods(int number);
 
-    public List<Food> getAllFoodWithPaging(int size);
-
     public Food getFoodById(int id);
 
     public void saveFood(Food theFood);

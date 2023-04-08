@@ -31,11 +31,6 @@ public class FoodServiceImplementation implements FoodService{
     }
 
     @Override
-    public List<Food> getAllFoodWithPaging(int size) {
-        return foodRepository.findAll(size);
-    }
-
-    @Override
     public Food getFoodById(int id) {
         Optional<Food> result = foodRepository.findById(id);
 
