@@ -82,12 +82,18 @@ public class StatisticRestController {
 
     @PostMapping("/statistic/detail")
     public Collection<OrderDateResponse> getDetailFromRestaurant(@RequestBody RevenueBetweenByRestaurantDTO revenue){
-        return revenueRepository.getOrdersFilterByDate(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay(), revenue.getRestaurantId());
+        if(revenue.getFromDate().isAfter(revenue.getToDate())){
+            throw new RuntimeException("fromDate and toDate input is incorrect");
+        }
+        return revenueRepository.getOrdersFilterByDate(revenue.getFromDate().minusDays(1).atStartOfDay(), revenue.getToDate().atStartOfDay(), revenue.getRestaurantId());
     }
 
     @PostMapping("statistic/detail/owner")
     public Collection<OrderDateResponse> getDetailForOwner(@RequestBody RevenueBetweenDTO revenue){
-        return revenueRepository.getOrdersFilterByDateForOwner(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay());
+        if(revenue.getFromDate().isAfter(revenue.getToDate())){
+            throw new RuntimeException("fromDate and toDate input is incorrect");
+        }
+        return revenueRepository.getOrdersFilterByDateForOwner(revenue.getFromDate().minusDays(1).atStartOfDay(), revenue.getToDate().atStartOfDay());
     }
 
     @PostMapping("/statistic/detail/user")
