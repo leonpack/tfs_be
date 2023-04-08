@@ -1,6 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.dao;
 
 import com.tfs.demo.tfs_crud_demo.dto.OrderDateResponse;
+import com.tfs.demo.tfs_crud_demo.dto.StaffChartResponseDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,27 +20,10 @@ public interface RevenueRepository extends JpaRepository<Order, Integer> {
 
     @Query(value = "select total_price from orders", nativeQuery = true)
     Collection<Double> getAllBill();
-
     @Query(value = "select total_price from orders o where o.restaurant_id = ?1 ", nativeQuery = true)
     Collection<Double> getAllBillByRestaurant(String restaurantId);
-
-    List<Order> getOrdersByOrderDate(LocalDateTime orderDate);
-
-    List<Order> getOrdersByOrderDateAndRestaurantId(LocalDateTime orderDate, int restaurantId);
-
     List<Order> getOrdersByOrderDateBetween(LocalDateTime fromDate, LocalDateTime toDate);
-
     List<Order> getOrdersByOrderDateBetweenAndRestaurantId(LocalDateTime fromDate, LocalDateTime toDate, int restaurantId);
-
-    //TESTING NEW Query
-//    @Query(value = "SELECT DATE_FORMAT(order_date,'%Y-%m-%d') as orderDay, \n" +
-//            "       SUM(total_price) as totalPrice, \n" +
-//            "       SUM(total_quantity) as totalQuantity \n" +
-//            "FROM orders \n" +
-//            "WHERE order_date BETWEEN ?1 AND ?2 AND restaurant_id = ?3\n" +
-//            "GROUP BY orderDay \n" +
-//            "ORDER BY orderDay ASC;\n", nativeQuery = true)
-//    Collection<OrderDateResponse> getOrdersFilterByDate(LocalDateTime fromDate, LocalDateTime toDate, int restaurantId);
 
     @Query(value = "SELECT date_table.date AS orderDay, \n" +
             "    COALESCE(SUM(orders.total_price), 0) AS totalPrice, \n" +
@@ -61,16 +45,6 @@ public interface RevenueRepository extends JpaRepository<Order, Integer> {
             "ORDER BY orderDay ASC", nativeQuery = true)
     Collection<OrderDateResponse> getOrdersFilterByDate(LocalDateTime fromDate, LocalDateTime toDate, int restaurantId);
 
-
-//    @Query(value = "SELECT DATE_FORMAT(order_date,'%Y-%m-%d') as orderDay, \n" +
-//            "       SUM(total_price) as totalPrice, \n" +
-//            "       SUM(total_quantity) as totalQuantity \n" +
-//            "FROM orders \n" +
-//            "WHERE order_date BETWEEN ?1 AND ?2\n" +
-//            "GROUP BY orderDay \n" +
-//            "ORDER BY orderDay ASC;\n", nativeQuery = true)
-//    Collection<OrderDateForOwnerResponse> getOrdersFilterByDateForOwner(LocalDateTime fromDate, LocalDateTime toDate);
-
     @Query(value = "SELECT date_table.date AS orderDay, \n" +
             "    COALESCE(SUM(orders.total_price), 0) AS totalPrice, \n" +
             "    COALESCE(SUM(orders.total_quantity), 0) AS totalQuantity \n" +
@@ -89,4 +63,23 @@ public interface RevenueRepository extends JpaRepository<Order, Integer> {
             "GROUP BY orderDay \n" +
             "ORDER BY orderDay ASC", nativeQuery = true)
     Collection<OrderDateResponse> getOrdersFilterByDateForOwner(LocalDateTime fromDate, LocalDateTime toDate);
+
+
+    @Query(value = "SELECT DATE_FORMAT(date_range.order_date, '%Y-%m-%d') AS orderDay,\n" +
+            "    COALESCE(SUM(orders.total_price), 0) AS totalPrice,\n" +
+            "    COALESCE(SUM(orders.total_quantity), 0) AS totalQuantity\n" +
+            "FROM (\n" +
+            "    SELECT DATE_SUB(CURDATE(), INTERVAL n.num DAY) AS order_date\n" +
+            "    FROM (\n" +
+            "        SELECT 0 AS num UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 \n" +
+            "        UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6\n" +
+            "    ) n\n" +
+            ") AS date_range\n" +
+            "LEFT JOIN orders\n" +
+            "ON date_range.order_date = DATE(orders.order_date)\n" +
+            "    AND orders.staff_id = ?1 \n" +
+            "WHERE date_range.order_date BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW()\n" +
+            "GROUP BY orderDay\n" +
+            "ORDER BY orderDay ASC;\n", nativeQuery = true)
+    Collection<StaffChartResponseDTO> getStaffStatistic(int staffId);
 }
