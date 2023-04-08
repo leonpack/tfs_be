@@ -20,8 +20,8 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/api")
 public class FoodRestController {
-    private FoodService foodService;
-    private EventService eventService;
+    private final FoodService foodService;
+    private final EventService eventService;
     private final EventRepository eventRepository;
     private final FoodRepository foodRepository;
 
@@ -41,13 +41,13 @@ public class FoodRestController {
     }
 
     @GetMapping("/foods/pagination")
-    public List<Food> getAllFoodsWithPagenation(@RequestParam int page, @RequestParam int size){
+    public List<Food> getAllFoodsWithPagination(@RequestParam int page, @RequestParam int size){
         Pageable paging = PageRequest.of(page, size);
         Page<Food> pagedResult = foodRepository.findAll(paging);
         if(pagedResult.hasContent()){
             return pagedResult.getContent();
         } else {
-            return new ArrayList<Food>();
+            return new ArrayList<>();
         }
     }
 
@@ -113,7 +113,7 @@ public class FoodRestController {
         if(food.getImgUrl()==null){
             food.setImgUrl(theFood1.getImgUrl());
         }
-        if(String.valueOf(food.getPrice())==null){
+        if(String.valueOf(food.getPrice())==null || String.valueOf(food.getPrice()).isBlank()){
             food.setPrice(theFood1.getPrice());
         }
         if(food.getPurchaseNum()==null){

@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class ComboRestController {
 
-    private ComboService comboService;
+    private final ComboService comboService;
 
     @Autowired
     public ComboRestController(ComboService theComboService){

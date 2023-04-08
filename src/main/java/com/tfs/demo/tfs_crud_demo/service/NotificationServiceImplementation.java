@@ -3,7 +3,6 @@ package com.tfs.demo.tfs_crud_demo.service;
 import com.tfs.demo.tfs_crud_demo.dao.NotificationRepository;
 import com.tfs.demo.tfs_crud_demo.entity.Notification;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +10,7 @@ import java.util.Optional;
 @Service
 public class NotificationServiceImplementation implements NotificationService{
 
-    private NotificationRepository notificationRepository;
+    private final NotificationRepository notificationRepository;
 
     public NotificationServiceImplementation(NotificationRepository theNotificationRepository){
         notificationRepository = theNotificationRepository;

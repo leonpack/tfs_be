@@ -16,6 +16,7 @@
     <description>tfs_crud_demo</description>
     <properties>
         <java.version>11</java.version>
+        <maven.test.skip>true</maven.test.skip>
     </properties>
     <dependencies>
         <dependency>

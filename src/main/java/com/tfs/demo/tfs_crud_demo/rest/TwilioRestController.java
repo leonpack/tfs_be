@@ -18,8 +18,8 @@ import java.util.Map;
 @RequestMapping("/api/sms")
 public class TwilioRestController {
 
-    private AccountService accountService;
-    private TwilioService twilioService;
+    private final AccountService accountService;
+    private final TwilioService twilioService;
 
     @Autowired
     public TwilioRestController(TwilioService theTwilioService, AccountService theAccountService){
@@ -75,10 +75,5 @@ public class TwilioRestController {
         accountService.saveAccount(account);
         return account;
     }
-
-//    @PostMapping("/requestpass")
-//    public void sendOTP(@RequestBody SMSRequestDTO smsRequestDTO){
-//        twilioService.sendSMS(smsRequestDTO);
-//    }
 
 }

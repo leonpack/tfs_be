@@ -15,13 +15,11 @@ import java.util.List;
 @RequestMapping("/api")
 public class AccountRestController {
 
-    private AccountService accountService;
-    private CustomerService customerService;
+    private final AccountService accountService;
 
     @Autowired
-    public AccountRestController(AccountService theAccountService, CustomerService theCustomerService){
+    public AccountRestController(AccountService theAccountService){
         accountService = theAccountService;
-        customerService = theCustomerService;
     }
 
     @GetMapping("/accounts")
@@ -87,21 +85,5 @@ public class AccountRestController {
 //        }
 //        accountService.saveAccount(theAccount);
 //        return "Saved account: "+theAccount;
-//    }
-//
-//    @PutMapping("/accounts")
-//    public Account updateAccount(@RequestBody Account theAccount){
-//        accountService.saveAccount(theAccount);
-//        return theAccount;
-//    }
-//
-//    @DeleteMapping("/accounts/{accountId}")
-//    public String disableAccount(@PathVariable String accountId){
-//        Account theAccount = accountService.getAccountById(accountId);
-//        if(theAccount==null){
-//            throw new RuntimeException("Account with id - "+accountId+ " not found!");
-//        }
-//        accountService.disableAccount(accountId);
-//        return "Disable account with id - " +accountId+ " completed!";
 //    }
 }

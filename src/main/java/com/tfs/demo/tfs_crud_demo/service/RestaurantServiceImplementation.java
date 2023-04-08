@@ -13,8 +13,8 @@ import java.util.Optional;
 @Service
 public class RestaurantServiceImplementation implements RestaurantService{
 
-    private RestaurantRepository restaurantRepository;
-    private EntityManager entityManager;
+    private final RestaurantRepository restaurantRepository;
+    private final EntityManager entityManager;
 
     @Autowired
     public RestaurantServiceImplementation(RestaurantRepository theRestaurantRepository, EntityManager theEntityManager){

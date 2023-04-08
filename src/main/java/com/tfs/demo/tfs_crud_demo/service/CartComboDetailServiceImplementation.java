@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public class CartComboDetailServiceImplementation implements CartComboDetailService{
 
-    private CartComboDetailRepository cartComboDetailRepository;
+    private final CartComboDetailRepository cartComboDetailRepository;
 
     @Autowired
     public CartComboDetailServiceImplementation(CartComboDetailRepository theCartComboDetailRepository){

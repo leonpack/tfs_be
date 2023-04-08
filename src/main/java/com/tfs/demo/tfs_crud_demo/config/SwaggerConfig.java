@@ -15,8 +15,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    //DEPRECATED!!
-
     @Bean
     public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -32,16 +30,4 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any()).build();
     }
 
-//    @Bean
-//    public OpenAPI tfsSWAGGER() {
-//        return new OpenAPI()
-//                .info(new Info().title("Traditional Food System's API")
-//                        .description("TFS API DOCUMENTATION")
-//                        .contact(new Contact().name("Nathan Nguyễn").email("namnhse140816@fpt.edu.vn").url("https://www.facebook.com/summerless14"))
-//                        .version("v2023.01")
-//                        .license(new License().name("Apache 2.0").url("http://springdoc.org")))
-//                .externalDocs(new ExternalDocumentation()
-//                        .description("Author GitHub page")
-//                        .url("https://github.com/leonpack"));
-//    }
 }

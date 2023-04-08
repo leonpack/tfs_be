@@ -11,7 +11,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/api")
 public class ServiceRestController {
-    private ServicesService servicesService;
+    private final ServicesService servicesService;
 
     @Autowired
     public ServiceRestController(ServicesService theServicesService){

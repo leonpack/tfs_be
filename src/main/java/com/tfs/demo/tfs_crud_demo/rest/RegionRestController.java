@@ -13,8 +13,8 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/api")
 public class RegionRestController {
-    private RegionService regionService;
-    private FoodService foodService;
+    private final RegionService regionService;
+    private final FoodService foodService;
 
     @Autowired
     public RegionRestController(RegionService theRegionService, FoodService theFoodService){
@@ -47,7 +47,7 @@ public class RegionRestController {
         theFood.setTheRegion(theRegion);
         regionService.saveRegion(theRegion);
         foodService.saveFood(theFood);
-        return "Add food: " +theFood.getFoodName() + " to region: " +theRegion.getRegion_name() + " successfull";
+        return "Add food: " +theFood.getFoodName() + " to region: " +theRegion.getRegion_name() + " successful";
     }
 
     @PutMapping("/regions")

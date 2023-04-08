@@ -4,7 +4,6 @@ import com.tfs.demo.tfs_crud_demo.dto.StaffLoginDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
-import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 import com.tfs.demo.tfs_crud_demo.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +15,13 @@ import java.util.List;
 @RequestMapping("/api")
 public class StaffRestController {
 
-    private StaffService staffService;
-    private AccountService accountService;
-    private CustomerService customerService;
+    private final StaffService staffService;
+    private final AccountService accountService;
 
     @Autowired
-    public StaffRestController(StaffService theStaffService, AccountService theAccountService, CustomerService theCustomerService){
+    public StaffRestController(StaffService theStaffService, AccountService theAccountService){
         staffService = theStaffService;
         accountService = theAccountService;
-        customerService = theCustomerService;
     }
 
     @GetMapping("/staffs")
@@ -34,8 +31,7 @@ public class StaffRestController {
 
     @GetMapping("/staffs/{staffId}")
     public Staff getStaffById(@PathVariable int staffId){
-        Staff theStaff = staffService.getStaffById(staffId);
-        return theStaff;
+        return staffService.getStaffById(staffId);
     }
 
     @PostMapping("/staffs/login")
@@ -57,17 +53,6 @@ public class StaffRestController {
         return theStaff;
     }
 
-//    @PostMapping("/staffs/{accountId}")
-//    public String addNewStaff(@RequestBody Staff theStaff,@PathVariable String accountId){
-//        if(!staffService.checkDuplicateStaffId(theStaff.getStaffId())){
-//            return "Staff with this id - " +theStaff + " already exist, please try again!";
-//        }
-//        Account theAccount = accountService.getAccountById(accountId);
-//        theStaff.setTheAccountForStaff(theAccount);
-//        staffService.saveStaff(theStaff);
-//        return "Saved " +theStaff;
-//    }
-
     @PostMapping("/staffs")
     public Staff addNewStaff(@RequestBody Staff theStaff){
         if(!staffService.checkDuplicateAccountId(theStaff.getTheAccountForStaff().getAccountId())){
@@ -76,11 +61,6 @@ public class StaffRestController {
         if(!accountService.checkDuplicatePhoneNumber(theStaff.getTheAccountForStaff().getPhoneNumber())){
             throw new RuntimeException("This phone number is already linked with another account, please try again!");
         }
-        //check duplicate email when adding new staff
-//        if(staffService.getStaffByEmail(theStaff.getStaffEmail()).getStaffId()!=theStaff.getStaffId()
-//        && customerService.getCustomerByEmail(theStaff.getStaffEmail()).getTheAccount().getAccountId()!=theStaff.getTheAccountForStaff().getAccountId()){
-//            throw new RuntimeException("This email has already linked with another account, please try again");
-//        }
         if(theStaff.getStaffAvatarUrl().isBlank() || theStaff.getStaffAvatarUrl()==null){
             theStaff.setStaffAvatarUrl("https://live.staticflickr.com/65535/52719475105_ec5b21e417_w.jpg");
         }
@@ -137,19 +117,6 @@ public class StaffRestController {
         if(theStaff.getTheAccountForStaff()==null){
             theStaff.setTheAccountForStaff(theStaffFix.getTheAccountForStaff());
         }
-
-        //TODO check duplicate phone number and email
-
-//        if(theStaff.getTheAccountForStaff().getPhoneNumber()!=null){
-//            Account accountCheck = accountService.checkLoginByPhone(theStaff.getTheAccountForStaff().getPhoneNumber());
-//            if(!(accountCheck==null) || !accountCheck.getAccountId().equals(theStaff.getTheAccountForStaff().getAccountId())){
-//                throw new RuntimeException("This phone number has already linked with another account!");
-//            }
-//        }
-//        if(staffService.getStaffByEmail(theStaff.getStaffEmail()).getStaffId()!=theStaff.getStaffId()
-//                && customerService.getCustomerByEmail(theStaff.getStaffEmail()).getTheAccount().getAccountId()!=theStaff.getTheAccountForStaff().getAccountId()){
-//            throw new RuntimeException("This email has already linked with another account, please try again");
-//        }
         accountService.saveAccount(theStaff.getTheAccountForStaff());
         staffService.saveStaff(theStaff);
         return theStaff;

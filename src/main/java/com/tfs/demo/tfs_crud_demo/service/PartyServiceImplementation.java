@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class PartyServiceImplementation implements PartyService{
 
-    private PartyRepository partyRepository;
+    private final PartyRepository partyRepository;
 
     @Autowired
     public PartyServiceImplementation(PartyRepository thePartyRepository){

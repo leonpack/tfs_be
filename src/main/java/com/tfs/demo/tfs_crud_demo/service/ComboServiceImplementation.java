@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public class ComboServiceImplementation implements ComboService{
 
-    private ComboRepository comboRepository;
+    private final ComboRepository comboRepository;
 
     public ComboServiceImplementation(ComboRepository theComboRepository){
         comboRepository = theComboRepository;

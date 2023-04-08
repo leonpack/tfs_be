@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class RegionServiceImplementation implements RegionService{
 
-    private RegionRepository regionRepository;
+    private final RegionRepository regionRepository;
 
     @Autowired
     public RegionServiceImplementation(RegionRepository theRegionRepository){

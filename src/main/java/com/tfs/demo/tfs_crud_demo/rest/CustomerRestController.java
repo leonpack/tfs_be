@@ -7,7 +7,6 @@ import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
 import com.tfs.demo.tfs_crud_demo.service.CartService;
 import com.tfs.demo.tfs_crud_demo.service.CustomerService;
-import com.tfs.demo.tfs_crud_demo.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,17 +18,15 @@ import java.util.Map;
 @CrossOrigin
 @RequestMapping("/api")
 public class CustomerRestController {
-    private CustomerService customerService;
-    private AccountService accountService;
-    private StaffService staffService;
-    private CartService cartService;
+    private final CustomerService customerService;
+    private final AccountService accountService;
+    private final CartService cartService;
 
     @Autowired
-    public CustomerRestController(CustomerService theCustomerService, AccountService theAccountService, CartService theCartService, StaffService theStaffService){
+    public CustomerRestController(CustomerService theCustomerService, AccountService theAccountService, CartService theCartService){
         customerService = theCustomerService;
         accountService = theAccountService;
         cartService = theCartService;
-        staffService = theStaffService;
     }
 
     @GetMapping("/customers")
@@ -37,16 +34,9 @@ public class CustomerRestController {
         return customerService.getAllCustomers();
     }
 
-//    @GetMapping("/customers/{customerId}")
-//    @ApiOperation("Return customer based on customerId")
-//    public Customer getCustomerById(@PathVariable int customerId){
-//        return customerService.getCustomerById(customerId);
-//    }
-
     @GetMapping("/customers/{accountId}")
     public Customer getCustomerByAccountId(@PathVariable String accountId){
-        Customer theCustomer = customerService.getCustomerByTheAccount(accountService.getAccountById(accountId));
-        return theCustomer;
+        return customerService.getCustomerByTheAccount(accountService.getAccountById(accountId));
     }
 
     @GetMapping("/customers/byid/{customerId}")
@@ -57,8 +47,7 @@ public class CustomerRestController {
     @GetMapping("/customers/cart/{accountId}")
     public Cart getCustomerCart(@PathVariable String accountId){
         Customer theCustomer = customerService.getCustomerByTheAccount(accountService.getAccountById(accountId));
-        Cart theCart = theCustomer.getCart();
-        return theCart;
+        return theCustomer.getCart();
     }
 
     @PostMapping("/customers/{accountId}")
@@ -92,6 +81,7 @@ public class CustomerRestController {
         }
         customerService.saveCustomer(customer);
         Cart cart = new Cart((double) 0, 0, customer);
+        cartService.saveCart(cart);
         return customer;
     }
 

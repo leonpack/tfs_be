@@ -1,6 +1,5 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
-import com.tfs.demo.tfs_crud_demo.dao.OrderDetailRepository;
 import com.tfs.demo.tfs_crud_demo.dto.AssignOrderDTO;
 import com.tfs.demo.tfs_crud_demo.dto.FeedbackStatusDTO;
 import com.tfs.demo.tfs_crud_demo.dto.NewRefundDTO;
@@ -59,23 +58,19 @@ public class OrderRestController {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    private OrderService orderService;
-    private PromotionService promotionService;
-    private FoodService foodService;
-    private final OrderDetailRepository orderDetailRepository;
-    private StaffService staffService;
-    private EventService eventService;
-    private CustomerService customerService;
-    private RestaurantService restaurantService;
-    private NotificationService notificationService;
-    private AccountService accountService;
-    private PartyService partyService;
-    private CartService cartService;
-    private ZalopayDetailService zalopayDetailService;
+    private final OrderService orderService;
+    private final PromotionService promotionService;
+    private final FoodService foodService;
+    private final StaffService staffService;
+    private final EventService eventService;
+    private final CustomerService customerService;
+    private final RestaurantService restaurantService;
+    private final NotificationService notificationService;
+    private final CartService cartService;
+    private final ZalopayDetailService zalopayDetailService;
 
     @Autowired
     public OrderRestController(OrderService theOrderService,
-                               OrderDetailRepository orderDetailRepository,
                                PromotionService thePromotionService,
                                FoodService theFoodService,
                                EventService theEventService,
@@ -83,12 +78,9 @@ public class OrderRestController {
                                RestaurantService theRestaurantService,
                                CustomerService theCustomerService,
                                NotificationService theNotificationService,
-                               PartyService thePartyService,
-                               AccountService theAccountService,
                                CartService theCartService,
                                ZalopayDetailService theZalopayDetailService){
         orderService = theOrderService;
-        this.orderDetailRepository = orderDetailRepository;
         promotionService = thePromotionService;
         foodService = theFoodService;
         eventService = theEventService;
@@ -96,7 +88,6 @@ public class OrderRestController {
         restaurantService = theRestaurantService;
         customerService = theCustomerService;
         notificationService = theNotificationService;
-        accountService = theAccountService;
         cartService = theCartService;
         zalopayDetailService = theZalopayDetailService;
     }
@@ -108,8 +99,7 @@ public class OrderRestController {
 
     @GetMapping("/orders/{orderId}")
     public Order getOrderById(@PathVariable int orderId){
-        Order order = orderService.getOrderById(orderId);
-        return order;
+        return orderService.getOrderById(orderId);
     }
 
     @GetMapping("/orders/customer/{cusId}")
@@ -153,7 +143,7 @@ public class OrderRestController {
                 throw new RuntimeException("This promotion can't be use in this time!");
             }
             //check promotion code availability
-            if(promotion.getStatus()==false){
+            if(!promotion.getStatus()){
                 throw new RuntimeException("Promotion" +order.getPromotionId() + " is unusable!");
             }
         }
@@ -188,7 +178,7 @@ public class OrderRestController {
 //            }
 //            if(order.getStaffId()==null || order.getStaffId().toString().isEmpty()){
                 Random rd = new Random();
-                Integer randomDude = rd.nextInt(restaurant.getStaffList().size()+1);
+                int randomDude = rd.nextInt(restaurant.getStaffList().size()+1);
                 order.setStaffId(restaurant.getStaffList().get(randomDude).getStaffId());
                 Notification staffNoti = new Notification("Bạn có một đơn hàng mới cần xử lý, mã đơn hàng là " +order.getId()
                         , restaurant.getStaffList().get(randomDude).getTheAccountForStaff().getAccountId());
@@ -209,13 +199,6 @@ public class OrderRestController {
         Notification managerNoti = new Notification("Khách hàng " + customerService.getCustomerById(order.getCustomerId()).getCustomerName() + " vừa đặt đơn hàng " +order.getId(), managerId);
         notificationService.save(userNoti);
         notificationService.save(managerNoti);
-
-        //this one is wrong
-//        auto increase num of purchase if order has been successfully saved
-//        for(OrderDetail item : order.getItemList()){
-//            Food food = foodService.getFoodById(item.getId());
-//            food.setPurchaseNum(food.getPurchaseNum()+item.getQuantity());
-//        }
 
         return order;
     }
@@ -512,21 +495,6 @@ public class OrderRestController {
         }
     }
 
-    //DEPRECATED
-//    @PutMapping("/orders/assign")
-//    public Order assignOrderForStaff(@RequestBody AssignOrderDTO assignOrderDTO){
-//        Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
-//        Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
-//        if(staff.getStaffActivityStatus().equals("busy")){
-//            throw new RuntimeException("This staff can't be assign to an order right now");
-//        }
-//        order.setStaffId(assignOrderDTO.getStaffId());
-//        staff.setStaffActivityStatus("busy");
-//        staffService.saveStaff(staff);
-//        orderService.saveOrder(order);
-//        return order;
-//    }
-
     @DeleteMapping("/orders/{orderId}")
     public String deleteOrder(@PathVariable int orderId){
         orderService.deleteOrder(orderId);
@@ -535,13 +503,12 @@ public class OrderRestController {
 
     @GetMapping("/orders/checkPayment/{appstranId}")
     public Map<String, Object> checkZaloPaymentStatus(@PathVariable String appstranId) throws URISyntaxException, IOException {
-        String apptransid = appstranId;
-        String data = config.get("appid") +"|"+ apptransid  +"|"+ config.get("key1"); // appid|apptransid|key1
+        String data = config.get("appid") +"|"+ appstranId  +"|"+ config.get("key1"); // appid|apptransid|key1
         String mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, config.get("key1"), data);
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("appid", config.get("appid")));
-        params.add(new BasicNameValuePair("apptransid", apptransid));
+        params.add(new BasicNameValuePair("apptransid", appstranId));
         params.add(new BasicNameValuePair("mac", mac));
 
         URIBuilder uri = new URIBuilder(config.get("endpointstatus"));
@@ -740,8 +707,7 @@ public class OrderRestController {
     }
 
     @GetMapping("/orders/refundStatus/{id}")
-    public Map<String, Object> getRefundStatus(@PathVariable String id) throws URISyntaxException, IOException {
-        String mrefundid = id;
+    public Map<String, Object> getRefundStatus(@PathVariable String mrefundid) throws URISyntaxException, IOException {
         String timestamp = Long.toString(System.currentTimeMillis()); // miliseconds
         String data = config.get("appid") +"|"+ mrefundid  +"|"+ timestamp; // appid|mrefundid|timestamp
         String mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, config.get("key1"), data);

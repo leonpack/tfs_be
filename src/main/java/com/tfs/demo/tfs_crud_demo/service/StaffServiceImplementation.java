@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class StaffServiceImplementation implements StaffService{
 
-    private StaffRepository staffRepository;
+    private final StaffRepository staffRepository;
     private final AccountRepository accountRepository;
 
     @Autowired

@@ -61,12 +61,10 @@ public class AccountServiceImplementation implements AccountService{
     public boolean CheckDuplicateAccountId(String accountId) {
 
         Optional<Account> result = accountRepository.findById(accountId);
-        Account theAccount = null;
         if(result.isPresent()){
             throw new RuntimeException("Duplicate with accountId - " +accountId+ " has been found!, please try again!");
         } else
         return true;
-
     }
 
     @Override

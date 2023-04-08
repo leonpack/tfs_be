@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class CategoryServiceImplementation implements CategoryService{
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
     public CategoryServiceImplementation(CategoryRepository theCategoryRepository){

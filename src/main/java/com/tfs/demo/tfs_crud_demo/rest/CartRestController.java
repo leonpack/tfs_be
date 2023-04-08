@@ -1,8 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.dao.CartComboDetailRepository;
-import com.tfs.demo.tfs_crud_demo.dao.CartDetailRepository;
-import com.tfs.demo.tfs_crud_demo.dao.CartRepository;
 import com.tfs.demo.tfs_crud_demo.dao.CustomerRepository;
 import com.tfs.demo.tfs_crud_demo.dto.PutPartyToCart;
 import com.tfs.demo.tfs_crud_demo.dto.RemoveComboFromCartDTO;
@@ -24,23 +22,17 @@ import java.util.List;
 @CrossOrigin
 public class CartRestController {
 
-    private CartService cartService;
-    private final CartRepository cartRepository;
-    private final CartDetailRepository cartDetailRepository;
-    private PartyService partyService;
+    private final CartService cartService;
+    private final PartyService partyService;
     private final CartComboDetailRepository cartComboDetailRepository;
     private final CustomerRepository customerRepository;
 
     @Autowired
     public CartRestController(CartService theCartService,
-                              CartRepository cartRepository,
-                              CartDetailRepository cartDetailRepository,
                               CartComboDetailRepository cartComboDetailRepository,
                               CustomerRepository customerRepository,
                               PartyService thePartyService){
         cartService = theCartService;
-        this.cartRepository = cartRepository;
-        this.cartDetailRepository = cartDetailRepository;
         this.customerRepository = customerRepository;
         this.cartComboDetailRepository = cartComboDetailRepository;
         partyService = thePartyService;
@@ -53,15 +45,8 @@ public class CartRestController {
 
     @GetMapping("/carts/{cartId}")
     public Cart getCartById(@PathVariable int cartId){
-        Cart theCart = cartService.getCartById(cartId);
-        return theCart;
+        return cartService.getCartById(cartId);
     }
-
-//    @PostMapping("/carts")
-//    public Cart AddNewCart(@RequestBody Cart cart){
-//        cartService.saveCart(cart);
-//        return cart;
-//    }
 
     @PutMapping("/carts")
     public Cart UpdateItemToCart(@RequestBody Cart cart){
@@ -153,14 +138,14 @@ public class CartRestController {
     @PostMapping("/carts/removeparty")
     public ResponseEntity<String> removePartyFromCart(@RequestBody PutPartyToCart party){
         Cart cart = cartService.getCartById(party.getCartId());
-        Party party1 = partyService.getById(party.getPartyId());
+//        Party party1 = partyService.getById(party.getPartyId());
         cart.setParty(null);
         cartService.saveCart(cart);
         partyService.removeById(party.getPartyId());
         return ResponseEntity.ok("Xoá tiệc khỏi giỏ hàng thành công");
     }
 
-    @GetMapping("/carts/getparty/{cartId}")
+    @GetMapping("/carts/httparty/{cartId}")
     public Party getPartyByCart(@PathVariable int cartId){
         Cart cart = cartService.getCartById(cartId);
         return cart.getParty();

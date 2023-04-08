@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class PromotionServiceImplementation implements PromotionService{
 
-    private PromotionRepository promotionRepository;
+    private final PromotionRepository promotionRepository;
 
     @Autowired
     public PromotionServiceImplementation(PromotionRepository thePromotionRepository){

@@ -4,12 +4,10 @@ import com.tfs.demo.tfs_crud_demo.dao.ZalopayDetailRepository;
 import com.tfs.demo.tfs_crud_demo.entity.ZalopayDetail;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class ZalopayDetailServiceImplementation implements ZalopayDetailService{
 
-    private ZalopayDetailRepository zalopayDetailRepository;
+    private final ZalopayDetailRepository zalopayDetailRepository;
 
     public ZalopayDetailServiceImplementation(ZalopayDetailRepository theZalopayDetailRepository){
         zalopayDetailRepository = theZalopayDetailRepository;

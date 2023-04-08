@@ -23,11 +23,11 @@ import java.util.Map;
 @CrossOrigin
 public class StatisticRestController {
 
-    private RevenueRepository revenueRepository;
-    private RestaurantService restaurantService;
-    private CustomerService customerService;
-    private StaffService staffService;
-    private OrderService orderService;
+    private final RevenueRepository revenueRepository;
+    private final RestaurantService restaurantService;
+    private final CustomerService customerService;
+    private final StaffService staffService;
+    private final OrderService orderService;
 
     public StatisticRestController(RevenueRepository theRevenueRepository, OrderService theOrderService,
                                    RestaurantService theRestaurantService, CustomerService theCustomerService,
@@ -38,85 +38,6 @@ public class StatisticRestController {
         customerService = theCustomerService;
         staffService = theStaffService;
     }
-
-//    @PostMapping("/revenues/bydate")
-//    public List<Order> getRevenueByDate(@RequestBody RevenueByDate revenueByDate) throws ParseException {
-//        List<Order> listOrder = revenueRepository.getOrdersByOrderDate(revenueByDate.getRevenueDate());
-////        Map<String, Object> returnValue = new HashMap<>();
-////        Double revenue = (double) 0;
-////        Integer quantity = 0;
-////        for(Order item : listOrder){
-////            revenue += item.getTotalPrice();
-////            quantity += item.getTotalQuantity();
-////            System.out.println(item);
-////        }
-////        returnValue.put("date", revenueByDate.getRevenueDate());
-////        returnValue.put("totalquantity", quantity);
-////        returnValue.put("totalrevenue", revenue);
-//        return listOrder;
-//    }
-
-//    @PostMapping("/revenues/bydate/restaurant")
-//    public Map<String, Object> getRevenueByDateAndRestaurant(@RequestBody RevenueByDateByRestaurant revenue){
-//        List<Order> listOrder = revenueRepository.getOrdersByOrderDateAndRestaurantId(revenue.getRevenueDate().atStartOfDay(), revenue.getRestaurantId());
-//        Restaurant restaurant = restaurantService.getRestaurantById(revenue.getRestaurantId());
-//        Map<String, Object> returnValue = new HashMap<>();
-//        Double revenues = (double) 0;
-//        Integer quantity = 0;
-//        for(Order item : listOrder){
-//            revenues += item.getTotalPrice();
-//            quantity += item.getTotalQuantity();
-//        }
-//        returnValue.put("restaurantid", revenue.getRestaurantId());
-//        returnValue.put("restaurantname", restaurant.getRestaurantName());
-//
-//        returnValue.put("date", revenue.getRevenueDate());
-//        returnValue.put("totalquantity", quantity);
-//        returnValue.put("totalrevenue", revenues);
-//
-//        return returnValue;
-//    }
-
-//    @PostMapping("/revenues/between")
-//    public Map<String, Object> getRevenueBetween(@RequestBody RevenueBetweenDTO revenueBetweenDTO){
-//        List<Order> listOrder = revenueRepository.getOrdersByOrderDateBetween(revenueBetweenDTO.getFromDate().atStartOfDay(), revenueBetweenDTO.getToDate().atStartOfDay());
-//        Map<String, Object> returnValue = new HashMap<>();
-//        Double revenue = (double) 0;
-//        Integer quantity = 0;
-//        for(Order item: listOrder){
-//            revenue += item.getTotalPrice();
-//            quantity += item.getTotalQuantity();
-//        }
-//
-//        returnValue.put("fromdate", revenueBetweenDTO.getFromDate());
-//        returnValue.put("todate", revenueBetweenDTO.getToDate());
-//        returnValue.put("totalquantity",quantity);
-//        returnValue.put("totalrevenue", revenue);
-//
-//        return returnValue;
-//    }
-
-//    @PostMapping("/revenues/between/restaurant")
-//    public Map<String, Object> getRevenueBetweenByRestaurant(@RequestBody RevenueBetweenByRestaurantDTO revenue){
-//        List<Order> listOrder = revenueRepository.getOrdersByOrderDateBetweenAndRestaurantId(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay(), revenue.getRestaurantId());
-//        Restaurant restaurant = restaurantService.getRestaurantById(revenue.getRestaurantId());
-//        Map<String, Object> returnValue = new HashMap<>();
-//        Double revenues = (double) 0;
-//        Integer quantity = 0;
-//        for(Order item: listOrder){
-//            quantity += item.getTotalQuantity();
-//            revenues += item.getTotalPrice();
-//        }
-//
-//        returnValue.put("restaurantid", revenue.getRestaurantId());
-//        returnValue.put("restaurantname", restaurant.getRestaurantName());
-//        returnValue.put("fromdate", revenue.getFromDate());
-//        returnValue.put("todate", revenue.getToDate());
-//        returnValue.put("totalquantity", quantity);
-//        returnValue.put("totalrevenue", revenue);
-//
-//        return returnValue;
-//    }
 
     @GetMapping("/statistic")
     public Map<String, Object> getAllStatistic(){

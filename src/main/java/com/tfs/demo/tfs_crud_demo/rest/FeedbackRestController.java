@@ -101,15 +101,6 @@ public class FeedbackRestController {
         return listResult;
     }
 
-//    @PostMapping("/feedbacks")
-//    public Feedback addNewFeedback(@RequestBody Feedback feedback){
-//        if(feedback.getPoint()<0 || feedback.getPoint()>100){
-//            throw new RuntimeException("Feedback point must be in range (0-100), please try again");
-//        }
-//        feedbackService.save(feedback);
-//        return feedback;
-//    }
-
     @PostMapping("/feedbacks")
     public Feedback addNewComment(@RequestBody AddCommentDTO addCommentDTO){
         Food food = foodService.getFoodById(addCommentDTO.getFoodId());

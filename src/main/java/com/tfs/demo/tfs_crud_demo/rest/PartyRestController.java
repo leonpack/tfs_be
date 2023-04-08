@@ -1,7 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.entity.Party;
-import com.tfs.demo.tfs_crud_demo.service.CartService;
 import com.tfs.demo.tfs_crud_demo.service.PartyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +13,12 @@ import java.util.List;
 @RequestMapping("/api")
 public class PartyRestController {
 
-    private PartyService partyService;
-    private CartService cartService;
+    private final PartyService partyService;
 
     @Autowired
-    public PartyRestController(PartyService thePartyService, CartService theCartService){
+    public PartyRestController(PartyService thePartyService){
         partyService = thePartyService;
-        cartService = theCartService;
     }
-
 
     @GetMapping("/parties")
     public List<Party> getAllParties(){

@@ -14,7 +14,7 @@ import java.util.Optional;
 @CrossOrigin
 public class FeedbackServiceImplementation implements FeedbackService{
 
-    private FeedbackRepository feedbackRepository;
+    private final FeedbackRepository feedbackRepository;
 
     @Autowired
     public FeedbackServiceImplementation(FeedbackRepository theFeedbackRepository){

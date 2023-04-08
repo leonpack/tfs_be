@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class EventServiceImplementation implements EventService {
 
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
 
     @Autowired
     public EventServiceImplementation(EventRepository theEventRepository){

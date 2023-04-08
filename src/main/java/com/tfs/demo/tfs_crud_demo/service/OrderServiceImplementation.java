@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class OrderServiceImplementation implements OrderService{
 
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
     public OrderServiceImplementation(OrderRepository theOrderRepository){

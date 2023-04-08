@@ -15,10 +15,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class RestaurantRestController {
 
-    private RestaurantService restaurantService;
-    private StaffService staffService;
-
-    private AccountService accountService;
+    private final RestaurantService restaurantService;
+    private final StaffService staffService;
+    private final AccountService accountService;
 
     @Autowired
     public RestaurantRestController(RestaurantService theRestaurantService, StaffService theStaffService, AccountService theAccountService){
@@ -45,14 +44,14 @@ public class RestaurantRestController {
     @GetMapping("/restaurants/manager/{restaurantId}")
     public Staff getManagerOfTheRestaurant(@PathVariable int restaurantId){
         Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
-        Staff manager = null;
+        Staff manager;
         for(Staff item : restaurant.getStaffList()){
             if(item.getTheAccountForStaff().getRoleId().toString().equals("3")){
                 manager = item;
                 return manager;
             }
         }
-        return manager;
+        return null;
     }
 
     @GetMapping("/manager/{managerId}")
@@ -66,21 +65,6 @@ public class RestaurantRestController {
         }
         return manager.getTheRestaurant();
     }
-
-
-
-
-//    @GetMapping("/restaurants/available/{restaurantId}")
-//    public List<Staff> getAllFreeStaffs(@PathVariable int restaurantId){
-//        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
-//        List<Staff> freeStaffs = new ArrayList<>();
-//        for(Staff item : restaurant.getStaffList()){
-//            if(item.getStaffActivityStatus().equals("available") && item.getTheAccountForStaff().getRoleId().toString().equals("4")){
-//                freeStaffs.add(item);
-//            }
-//        }
-//        return freeStaffs;
-//    }
 
     @PostMapping("/restaurants")
     public String AddNewRestaurant(@RequestBody Restaurant theRestaurant){
@@ -140,7 +124,7 @@ public class RestaurantRestController {
     }
 
 //    @PostMapping("/restaurants/{staffId}TO{restaurantId}")
-//    public String addStaffToRestaurant(@PathVariable String staffId, @PathVariable String restaurantId){
+//    public String addStaffToRestaurant(@PathVariable int staffId, @PathVariable int restaurantId){
 //        Staff theStaff = staffService.getStaffById(staffId);
 //        Restaurant theRestaurant = restaurantService.getRestaurantById(restaurantId);
 //        if(theStaff == null || theRestaurant == null){

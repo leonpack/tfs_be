@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class CustomerServiceImplementation implements CustomerService{
 
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
     private final AccountRepository accountRepository;
 
     @Autowired

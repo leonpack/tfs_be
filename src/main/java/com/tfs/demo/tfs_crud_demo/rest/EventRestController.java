@@ -14,12 +14,10 @@ import java.util.List;
 public class EventRestController {
 
     private EventService eventService;
-    private FoodService foodService;
 
     @Autowired
-    public EventRestController(EventService theEventService,FoodService theFoodService){
+    public EventRestController(EventService theEventService){
         eventService = theEventService;
-        foodService = theFoodService;
     }
 
     @GetMapping("/events")

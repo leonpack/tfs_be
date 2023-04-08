@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class RoleServiceImplementation implements RoleService{
 
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public RoleServiceImplementation(RoleRepository theRoleRepository){

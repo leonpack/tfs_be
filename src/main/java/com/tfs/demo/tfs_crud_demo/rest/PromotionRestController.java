@@ -11,7 +11,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/api")
 public class PromotionRestController {
-    private PromotionService promotionService;
+    private final PromotionService promotionService;
     @Autowired
     public PromotionRestController(PromotionService thePromotionService){
         promotionService = thePromotionService;

@@ -14,9 +14,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class CategoryRestController {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
-    private FoodService foodService;
+    private final FoodService foodService;
 
     @Autowired
     public CategoryRestController(CategoryService theCategoryService, FoodService theFoodService){
@@ -41,12 +41,6 @@ public class CategoryRestController {
 
     @PostMapping("/categories")
     public String addCategory(@RequestBody Category theCategory){
-
-//        if(!categoryService.CheckDuplicateId(theCategory.getId())){
-//            return "Duplicate id issues has been found!";
-//        }
-//        categoryService.saveCategory(theCategory);
-//        return theCategory;
         categoryService.saveCategory(theCategory);
         return "Saved " + theCategory;
     }

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class FoodServiceImplementation implements FoodService{
 
-    private FoodRepository foodRepository;
+    private final FoodRepository foodRepository;
 
     @Autowired
     public FoodServiceImplementation(FoodRepository theFoodRepository){
@@ -34,7 +34,7 @@ public class FoodServiceImplementation implements FoodService{
     public Food getFoodById(int id) {
         Optional<Food> result = foodRepository.findById(id);
 
-        Food theFood = null;
+        Food theFood;
 
         if(result.isPresent()){
             theFood = result.get();
@@ -56,7 +56,7 @@ public class FoodServiceImplementation implements FoodService{
     public void disableFood(int id) {
         Optional<Food> result = foodRepository.findById(id);
 
-        Food theFood = null;
+        Food theFood;
 
         if(result.isPresent()){
             theFood = result.get();
@@ -72,7 +72,7 @@ public class FoodServiceImplementation implements FoodService{
     @Transactional
     public void removeFood(int foodId) {
         Optional<Food> result = foodRepository.findById(foodId);
-        Food food = null;
+        Food food;
         if(result.isPresent()){
             food = result.get();
             foodRepository.delete(food);
