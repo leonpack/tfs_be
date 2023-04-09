@@ -1,9 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
-import com.tfs.demo.tfs_crud_demo.dto.AssignOrderDTO;
-import com.tfs.demo.tfs_crud_demo.dto.FeedbackStatusDTO;
-import com.tfs.demo.tfs_crud_demo.dto.NewRefundDTO;
-import com.tfs.demo.tfs_crud_demo.dto.RefundDTO;
+import com.tfs.demo.tfs_crud_demo.dao.OrderComboDetailRepository;
+import com.tfs.demo.tfs_crud_demo.dto.*;
 import com.tfs.demo.tfs_crud_demo.entity.*;
 import com.tfs.demo.tfs_crud_demo.library.vn.zalopay.crypto.HMACUtil;
 import com.tfs.demo.tfs_crud_demo.service.*;
@@ -68,6 +66,8 @@ public class OrderRestController {
     private final NotificationService notificationService;
     private final CartService cartService;
     private final ZalopayDetailService zalopayDetailService;
+    private final ComboService comboService;
+    private final OrderComboDetailRepository orderComboDetailRepository;
 
     @Autowired
     public OrderRestController(OrderService theOrderService,
@@ -79,7 +79,9 @@ public class OrderRestController {
                                CustomerService theCustomerService,
                                NotificationService theNotificationService,
                                CartService theCartService,
-                               ZalopayDetailService theZalopayDetailService){
+                               ZalopayDetailService theZalopayDetailService,
+                               ComboService theComboService,
+                               OrderComboDetailRepository orderComboDetailRepository){
         orderService = theOrderService;
         promotionService = thePromotionService;
         foodService = theFoodService;
@@ -90,6 +92,8 @@ public class OrderRestController {
         notificationService = theNotificationService;
         cartService = theCartService;
         zalopayDetailService = theZalopayDetailService;
+        comboService = theComboService;
+        this.orderComboDetailRepository = orderComboDetailRepository;
     }
 
     @GetMapping("/orders")
