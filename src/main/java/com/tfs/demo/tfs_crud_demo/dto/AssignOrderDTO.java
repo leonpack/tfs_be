@@ -7,15 +7,17 @@ public class AssignOrderDTO {
     private int orderId;
 
     private String status;
+    private String reason;
 
     public AssignOrderDTO(){
 
     }
 
-    public AssignOrderDTO(int staffId, int orderId, String status) {
+    public AssignOrderDTO(int staffId, int orderId, String status, String reason) {
         this.staffId = staffId;
         this.orderId = orderId;
         this.status = status;
+        this.reason = reason;
     }
 
     public int getStaffId() {
@@ -40,5 +42,13 @@ public class AssignOrderDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

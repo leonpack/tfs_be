@@ -404,6 +404,10 @@ public class OrderRestController {
     @PutMapping("/orders/status")
     public Order updateOrderStatus(@RequestBody AssignOrderDTO assignOrderDTO){
 
+        if(assignOrderDTO.getReason()==null || assignOrderDTO.getReason().isBlank()){
+            assignOrderDTO.setReason("");
+        }
+
         Order order = orderService.getOrderById(assignOrderDTO.getOrderId());
         Staff staff = staffService.getStaffById(assignOrderDTO.getStaffId());
         Restaurant restaurant = restaurantService.getRestaurantById(order.getRestaurantId());
@@ -423,7 +427,7 @@ public class OrderRestController {
         if(assignOrderDTO.getStatus().toLowerCase().equals("deny")){
             order.setStatus(assignOrderDTO.getStatus());
             order.setStaffId(null);
-
+            order.setReason(assignOrderDTO.getReason());
             orderService.saveOrder(order);
 
             //create notification to in-form user about denied's order
