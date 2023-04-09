@@ -706,7 +706,7 @@ public class OrderRestController {
         return returnMessage;
     }
 
-    @GetMapping("/orders/refundStatus/{id}")
+    @GetMapping("/orders/refundStatus/{mrefundid}")
     public Map<String, Object> getRefundStatus(@PathVariable String mrefundid) throws URISyntaxException, IOException {
         String timestamp = Long.toString(System.currentTimeMillis()); // miliseconds
         String data = config.get("appid") +"|"+ mrefundid  +"|"+ timestamp; // appid|mrefundid|timestamp
@@ -744,38 +744,6 @@ public class OrderRestController {
 
         return returnMessage;
     }
-
-
-    //TODO ADD Party and then TURN THIS ON AGAIN
-//    @PutMapping("/orders/{orderId}")
-//    public Order denyOrder(@PathVariable int orderId){
-//        Order order = orderService.getOrderById(orderId);
-//        for(OrderDetail item : order.getItemList()){
-//            if(item.getPartyId()!=null || !item.getPartyId().toString().isEmpty()){
-//                LocalDate today = LocalDate.parse(LocalDate.now().toString());
-//                LocalDate deliDay = LocalDate.parse(order.getDeliveryDate().toString());
-//                long diffDays= ChronoUnit.DAYS.between(today,deliDay);
-//                if(diffDays>1){
-//                    order.setStatus("DENY");
-//                    order.setStaffId(null);
-//                    Staff staff = staffService.getStaffById(order.getStaffId());
-//                    staff.setStaffActivityStatus("available");
-//                    staffService.saveStaff(staff);
-//                    orderService.saveOrder(order);
-//                } else {
-//                    throw new RuntimeException("Order can't be deny right now");
-//                }
-//            } else {
-//                order.setStatus("DENY");
-//                order.setStaffId(null);
-//                Staff staff = staffService.getStaffById(order.getStaffId());
-//                staff.setStaffActivityStatus("available");
-//                staffService.saveStaff(staff);
-//                orderService.saveOrder(order);
-//            }
-//        }
-//        return order;
-//    }
 
     @PutMapping("/orders/feedback/status")
     public ResponseEntity<String> updateOrderFeedback(@RequestBody FeedbackStatusDTO feedbackStatusDTO){

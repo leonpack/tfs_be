@@ -91,7 +91,6 @@ public class FeedbackRestController {
             Map<String, Object> fb = new HashMap<>();
             fb.put("id",item.getId());
             fb.put("food",item.getFood());
-            fb.put("orderId", item.getOrderId());
             fb.put("customerName", customerService.getCustomerById(item.getCustomerId()).getCustomerName());
             fb.put("avatarUrl",item.getAvatarUrl());
             fb.put("comment",item.getComment());
@@ -105,7 +104,7 @@ public class FeedbackRestController {
     @PostMapping("/feedbacks")
     public Feedback addNewComment(@RequestBody AddCommentDTO addCommentDTO){
         Food food = foodService.getFoodById(addCommentDTO.getFoodId());
-        Feedback feedback = new Feedback(food, addCommentDTO.getOrderId(), addCommentDTO.getCustomerId(), addCommentDTO.getAvatarUrl(), addCommentDTO.getComment(), addCommentDTO.getRate(), true);
+        Feedback feedback = new Feedback(food, addCommentDTO.getCustomerId(), addCommentDTO.getAvatarUrl(), addCommentDTO.getComment(), addCommentDTO.getRate(), true);
         feedbackService.save(feedback);
         food.addComment(feedback);
         foodService.saveFood(food);
@@ -116,7 +115,7 @@ public class FeedbackRestController {
     public ResponseEntity<String> addListFeedBack(@RequestBody List<AddCommentDTO> list){
         for(AddCommentDTO item: list){
             Food food = foodService.getFoodById(item.getFoodId());
-            Feedback feedback = new Feedback(food, item.getOrderId() ,item.getCustomerId(), item.getAvatarUrl(), item.getComment(), item.getRate(), true);
+            Feedback feedback = new Feedback(food, item.getCustomerId(), item.getAvatarUrl(), item.getComment(), item.getRate(), true);
             feedbackService.save(feedback);
             food.addComment(feedback);
             food.setRatingNum(food.getRatingNum()+1);
