@@ -182,7 +182,7 @@ public class OrderRestController {
 //            }
 //            if(order.getStaffId()==null || order.getStaffId().toString().isEmpty()){
                 Random rd = new Random();
-                int randomDude = rd.nextInt(restaurant.getStaffList().size()+1);
+                int randomDude = rd.nextInt(restaurant.getStaffList().size());
                 order.setStaffId(restaurant.getStaffList().get(randomDude).getStaffId());
                 Notification staffNoti = new Notification("Bạn có một đơn hàng mới cần xử lý, mã đơn hàng là " +order.getId()
                         , restaurant.getStaffList().get(randomDude).getTheAccountForStaff().getAccountId());
