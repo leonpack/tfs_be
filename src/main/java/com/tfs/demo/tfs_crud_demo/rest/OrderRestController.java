@@ -153,7 +153,7 @@ public class OrderRestController {
         }
 
         if(orderService.CheckDuplicateOrderId(order.getId())){
-            throw new RuntimeException("Order with id -" +order.getId() + " already exist, please try again!");
+            throw new RuntimeException("Order with id - " +order.getId() + " already exist, please try again!");
         }
 
         //check if the party is in another order
@@ -181,9 +181,18 @@ public class OrderRestController {
 //                }
 //            }
 //            if(order.getStaffId()==null || order.getStaffId().toString().isEmpty()){
+                List<Staff> availableStaff = new ArrayList<>();
+                for(Staff item: restaurant.getStaffList()){
+                    if(item.getTheAccountForStaff().getRoleId().toString().equals("4")){
+                        availableStaff.add(item);
+                    }
+                }
+                if(availableStaff.isEmpty()){
+                    throw new RuntimeException("This restaurant don't have any staff to proceed this order");
+                }
                 Random rd = new Random();
-                int randomDude = rd.nextInt(restaurant.getStaffList().size());
-                order.setStaffId(restaurant.getStaffList().get(randomDude).getStaffId());
+                int randomDude = rd.nextInt(availableStaff.size());
+                order.setStaffId(availableStaff.get(randomDude).getStaffId());
                 Notification staffNoti = new Notification("Bạn có một đơn hàng mới cần xử lý, mã đơn hàng là " +order.getId()
                         , restaurant.getStaffList().get(randomDude).getTheAccountForStaff().getAccountId());
                 notificationService.save(staffNoti);
