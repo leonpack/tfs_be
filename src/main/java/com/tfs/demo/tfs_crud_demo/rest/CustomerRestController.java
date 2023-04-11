@@ -79,6 +79,7 @@ public class CustomerRestController {
         if(customer.getAvatarURL().isBlank() || customer.getAvatarURL()==null){
             customer.setAvatarURL("https://live.staticflickr.com/65535/52719475105_ec5b21e417_w.jpg");
         }
+        Account account = accountService.saveAccount(customer.getTheAccount());
         customerService.saveCustomer(customer);
         Cart cart = new Cart((double) 0, 0, customer);
         cartService.saveCart(cart);
