@@ -27,7 +27,7 @@ public class Combo {
     @Column(name = "image")
     private String image;
 
-    @OneToMany(mappedBy = "combo", cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "combo", cascade = CascadeType.MERGE, orphanRemoval = true)
     @JsonManagedReference
     private List<ComboDetail> comboItems = new ArrayList<>();
 

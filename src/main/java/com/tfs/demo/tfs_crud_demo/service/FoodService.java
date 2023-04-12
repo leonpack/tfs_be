@@ -12,6 +12,8 @@ public interface FoodService {
 
     public Food getFoodById(int id);
 
+    public Food getByName(String name);
+
     public void saveFood(Food theFood);
 
     public void disableFood(int id);

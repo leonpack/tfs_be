@@ -93,6 +93,9 @@ public class FoodRestController {
         if(food.getRatingNum()==null){
             food.setRatingNum(0);
         }
+        if(food.getType()==null){
+            food.setType(false);
+        }
         foodService.saveFood(food);
         return food;
     }
@@ -127,6 +130,9 @@ public class FoodRestController {
         }
         if(food.getRatingNum()==null){
             food.setRatingNum(theFood1.getRatingNum());
+        }
+        if(food.getType()==null){
+            food.setType(theFood1.getType());
         }
         foodService.saveFood(food);
         return food;

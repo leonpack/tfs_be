@@ -1,8 +1,12 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
-import com.tfs.demo.tfs_crud_demo.entity.Combo;
+import com.tfs.demo.tfs_crud_demo.entity.*;
+import com.tfs.demo.tfs_crud_demo.service.CategoryService;
 import com.tfs.demo.tfs_crud_demo.service.ComboService;
+import com.tfs.demo.tfs_crud_demo.service.FoodService;
+import com.tfs.demo.tfs_crud_demo.service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,10 +17,16 @@ import java.util.List;
 public class ComboRestController {
 
     private final ComboService comboService;
+    private final FoodService foodService;
+    private final CategoryService categoryService;
+    private final RegionService regionService;
 
     @Autowired
-    public ComboRestController(ComboService theComboService){
+    public ComboRestController(ComboService theComboService, FoodService theFoodService, CategoryService theCategoryService, RegionService theRegionService){
         comboService = theComboService;
+        foodService = theFoodService;
+        categoryService = theCategoryService;
+        regionService = theRegionService;
     }
 
     @GetMapping("/combos")
@@ -30,13 +40,48 @@ public class ComboRestController {
     }
 
     @PostMapping("/combos")
-    public Combo addNewCombo(@RequestBody Combo combo){
+    public ResponseEntity<String> addNewCombo(@RequestBody Combo combo){
         comboService.saveCombo(combo);
-        return combo;
+        StringBuilder description = new StringBuilder("Combo bao gồm:");
+        int bac = 0;
+        int trung = 0;
+        int nam = 0;
+        for(ComboDetail item: combo.getComboItems()){
+            Food food = foodService.getFoodById(item.getFoodId());
+            if(food.getTheRegion().getId()==1){
+                bac += 1;
+            } else if (food.getTheRegion().getId()==2){
+                trung += 1;
+            } else {
+                nam += 1;
+            }
+        }
+        for(ComboDetail item: combo.getComboItems()){
+            description.append(" "+ item.getName() + " ,");
+        }
+        if(bac >= trung && bac >= nam){
+            Region theRegion = regionService.getRegionById(1);
+            Category theCategory = categoryService.getCategoryById(13);
+            Food food = new Food(combo.getComboName(), description.toString(), combo.getComboPrice(), combo.getImage(), theCategory, theRegion, true, 0, 0, true);
+            foodService.saveFood(food);
+        }
+        else if(trung >= bac && trung >= nam){
+            Region theRegion = regionService.getRegionById(2);
+            Category theCategory = categoryService.getCategoryById(13);
+            Food food = new Food(combo.getComboName(), description.toString(), combo.getComboPrice(), combo.getImage(), theCategory, theRegion, true, 0, 0, true);
+            foodService.saveFood(food);
+        }
+        else if(nam >= bac && nam >= trung){
+            Region theRegion = regionService.getRegionById(3);
+            Category theCategory = categoryService.getCategoryById(13);
+            Food food = new Food(combo.getComboName(), description.toString(), combo.getComboPrice(), combo.getImage(), theCategory, theRegion, true, 0, 0, true);
+            foodService.saveFood(food);
+        }
+        return ResponseEntity.ok("Tạo combo thành công");
     }
 
     @PutMapping("/combos")
-    public Combo updateCombo(@RequestBody Combo combo){
+    public ResponseEntity<String> updateCombo(@RequestBody Combo combo){
         Combo existCombo = comboService.getComboById(combo.getId());
 
         if(combo.getComboName()==null){
@@ -59,7 +104,55 @@ public class ComboRestController {
             combo.setStatus(existCombo.getStatus());
         }
         comboService.saveCombo(combo);
-        return combo;
+
+        //also gen to food
+        Food existFood = foodService.getByName(combo.getComboName());
+        if(existFood==null){
+            throw new RuntimeException("This combo/food is not exist, or the name has been changed");
+        }
+
+        StringBuilder description = new StringBuilder("Combo gồm: ");
+        int bac = 0;
+        int trung = 0;
+        int nam = 0;
+        for(ComboDetail item: combo.getComboItems()){
+            description.append(" "+ item.getName() + " ,");
+        }
+        for(ComboDetail item: combo.getComboItems()){
+            Food food = foodService.getFoodById(item.getFoodId());
+            if(food.getTheRegion().getId()==1){
+                bac += 1;
+            } else if (food.getTheRegion().getId()==2){
+                trung += 1;
+            } else {
+                nam += 1;
+            }
+        }
+
+        if(bac >= trung && bac >= nam){
+            existFood.setDescription(description.toString());
+            existFood.setImgUrl(combo.getImage());
+            existFood.setPrice(combo.getComboPrice());
+            Region theRegion = regionService.getRegionById(1);
+            existFood.setTheRegion(theRegion);
+            foodService.saveFood(existFood);
+        }
+        else if(trung >= bac && trung >= nam){
+            existFood.setDescription(description.toString());
+            existFood.setImgUrl(combo.getImage());
+            existFood.setPrice(combo.getComboPrice());
+            Region theRegion = regionService.getRegionById(2);
+            existFood.setTheRegion(theRegion);
+            foodService.saveFood(existFood);
+        } else if(nam >= bac && nam >= trung){
+            existFood.setDescription(description.toString());
+            existFood.setImgUrl(combo.getImage());
+            existFood.setPrice(combo.getComboPrice());
+            Region theRegion = regionService.getRegionById(3);
+            existFood.setTheRegion(theRegion);
+            foodService.saveFood(existFood);
+        }
+        return ResponseEntity.ok("Cập nhật combo thành công");
     }
 
     @PutMapping("/combos/clear/{comboId}")

@@ -46,6 +46,11 @@ public class FoodServiceImplementation implements FoodService{
     }
 
     @Override
+    public Food getByName(String name) {
+        return foodRepository.findFoodByFoodName(name);
+    }
+
+    @Override
     @Transactional
     public void saveFood(Food theFood) {
         foodRepository.save(theFood);

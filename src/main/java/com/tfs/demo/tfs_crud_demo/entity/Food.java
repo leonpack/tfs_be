@@ -53,6 +53,9 @@ public class Food {
     @Column(name = "rating_num")
     private Integer ratingNum;
 
+    @Column(name = "type")
+    private Boolean type;
+
     @ManyToMany(mappedBy = "foodList", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"foodList","description","image_url","fromDate","toDate","status"})
     private Set<Event> eventList = new HashSet<Event>();
@@ -79,14 +82,17 @@ public class Food {
 //    }
 
 
-    public Food(String foodName, String description, double price, String imgUrl, boolean status, Integer purchaseNum, Integer ratingNum) {
+    public Food(String foodName, String description, double price, String imgUrl, Category theCategory, Region theRegion, boolean status, Integer purchaseNum, Integer ratingNum, Boolean type) {
         this.foodName = foodName;
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
+        this.theCategory = theCategory;
+        this.theRegion = theRegion;
         this.status = status;
         this.purchaseNum = purchaseNum;
         this.ratingNum = ratingNum;
+        this.type = type;
     }
 
     public int getId() {
@@ -175,6 +181,14 @@ public class Food {
 
     public void setRatingNum(Integer ratingNum) {
         this.ratingNum = ratingNum;
+    }
+
+    public Boolean getType() {
+        return type;
+    }
+
+    public void setType(Boolean type) {
+        this.type = type;
     }
 
     public List<Feedback> getListComment() {
