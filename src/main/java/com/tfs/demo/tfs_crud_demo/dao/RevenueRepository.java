@@ -1,6 +1,7 @@
 package com.tfs.demo.tfs_crud_demo.dao;
 
 import com.tfs.demo.tfs_crud_demo.dto.OrderDateResponse;
+import com.tfs.demo.tfs_crud_demo.dto.RefundChartResponseDTO;
 import com.tfs.demo.tfs_crud_demo.dto.StaffChartResponseDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -82,4 +83,51 @@ public interface RevenueRepository extends JpaRepository<Order, Integer> {
             "GROUP BY orderDay\n" +
             "ORDER BY orderDay ASC;\n", nativeQuery = true)
     Collection<StaffChartResponseDTO> getStaffStatistic(int staffId);
+
+    @Query(value = "SET @start_date = ?1;\n" +
+            "SET @end_date = ?2;\n" +
+            "\n" +
+            "SELECT date_table.date AS orderDay, COALESCE(SUM(orders_refund.refund), 0) AS refund\n" +
+            "FROM (\n" +
+            "    SELECT DATE_FORMAT(DATE_ADD(@start_date, INTERVAL seq DAY), '%Y-%m-%d') AS date\n" +
+            "    FROM (\n" +
+            "        SELECT @rownum\\:=@rownum+1 AS seq\n" +
+            "        FROM information_schema.columns\n" +
+            "        JOIN (SELECT @rownum\\:=0) r\n" +
+            "        WHERE @rownum<DATEDIFF(@end_date, @start_date) + 1\n" +
+            "    ) AS seq_table\n" +
+            ") AS date_table\n" +
+            "LEFT JOIN (\n" +
+            "    SELECT DATE_FORMAT(order_date, '%Y-%m-%d') AS order_date_formatted,\n" +
+            "           CASE WHEN activity_status = 'deny' AND payment_method = 'ZaloPay' AND order_date >= @start_date AND order_date <= @end_date\n" +
+            "                THEN (total_price * 0.1) ELSE 0 END AS refund\n" +
+            "    FROM orders\n" +
+            ") AS orders_refund ON date_table.date = orders_refund.order_date_formatted\n" +
+            "GROUP BY orderDay\n" +
+            "ORDER BY orderDay ASC;", nativeQuery = true)
+    Collection<RefundChartResponseDTO> getRefundChartForOwner(LocalDateTime fromDate, LocalDateTime toDate);
+
+    @Query(value = "SET @start_date = ?1;\n" +
+            "SET @end_date = ?2;\n" +
+            "SET @restaurant_id = ?3;\n" +
+            "\n" +
+            "SELECT date_table.date AS orderDay, COALESCE(SUM(orders_refund.refund), 0) AS refund\n" +
+            "FROM (\n" +
+            "    SELECT DATE_FORMAT(DATE_ADD(@start_date, INTERVAL seq DAY), '%Y-%m-%d') AS date\n" +
+            "    FROM (\n" +
+            "        SELECT @rownum\\:=@rownum+1 AS seq\n" +
+            "        FROM information_schema.columns\n" +
+            "        JOIN (SELECT @rownum\\:=0) r\n" +
+            "        WHERE @rownum<DATEDIFF(@end_date, @start_date) + 1\n" +
+            "    ) AS seq_table\n" +
+            ") AS date_table\n" +
+            "LEFT JOIN (\n" +
+            "    SELECT DATE_FORMAT(order_date, '%Y-%m-%d') AS order_date_formatted,\n" +
+            "           CASE WHEN activity_status = 'deny' AND payment_method = 'ZaloPay' AND order_date >= @start_date AND order_date <= @end_date AND restaurant_id = @restaurant_id\n" +
+            "                THEN (total_price * 0.1) ELSE 0 END AS refund\n" +
+            "    FROM orders\n" +
+            ") AS orders_refund ON date_table.date = orders_refund.order_date_formatted\n" +
+            "GROUP BY orderDay\n" +
+            "ORDER BY orderDay ASC;", nativeQuery = true)
+    Collection<RefundChartResponseDTO> getRefundChartForRestaurant(LocalDateTime fromDate, LocalDateTime toDate, int restaurantId);
 }

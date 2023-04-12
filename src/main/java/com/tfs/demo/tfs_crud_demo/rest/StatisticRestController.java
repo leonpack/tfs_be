@@ -43,8 +43,12 @@ public class StatisticRestController {
         List<Customer> getAllCustomers = customerService.getAllCustomers();
         List<Staff> getAllStaffs = staffService.getAllStaffs();
         Double totalRevenues = (double) 0;
+        Double prepaid = (double) 0;
         for(Order item: getAllOrders){
             totalRevenues += item.getTotalPrice();
+            if(item.getPaymentMethod().equals("ZaloPay") && item.getStatus().equals("deny")){
+                prepaid += (item.getTotalPrice()*0.1);
+            }
         }
         int orderNum = getAllOrders.size();
         int customerNum = getAllCustomers.size();
@@ -55,6 +59,8 @@ public class StatisticRestController {
         returnValue.put("totalcustomers", customerNum);
         returnValue.put("totalstaffs", staffNum);
         returnValue.put("totalrevenues", totalRevenues);
+        returnValue.put("totalrefunds", prepaid);
+        returnValue.put("totalfinal", totalRevenues + prepaid);
 
         return returnValue;
     }
@@ -65,15 +71,21 @@ public class StatisticRestController {
         List<Staff> getStaffsByRestaurant = staffService.getAllByRestaurant(restaurantService.getRestaurantById(restaurantId));
         int ordersNum = getOrdersByRestaurant.size();
         int staffsNum = getStaffsByRestaurant.size();
+        double prepaid = (double) 0;
         Double totalRevenue = (double) 0;
         for(Order item: getOrdersByRestaurant){
             totalRevenue += item.getTotalPrice();
+            if(item.getStatus().equals("deny") && item.getPaymentMethod().equals("ZaloPay")){
+                prepaid += (item.getTotalPrice()*0.1);
+            }
         }
 
         Map<String, Object> returnValue = new HashMap<>();
         returnValue.put("totalorders", ordersNum);
         returnValue.put("totalstaffs", staffsNum);
         returnValue.put("totalrevenues", totalRevenue);
+        returnValue.put("totalrefunds", prepaid);
+        returnValue.put("totalfinal", totalRevenue + prepaid);
 
         return returnValue;
     }
@@ -122,9 +134,27 @@ public class StatisticRestController {
         return result;
     }
 
+    @PostMapping("/statistic/refund/detail/owner")
+    public Collection<RefundChartResponseDTO> getRefundChartForOwner(@RequestBody RevenueBetweenDTO revenue){
+        if(revenue.getFromDate().isAfter(revenue.getToDate())){
+            throw new RuntimeException("fromDate and toDate value is not valid, please try again");
+        }
+        return revenueRepository.getRefundChartForOwner(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay());
+    }
+
+    @PostMapping("/statistic/refund/detail")
+    public Collection<RefundChartResponseDTO> getRefundChartForRestaurant(@RequestBody RevenueBetweenByRestaurantDTO revenue){
+        if(revenue.getFromDate().isAfter(revenue.getToDate())){
+            throw new RuntimeException("fromDate and toDate value is not valid, please try again");
+        }
+        return revenueRepository.getRefundChartForRestaurant(revenue.getFromDate().atStartOfDay(), revenue.getToDate().atStartOfDay(), revenue.getRestaurantId());
+    }
+
     @GetMapping("/statistic/staff/{staffId}")
     public Collection<StaffChartResponseDTO> getStaffStatistic(@PathVariable int staffId){
         return revenueRepository.getStaffStatistic(staffId);
     }
+
+
 
 }
