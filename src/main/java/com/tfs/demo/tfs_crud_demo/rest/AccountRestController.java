@@ -57,6 +57,9 @@ public class AccountRestController {
         if(!theAccount.getPassword().equals(userLogin.getPassword())){
             throw new RuntimeException("Password is incorrect!");
         }
+        if(!theAccount.getRoleId().equals("5")){
+            throw new RuntimeException("This type of account can't login to the system");
+        }
         if(theAccount.getTheCustomer()==null){
             throw new RuntimeException("Login success but this customer need to update their information!");
         }
