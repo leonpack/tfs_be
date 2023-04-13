@@ -795,4 +795,12 @@ public class OrderRestController {
         return ResponseEntity.ok("Lưu feedback status của order thành công");
     }
 
+    @PutMapping("/orders/note")
+    public ResponseEntity<String> setNoteForOrder(@RequestBody OrderNoteDTO noteDTO){
+        Order order = orderService.getOrderById(noteDTO.getOrderId());
+        order.setNote(noteDTO.getNote());
+        orderService.saveOrder(order);
+        return ResponseEntity.ok("Lưu note thành công");
+    }
+
 }
