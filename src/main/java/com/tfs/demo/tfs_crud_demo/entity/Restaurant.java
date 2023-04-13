@@ -38,17 +38,21 @@ public class Restaurant {
     @Column(name = "status")
     private Boolean status;
 
+    @Column(name = "available_status")
+    private Boolean availableStatus;
+
     public Restaurant(){
 
     }
 
-    public Restaurant(String restaurantLocation, String latitude, String longitude, String restaurantName, String restaurantNumber, Boolean status) {
+    public Restaurant(String restaurantLocation, String latitude, String longitude, String restaurantName, String restaurantNumber, Boolean status, Boolean availableStatus) {
         this.restaurantLocation = restaurantLocation;
         this.latitude = latitude;
         this.longitude = longitude;
         this.restaurantName = restaurantName;
         this.restaurantNumber = restaurantNumber;
         this.status = status;
+        this.availableStatus = availableStatus;
     }
 
     public int getRestaurantId() {
@@ -113,5 +117,13 @@ public class Restaurant {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public Boolean getAvailableStatus() {
+        return availableStatus;
+    }
+
+    public void setAvailableStatus(Boolean availableStatus) {
+        this.availableStatus = availableStatus;
     }
 }

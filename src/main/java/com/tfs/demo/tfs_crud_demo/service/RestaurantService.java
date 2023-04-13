@@ -8,6 +8,8 @@ public interface RestaurantService {
 
     public List<Restaurant> getAllRestaurants();
 
+    public List<Restaurant> getAllByAvailableStatus(Boolean status);
+
     public Restaurant getRestaurantById(int restaurantId);
 
     public void saveRestaurant(Restaurant theRestaurant);

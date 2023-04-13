@@ -6,6 +6,7 @@ import com.tfs.demo.tfs_crud_demo.service.AccountService;
 import com.tfs.demo.tfs_crud_demo.service.RestaurantService;
 import com.tfs.demo.tfs_crud_demo.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,10 +35,6 @@ public class RestaurantRestController {
     @GetMapping("/restaurants/{restaurantId}")
     public Restaurant getRestaurantById(@PathVariable int restaurantId){
         Restaurant theRestaurant = restaurantService.getRestaurantById(restaurantId);
-
-        if(theRestaurant==null){
-            throw new RuntimeException("Restaurant with id - " +restaurantId+" not found!");
-        }
         return theRestaurant;
     }
 
@@ -71,6 +68,9 @@ public class RestaurantRestController {
         if(!restaurantService.checkDuplicatePhoneNumber(theRestaurant.getRestaurantNumber())){
             return "This restaurant phone number - " +theRestaurant.getRestaurantNumber() + " has been linked with another restaurant, please try again!";
         }
+        if(theRestaurant.getAvailableStatus()==null){
+            theRestaurant.setAvailableStatus(true);
+        }
         restaurantService.saveRestaurant(theRestaurant);
         return "Saved - " +theRestaurant;
     }
@@ -99,6 +99,9 @@ public class RestaurantRestController {
         }
         if(theRestaurant.getStatus()==null){
             theRestaurant.setStatus(restaurant.getStatus());
+        }
+        if(theRestaurant.getAvailableStatus()==null){
+            theRestaurant.setAvailableStatus(restaurant.getAvailableStatus());
         }
         theRestaurant.setStaffList(theRestaurant.getStaffList());
         for(Staff item : theRestaurant.getStaffList()){
@@ -133,5 +136,23 @@ public class RestaurantRestController {
 //        theRestaurant.addStaff(theStaff);
 //        return "Add " +theStaff + " to " +theRestaurant + " successfully";
 //    }
+
+    @GetMapping("/restaurants/busybutton/{restaurantId}")
+    public ResponseEntity<String> changeRestaurantAvailableStatus(@PathVariable int restaurantId){
+        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+        if(restaurant.getAvailableStatus().toString().equals("true")){
+            restaurant.setAvailableStatus(false);
+            restaurantService.saveRestaurant(restaurant);
+        } else if(restaurant.getAvailableStatus().toString().equals("false")){
+            restaurant.setAvailableStatus(true);
+            restaurantService.saveRestaurant(restaurant);
+        }
+        return ResponseEntity.ok("Cập nhật trạng thái nhà hàng thành công");
+    }
+
+    @GetMapping("/restaurants/available")
+    public List<Restaurant> getAllAvailableRestaurant(){
+        return restaurantService.getAllByAvailableStatus(true);
+    }
 
 }

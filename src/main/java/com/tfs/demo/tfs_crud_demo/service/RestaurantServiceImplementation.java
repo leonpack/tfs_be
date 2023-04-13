@@ -28,6 +28,11 @@ public class RestaurantServiceImplementation implements RestaurantService{
     }
 
     @Override
+    public List<Restaurant> getAllByAvailableStatus(Boolean status) {
+        return restaurantRepository.findAllByAvailableStatus(status);
+    }
+
+    @Override
     public Restaurant getRestaurantById(int restaurantId) {
         Optional<Restaurant> result = restaurantRepository.findById(restaurantId);
         Restaurant theRestaurant = null;
