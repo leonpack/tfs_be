@@ -1,10 +1,9 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
-import com.tfs.demo.tfs_crud_demo.dto.UserLogin;
+import com.tfs.demo.tfs_crud_demo.dto.LoginDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Customer;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
-import com.tfs.demo.tfs_crud_demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,7 +48,7 @@ public class AccountRestController {
 //    }
 
     @PostMapping("/user/login")
-    public Customer loginByUserInformation(@RequestBody UserLogin userLogin){
+    public Customer loginByUserInformation(@RequestBody LoginDTO userLogin){
         Account theAccount = accountService.getAccountById(userLogin.getUsername());
         if(theAccount == null){
             throw new RuntimeException("Account not found!");

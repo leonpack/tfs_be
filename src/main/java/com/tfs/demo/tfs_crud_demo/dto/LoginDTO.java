@@ -1,15 +1,15 @@
 package com.tfs.demo.tfs_crud_demo.dto;
 
-public class StaffLoginDTO {
+public class LoginDTO {
 
     private String username;
     private String password;
 
-    public StaffLoginDTO(){
+    public LoginDTO(){
 
     }
 
-    public StaffLoginDTO(String username, String password) {
+    public LoginDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }

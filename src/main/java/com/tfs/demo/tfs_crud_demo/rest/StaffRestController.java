@@ -1,6 +1,6 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
-import com.tfs.demo.tfs_crud_demo.dto.StaffLoginDTO;
+import com.tfs.demo.tfs_crud_demo.dto.LoginDTO;
 import com.tfs.demo.tfs_crud_demo.entity.Account;
 import com.tfs.demo.tfs_crud_demo.entity.Staff;
 import com.tfs.demo.tfs_crud_demo.service.AccountService;
@@ -35,7 +35,7 @@ public class StaffRestController {
     }
 
     @PostMapping("/staffs/login")
-    public Staff loginForStaff(@RequestBody StaffLoginDTO loginDTO){
+    public Staff loginForStaff(@RequestBody LoginDTO loginDTO){
         Account theAccount = accountService.getAccountById(loginDTO.getUsername());
         if(theAccount==null){
             throw new RuntimeException("username not found!");
@@ -43,7 +43,7 @@ public class StaffRestController {
         if(!theAccount.getPassword().equals(loginDTO.getPassword())){
             throw new RuntimeException("Wrong password!");
         }
-        if(theAccount.getRoleId().toString().equals("5")){
+        if(theAccount.getRoleId().toString().equals("5") || theAccount.getRoleId().toString().equals("4")){
             throw new RuntimeException("This type of account is not permit here");
         }
         Staff theStaff = staffService.getStaffByTheAccount(theAccount);
