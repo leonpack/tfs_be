@@ -398,6 +398,14 @@ public class OrderRestController {
             order.setPromotionId(theTempOrder.getPromotionId());
         }
 
+        if(order.getCustomerName()==null){
+            order.setCustomerName(theTempOrder.getCustomerName());
+        }
+
+        if(order.getCustomerPhoneNumber()==null){
+            order.setCustomerPhoneNumber(theTempOrder.getCustomerPhoneNumber());
+        }
+
         if(order.getItemList()==null || order.getItemList().isEmpty()){
             order.setItemList(theTempOrder.getItemList());
         }

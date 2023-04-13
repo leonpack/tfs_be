@@ -57,6 +57,12 @@ public class Order {
     @JoinColumn(name = "customer_id")
     private Integer customerId;
 
+    @Column(name = "customer_name")
+    private String customerName;
+
+    @Column(name = "customer_phone_number")
+    private String customerPhoneNumber;
+
     @JoinColumn(name = "restaurant_id")
     private Integer restaurantId;
 
@@ -72,7 +78,6 @@ public class Order {
     @JsonManagedReference
     private List<OrderServices> serviceList = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "orderCombo", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<OrderComboDetail> comboList = new ArrayList<>();
@@ -87,10 +92,10 @@ public class Order {
     public Order(){
 
     }
-
-    public Order(Integer promotionId, Double totalPrice, Integer totalQuantity, String paymentMethod,
-                 String deliveryAddress, LocalDateTime orderDate, LocalDateTime deliveryDate, LocalDateTime receiveTime,
-                 String status, String note, String reason, String deliveryMethod, Integer customerId, Integer restaurantId, Integer staffId, Boolean feedbackStatus) {
+    public Order(Integer promotionId, Double totalPrice, Integer totalQuantity, String paymentMethod
+            , String deliveryAddress, LocalDateTime orderDate, LocalDateTime deliveryDate, LocalDateTime receiveTime
+            , String status, String note, String reason, String deliveryMethod, Integer customerId, String customerName
+            , String customerPhoneNumber, Integer restaurantId, Integer staffId, Boolean feedbackStatus) {
         this.promotionId = promotionId;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
@@ -104,6 +109,8 @@ public class Order {
         this.reason = reason;
         this.deliveryMethod = deliveryMethod;
         this.customerId = customerId;
+        this.customerName = customerName;
+        this.customerPhoneNumber = customerPhoneNumber;
         this.restaurantId = restaurantId;
         this.staffId = staffId;
         this.feedbackStatus = feedbackStatus;
@@ -275,5 +282,21 @@ public class Order {
 
     public void setFeedbackStatus(Boolean feedbackStatus) {
         this.feedbackStatus = feedbackStatus;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerPhoneNumber() {
+        return customerPhoneNumber;
+    }
+
+    public void setCustomerPhoneNumber(String customerPhoneNumber) {
+        this.customerPhoneNumber = customerPhoneNumber;
     }
 }
