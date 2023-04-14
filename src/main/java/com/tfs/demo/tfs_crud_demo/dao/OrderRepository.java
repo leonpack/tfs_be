@@ -19,4 +19,5 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> getAllByRestaurantId(int restaurantId);
 
     Order getOrderByParty(Party party);
+
 }

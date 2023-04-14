@@ -38,18 +38,34 @@ public class StaffRestController {
     public Staff loginForStaff(@RequestBody LoginDTO loginDTO){
         Account theAccount = accountService.getAccountById(loginDTO.getUsername());
         if(theAccount==null){
-            throw new RuntimeException("username not found!");
+            throw new RuntimeException("Tài khoản không tồn tại!");
         }
         if(!theAccount.getPassword().equals(loginDTO.getPassword())){
-            throw new RuntimeException("Wrong password!");
+            throw new RuntimeException("Sai mật khẩu!");
         }
-        if(theAccount.getRoleId().toString().equals("5") || theAccount.getRoleId().toString().equals("4")){
-            throw new RuntimeException("This type of account is not permit here");
+        if(!theAccount.getRoleId().toString().equals("4")){
+            throw new RuntimeException("Tài khoản này không được phép đăng nhập ở đây");
         }
         Staff theStaff = staffService.getStaffByTheAccount(theAccount);
         if(theStaff == null){
             throw new RuntimeException("Login success but this staff need to update their information");
         }
+        return theStaff;
+    }
+
+    @PostMapping("/managers/login")
+    public Staff loginForManager(@RequestBody LoginDTO loginDTO){
+        Account theAccount = accountService.getAccountById(loginDTO.getUsername());
+        if(theAccount==null){
+            throw new RuntimeException("Tài khoản không tồn tại!");
+        }
+        if(!theAccount.getPassword().equals(loginDTO.getPassword())){
+            throw new RuntimeException("Sai mật khẩu!");
+        }
+        if(theAccount.getRoleId().equals("4") || theAccount.getRoleId().equals("5")){
+            throw new RuntimeException("Tài khoản này không được phép đăng nhập ở đây");
+        }
+        Staff theStaff = staffService.getStaffByTheAccount(theAccount);
         return theStaff;
     }
 
