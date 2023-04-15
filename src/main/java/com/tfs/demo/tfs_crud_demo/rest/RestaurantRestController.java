@@ -138,7 +138,7 @@ public class RestaurantRestController {
 //    }
 
     @GetMapping("/restaurants/busybutton/{restaurantId}")
-    public ResponseEntity<String> changeRestaurantAvailableStatus(@PathVariable int restaurantId){
+    public Restaurant changeRestaurantAvailableStatus(@PathVariable int restaurantId){
         Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
         if(restaurant.getAvailableStatus().toString().equals("true")){
             restaurant.setAvailableStatus(false);
@@ -147,7 +147,7 @@ public class RestaurantRestController {
             restaurant.setAvailableStatus(true);
             restaurantService.saveRestaurant(restaurant);
         }
-        return ResponseEntity.ok("Cập nhật trạng thái nhà hàng thành công");
+        return restaurant;
     }
 
     @GetMapping("/restaurants/available")
