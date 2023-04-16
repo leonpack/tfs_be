@@ -14,5 +14,7 @@ public interface FoodRepository extends JpaRepository<Food, Integer>, PagingAndS
 
     List<Food> findFoodsByPurchaseNumGreaterThan(int number);
 
+    List<Food> findAllByType(Boolean type);
+
     Food findFoodByFoodName(String foodName);
 }

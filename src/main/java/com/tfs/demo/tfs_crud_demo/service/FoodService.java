@@ -10,6 +10,8 @@ public interface FoodService {
 
     public List<Food> getBestSellerFoods(int number);
 
+    public List<Food> getComboFromFood(Boolean type);
+
     public Food getFoodById(int id);
 
     public Food getByName(String name);

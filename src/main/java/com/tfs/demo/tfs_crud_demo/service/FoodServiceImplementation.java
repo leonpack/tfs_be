@@ -31,6 +31,11 @@ public class FoodServiceImplementation implements FoodService{
     }
 
     @Override
+    public List<Food> getComboFromFood(Boolean type) {
+        return foodRepository.findAllByType(type);
+    }
+
+    @Override
     public Food getFoodById(int id) {
         Optional<Food> result = foodRepository.findById(id);
 
