@@ -96,6 +96,9 @@ public class FoodRestController {
         if(food.getType()==null){
             food.setType(false);
         }
+        if(food.getImgUrl()==null || food.getImgUrl().isBlank()){
+            food.setImgUrl("https://live.staticflickr.com/65535/52821073294_019a4ab45d_m.jpg");
+        }
         foodService.saveFood(food);
         return food;
     }
