@@ -21,6 +21,12 @@ public class CartDetail {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @Column(name = "type")
+    private Boolean type;
+
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "image")
     private String image;
 
@@ -39,10 +45,12 @@ public class CartDetail {
 
     }
 
-    public CartDetail(Integer id, String name, Integer quantity, String image, Double price, Double subTotal) {
+    public CartDetail(Integer id, String name, Integer quantity, Boolean type, String description, String image, Double price, Double subTotal) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
+        this.type = type;
+        this.description = description;
         this.image = image;
         this.price = price;
         this.subTotal = subTotal;
@@ -110,5 +118,21 @@ public class CartDetail {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Boolean getType() {
+        return type;
+    }
+
+    public void setType(Boolean type) {
+        this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

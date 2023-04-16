@@ -73,7 +73,6 @@ public class Order {
     @JsonManagedReference
     private List<OrderDetail> itemList = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "orderService", cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.MERGE}, orphanRemoval = true)
     @JsonManagedReference
     private List<OrderServices> serviceList = new ArrayList<>();
@@ -299,4 +298,6 @@ public class Order {
     public void setCustomerPhoneNumber(String customerPhoneNumber) {
         this.customerPhoneNumber = customerPhoneNumber;
     }
+
+
 }
