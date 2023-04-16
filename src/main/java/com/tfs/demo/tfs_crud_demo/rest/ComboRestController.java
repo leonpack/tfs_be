@@ -41,6 +41,9 @@ public class ComboRestController {
 
     @PostMapping("/combos")
     public ResponseEntity<String> addNewCombo(@RequestBody Combo combo){
+        if(combo.getImage()==null || combo.getImage().isBlank()){
+            combo.setImage("https://live.staticflickr.com/65535/52821073294_019a4ab45d_m.jpg");
+        }
         comboService.saveCombo(combo);
         StringBuilder description = new StringBuilder("Combo bao gồm:");
         int bac = 0;
