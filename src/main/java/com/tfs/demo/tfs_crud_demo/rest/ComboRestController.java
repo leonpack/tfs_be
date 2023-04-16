@@ -45,7 +45,7 @@ public class ComboRestController {
             combo.setImage("https://live.staticflickr.com/65535/52821073294_019a4ab45d_m.jpg");
         }
         comboService.saveCombo(combo);
-        StringBuilder description = new StringBuilder("Combo bao gồm:");
+        StringBuilder description = new StringBuilder("");
         int bac = 0;
         int trung = 0;
         int nam = 0;
@@ -60,7 +60,7 @@ public class ComboRestController {
             }
         }
         for(ComboDetail item: combo.getComboItems()){
-            description.append(" "+ item.getName() + " ,");
+            description.append(" " +item.getQuantity() +" " + item.getName() + " ,");
         }
         if(bac >= trung && bac >= nam){
             Region theRegion = regionService.getRegionById(1);
@@ -114,12 +114,12 @@ public class ComboRestController {
             throw new RuntimeException("This combo/food is not exist, or the name has been changed");
         }
 
-        StringBuilder description = new StringBuilder("Combo gồm: ");
+        StringBuilder description = new StringBuilder("");
         int bac = 0;
         int trung = 0;
         int nam = 0;
         for(ComboDetail item: combo.getComboItems()){
-            description.append(" "+ item.getName() + " ,");
+            description.append(" " +item.getQuantity() +" " + item.getName() + " ,");
         }
         for(ComboDetail item: combo.getComboItems()){
             Food food = foodService.getFoodById(item.getFoodId());
