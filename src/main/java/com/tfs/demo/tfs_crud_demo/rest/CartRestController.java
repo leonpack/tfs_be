@@ -2,10 +2,10 @@ package com.tfs.demo.tfs_crud_demo.rest;
 
 import com.tfs.demo.tfs_crud_demo.dao.CartComboDetailRepository;
 import com.tfs.demo.tfs_crud_demo.dao.CustomerRepository;
-import com.tfs.demo.tfs_crud_demo.dto.ComboCartDTO;
 import com.tfs.demo.tfs_crud_demo.dto.PutPartyToCart;
-import com.tfs.demo.tfs_crud_demo.dto.RemoveComboFromCartDTO;
-import com.tfs.demo.tfs_crud_demo.entity.*;
+import com.tfs.demo.tfs_crud_demo.entity.Cart;
+import com.tfs.demo.tfs_crud_demo.entity.Customer;
+import com.tfs.demo.tfs_crud_demo.entity.Party;
 import com.tfs.demo.tfs_crud_demo.service.CartService;
 import com.tfs.demo.tfs_crud_demo.service.ComboService;
 import com.tfs.demo.tfs_crud_demo.service.PartyService;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -78,101 +77,6 @@ public class CartRestController {
         return cart;
     }
 
-//DEPRECATED
-//    @PostMapping("/carts/combo/{cartId}")
-//    public ResponseEntity<String> addComboToCart(@PathVariable int cartId,@RequestBody CartComboDetail combo){
-//        Cart cart = cartService.getCartById(cartId);
-//        if(cart.getComboList()==null || cart.getComboList().isEmpty()){
-//            cart.setComboList(new ArrayList<>());
-//            cartService.saveCart(cart);
-//        }
-//        for(int i = 0; i < cart.getComboList().size();i++){
-//            if(cart.getComboList().get(i).getComboId().toString().equals(combo.getComboId().toString())){
-//                cart.getComboList().get(i).setComboQuantity(cart.getComboList().get(i).getComboQuantity()+1);
-//                cart.getComboList().get(i).setSubtotal(cart.getComboList().get(i).getComboQuantity()*cart.getComboList().get(i).getComboPrice());
-//                cartService.saveCart(cart);
-//                return ResponseEntity.ok("Đã update số lượng combo thành công");
-//            }
-//        }
-//        cart.addCombo(combo);
-//        cartService.saveCart(cart);
-//        return ResponseEntity.ok("Thêm combo vào giỏ hàng thành công!");
-//    }
-//
-//    @PostMapping("/carts/removeCombo")
-//    public ResponseEntity<String> removeCombo(@RequestBody RemoveComboFromCartDTO removeComboFromCartDTO){
-//        Cart cart = cartService.getCartById(removeComboFromCartDTO.getCartId());
-//        for(CartComboDetail item: cart.getComboList()){
-//            if(item.getComboId().toString().equals(removeComboFromCartDTO.getComboId().toString())&&item.getComboQuantity()>1){
-//                item.setComboQuantity(item.getComboQuantity()-1);
-//                cartService.saveCart(cart);
-//                return ResponseEntity.ok("Giảm số lượng cart thành công");
-//            } else if(item.getComboId().toString().equals(removeComboFromCartDTO.getComboId().toString())&&item.getComboQuantity()==1){
-//                item.setComboCart(null);
-//                cartComboDetailRepository.deleteById(removeComboFromCartDTO.getComboId());
-//                return ResponseEntity.ok("Xoá combo ra khỏi cart thành công");
-//            }
-//        }
-//        return ResponseEntity.ok("This place is forbidden");
-//    }
-    //NEW COMBO
-//    @PostMapping("/carts/addcombo")
-//    public ResponseEntity<String> addComboToCart(@RequestBody ComboCartDTO comboDTO){
-//        Cart cart = cartService.getCartById(comboDTO.getCartId());
-//        Combo combo = comboService.getComboById(comboDTO.getComboId());
-//        if(cart.getComboList().isEmpty()){
-//            Double total = combo.getComboPrice()* comboDTO.getQuantity();
-//            CartComboDetail comboDetail = cartComboDetailRepository.save(new CartComboDetail(combo.getId(), combo.getComboName(), combo.getComboPrice(), combo.getImage(), comboDTO.getQuantity(), total));
-//            cart.getComboList().add(comboDetail);
-//            cart.setNumberCart(cart.getNumberCart()+ comboDTO.getQuantity());
-//            cart.setTotalPrice(cart.getTotalPrice()+total);
-//            cartService.saveCart(cart);
-//            return ResponseEntity.ok("Add combo success");
-//        } else if(!cart.getComboList().isEmpty()){
-//            for(CartComboDetail item: cart.getComboList()){
-//                if(item.getComboId().equals(comboDTO.getComboId())){
-//                    item.setComboQuantity(item.getComboQuantity()+ comboDTO.getQuantity());
-//                    item.setSubtotal(item.getSubtotal()+(item.getComboPrice()*comboDTO.getQuantity()));
-//                    cartComboDetailRepository.save(item);
-//                    cartService.saveCart(cart);
-//                }
-//            }
-//            //if the combo not in the cart yet then add new one
-//            Double total = combo.getComboPrice()*comboDTO.getQuantity();
-//            CartComboDetail comboDetail = new CartComboDetail(combo.getId(), combo.getComboName(), combo.getComboPrice(), combo.getImage(), comboDTO.getQuantity(), total);
-//            cartComboDetailRepository.save(comboDetail);
-//            cart.getComboList().add(comboDetail);
-//            cartService.saveCart(cart);
-//            return ResponseEntity.ok("update combo success");
-//        }
-//        return ResponseEntity.ok("Forbidden zone");
-//    }
-//
-//    @PostMapping("/carts/updatecombo")
-//    public ResponseEntity<String> updateComboInCart(@RequestBody ComboCartDTO comboDTO){
-//        Cart cart = cartService.getCartById(comboDTO.getCartId());
-//        Combo combo = comboService.getComboById(comboDTO.getComboId());
-//        for(CartComboDetail item: cart.getComboList()){
-//            if(item.getComboId().equals(combo.getId())){
-//                int previousQuantity = item.getComboQuantity();
-//                Double previousSubTotal = item.getSubtotal();
-//                item.setComboQuantity(item.getComboQuantity()+ comboDTO.getQuantity());
-//                if(item.getComboQuantity()<=0){
-//                    cart.setNumberCart(cart.getNumberCart()-previousQuantity);
-//                    cart.setTotalPrice(cart.getTotalPrice()-previousSubTotal);
-//                    cartComboDetailRepository.delete(item);
-//                    cartService.saveCart(cart);
-//                    return ResponseEntity.ok("Update combo in cart done");
-//                }
-//                Double newSubtotal = item.getComboPrice()*item.getComboQuantity();
-//                cart.setNumberCart(cart.getNumberCart()+item.getComboQuantity());
-//                cart.setTotalPrice(cart.getTotalPrice()+newSubtotal);
-//                cartService.saveCart(cart);
-//                return ResponseEntity.ok("Update combo in cart done");
-//            }
-//        }
-//        return ResponseEntity.ok("Forbidden Zone");
-//    }
 
     @PostMapping("/carts/party")
     public ResponseEntity<String> addPartyToCart(@RequestBody PutPartyToCart party){
