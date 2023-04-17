@@ -137,6 +137,15 @@ public class OrderRestController {
             cartService.saveCart(cart);
         }
 
+        //auto add customer information if json is null
+        if(order.getCustomerName()==null){
+            order.setCustomerName(customer.getCustomerName());
+        }
+
+        if(order.getCustomerPhoneNumber()==null){
+            order.setCustomerPhoneNumber(customer.getTheAccount().getPhoneNumber());
+        }
+
         //check valid promotion
         if(order.getPromotionId()!=null){
             Promotion promotion = promotionService.getPromotionById(order.getPromotionId());

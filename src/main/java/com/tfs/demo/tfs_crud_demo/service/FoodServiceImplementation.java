@@ -4,7 +4,6 @@ import com.tfs.demo.tfs_crud_demo.dao.FoodRepository;
 import com.tfs.demo.tfs_crud_demo.entity.Food;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,13 +55,11 @@ public class FoodServiceImplementation implements FoodService{
     }
 
     @Override
-    @Transactional
     public void saveFood(Food theFood) {
         foodRepository.save(theFood);
     }
 
     @Override
-    @Transactional
     public void disableFood(int id) {
         Optional<Food> result = foodRepository.findById(id);
 
@@ -79,7 +76,6 @@ public class FoodServiceImplementation implements FoodService{
     }
 
     @Override
-    @Transactional
     public void removeFood(int foodId) {
         Optional<Food> result = foodRepository.findById(foodId);
         Food food;
