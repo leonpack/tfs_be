@@ -249,6 +249,12 @@ public class OrderRestController {
         if(order.getDeliveryMethod()==null || order.getDeliveryMethod().isBlank()){
             order.setDeliveryMethod("takeaway");
         }
+        if(order.getCustomerName()==null){
+            order.setCustomerName("");
+        }
+        if(order.getCustomerPhoneNumber()==null){
+            order.setCustomerPhoneNumber("");
+        }
         if(order.getItemList()!=null || !order.getItemList().isEmpty()){
             Integer quantity = 0;
             Double price = (double) 0;

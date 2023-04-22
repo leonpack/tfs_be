@@ -13,6 +13,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.chrono.ChronoLocalDate;
+import java.time.chrono.ChronoLocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,24 +77,58 @@ public class FoodRestController {
         return theFood;
     }
 
+//    @GetMapping("/foods/traditional")
+//    public List<Food> getTraditionalFoodList(){
+//        List<Food> newList = new ArrayList<>();
+//        newList.add(foodService.getFoodById(1));
+//        newList.add(foodService.getFoodById(6));
+//        newList.add(foodService.getFoodById(10));
+//        newList.add(foodService.getFoodById(12));
+//        newList.add(foodService.getFoodById(13));
+//        newList.add(foodService.getFoodById(21));
+//        newList.add(foodService.getFoodById(28));
+//        newList.add(foodService.getFoodById(32));
+//        newList.add(foodService.getFoodById(36));
+//        newList.add(foodService.getFoodById(39));
+//        newList.add(foodService.getFoodById(41));
+//        newList.add(foodService.getFoodById(49));
+//        newList.add(foodService.getFoodById(50));
+//        newList.add(foodService.getFoodById(52));
+//        newList.add(foodService.getFoodById(53));
+//        return newList;
+//    }
+
     @GetMapping("/foods/traditional")
-    public List<Food> getTraditionalFoodList(){
-        List<Food> newList = new ArrayList<>();
-        newList.add(foodService.getFoodById(1));
-        newList.add(foodService.getFoodById(6));
-        newList.add(foodService.getFoodById(10));
-        newList.add(foodService.getFoodById(12));
-        newList.add(foodService.getFoodById(13));
-        newList.add(foodService.getFoodById(21));
-        newList.add(foodService.getFoodById(28));
-        newList.add(foodService.getFoodById(32));
-        newList.add(foodService.getFoodById(36));
-        newList.add(foodService.getFoodById(39));
-        newList.add(foodService.getFoodById(41));
-        newList.add(foodService.getFoodById(49));
-        newList.add(foodService.getFoodById(50));
-        newList.add(foodService.getFoodById(52));
-        newList.add(foodService.getFoodById(53));
+    public List<Food> getTraditionalFoodsVersion2(){
+        //get event theo ngày sắp tới
+        LocalDate today = LocalDate.now();
+        List<Event> eventList = eventService.getAllEvents();
+        Event existEvent = null;
+        for(Event item: eventList){
+            LocalDate fromDateOrigin = LocalDate.from(Instant.ofEpochMilli(item.getFromDate().getTime()).atZone(ZoneId.systemDefault()));
+            if(ChronoUnit.DAYS.between(today, fromDateOrigin)<=30){
+                existEvent = item;
+                break;
+            }
+        }
+        List<Food> newList = new ArrayList<>(existEvent.getFoodList());
+        if(newList==null || newList.isEmpty()){
+            newList.add(foodService.getFoodById(1));
+            newList.add(foodService.getFoodById(6));
+            newList.add(foodService.getFoodById(10));
+            newList.add(foodService.getFoodById(12));
+            newList.add(foodService.getFoodById(13));
+            newList.add(foodService.getFoodById(21));
+            newList.add(foodService.getFoodById(28));
+            newList.add(foodService.getFoodById(32));
+            newList.add(foodService.getFoodById(36));
+            newList.add(foodService.getFoodById(39));
+            newList.add(foodService.getFoodById(41));
+            newList.add(foodService.getFoodById(49));
+            newList.add(foodService.getFoodById(50));
+            newList.add(foodService.getFoodById(52));
+            newList.add(foodService.getFoodById(53));
+        }
         return newList;
     }
 

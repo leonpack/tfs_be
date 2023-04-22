@@ -109,7 +109,7 @@ public class ComboRestController {
         comboService.saveCombo(combo);
 
         //also gen to food
-        Food existFood = foodService.getByName(combo.getComboName());
+        Food existFood = foodService.getByName(existCombo.getComboName());
         if(existFood==null){
             throw new RuntimeException("This combo/food is not exist, or the name has been changed");
         }
@@ -136,6 +136,7 @@ public class ComboRestController {
             existFood.setDescription(description.toString());
             existFood.setImgUrl(combo.getImage());
             existFood.setPrice(combo.getComboPrice());
+            existFood.setFoodName(combo.getComboName());
             Region theRegion = regionService.getRegionById(1);
             existFood.setTheRegion(theRegion);
             foodService.saveFood(existFood);
@@ -143,6 +144,7 @@ public class ComboRestController {
         else if(trung >= bac && trung >= nam){
             existFood.setDescription(description.toString());
             existFood.setImgUrl(combo.getImage());
+            existFood.setFoodName(combo.getComboName());
             existFood.setPrice(combo.getComboPrice());
             Region theRegion = regionService.getRegionById(2);
             existFood.setTheRegion(theRegion);
@@ -151,6 +153,7 @@ public class ComboRestController {
             existFood.setDescription(description.toString());
             existFood.setImgUrl(combo.getImage());
             existFood.setPrice(combo.getComboPrice());
+            existFood.setFoodName(combo.getComboName());
             Region theRegion = regionService.getRegionById(3);
             existFood.setTheRegion(theRegion);
             foodService.saveFood(existFood);
