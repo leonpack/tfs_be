@@ -68,6 +68,11 @@ public class FoodRestController {
         return foodService.getComboFromFood(true);
     }
 
+    @GetMapping("/foods/purefood")
+    public List<Food> getPureFoodsList(){
+        return foodService.getComboFromFood(false);
+    }
+
     @GetMapping("/foods/{foodId}")
     public Food theFood(@PathVariable int foodId){
         Food theFood = foodService.getFoodById(foodId);

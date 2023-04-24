@@ -65,19 +65,19 @@ public class ComboRestController {
         if(bac >= trung && bac >= nam){
             Region theRegion = regionService.getRegionById(1);
             Category theCategory = categoryService.getCategoryById(13);
-            Food food = new Food("Combo " + combo.getComboName(), description.toString(), combo.getComboPrice(), combo.getImage(), theCategory, theRegion, true, 0, 0, true);
+            Food food = new Food(combo.getComboName(), description.toString(), combo.getComboPrice(), combo.getImage(), theCategory, theRegion, true, 0, 0, true);
             foodService.saveFood(food);
         }
         else if(trung >= bac && trung >= nam){
             Region theRegion = regionService.getRegionById(2);
             Category theCategory = categoryService.getCategoryById(13);
-            Food food = new Food("Combo " + combo.getComboName(), description.toString(), combo.getComboPrice(), combo.getImage(), theCategory, theRegion, true, 0, 0, true);
+            Food food = new Food(combo.getComboName(), description.toString(), combo.getComboPrice(), combo.getImage(), theCategory, theRegion, true, 0, 0, true);
             foodService.saveFood(food);
         }
         else if(nam >= bac && nam >= trung){
             Region theRegion = regionService.getRegionById(3);
             Category theCategory = categoryService.getCategoryById(13);
-            Food food = new Food("Combo " + combo.getComboName(), description.toString(), combo.getComboPrice(), combo.getImage(), theCategory, theRegion, true, 0, 0, true);
+            Food food = new Food(combo.getComboName(), description.toString(), combo.getComboPrice(), combo.getImage(), theCategory, theRegion, true, 0, 0, true);
             foodService.saveFood(food);
         }
         return ResponseEntity.ok("Tạo combo thành công");
