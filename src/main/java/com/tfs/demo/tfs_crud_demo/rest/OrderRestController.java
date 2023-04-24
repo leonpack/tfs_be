@@ -201,10 +201,10 @@ public class OrderRestController {
                 }
                 Random rd = new Random();
                 int randomDude = rd.nextInt(availableStaff.size());
+                Staff thatUnluckyStaff = staffService.getStaffById(availableStaff.get(randomDude).getStaffId());
                 order.setStaffId(availableStaff.get(randomDude).getStaffId());
-                Notification staffNoti = new Notification("Bạn có một đơn hàng mới cần xử lý, mã đơn hàng là " +order.getId()
-                        , restaurant.getStaffList().get(randomDude).getTheAccountForStaff().getAccountId());
-                notificationService.save(staffNoti);
+                Notification nextNoti = new Notification("Bạn có một đơn hàng mới cần xử lý, mã đơn hàng là " +order.getId(), thatUnluckyStaff.getTheAccountForStaff().getAccountId());
+                notificationService.save(nextNoti);
 //                staffService.getStaffById(restaurant.getStaffList().get(randomDude).getStaffId()).setStaffActivityStatus("busy");
 //            }
         }
