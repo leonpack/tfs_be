@@ -106,13 +106,14 @@ public class ComboRestController {
         if(combo.getStatus()==null){
             combo.setStatus(existCombo.getStatus());
         }
-        comboService.saveCombo(combo);
 
-        //also gen to food
+        //also gen to food, get existCombo name to prevent unable to update due to different combo name
         Food existFood = foodService.getByName(existCombo.getComboName());
         if(existFood==null){
             throw new RuntimeException("This combo/food is not exist, or the name has been changed");
         }
+
+        comboService.saveCombo(combo);
 
         StringBuilder description = new StringBuilder("");
         int bac = 0;
