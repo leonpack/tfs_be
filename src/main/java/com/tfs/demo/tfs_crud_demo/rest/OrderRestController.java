@@ -642,7 +642,8 @@ public class OrderRestController {
             System.out.format("%s = %s\n", key, result.get(key));
         }
 
-        Long value = (Long) result.get("zptransid");
+//        Long value = (Long) result.get("zptransid");
+        Long value = ((Number) result.get("zptransid")).longValue();
 
         Map<String, Object> returnMessage = new HashMap<>();
         returnMessage.put("returnCode",result.get("returncode"));
