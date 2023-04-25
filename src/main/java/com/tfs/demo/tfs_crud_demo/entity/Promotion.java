@@ -10,6 +10,9 @@ public class Promotion {
     @Column(name = "promotion_id")
     private int id;
 
+    @Column(name = "promotion_name")
+    private String promotionName;
+
     @Column(name = "promotion_code")
     private String promotionCode;
 
@@ -25,8 +28,8 @@ public class Promotion {
 
     }
 
-    public Promotion(int id, String promotionCode, Integer eventId, int discountPercent, Boolean status) {
-        this.id = id;
+    public Promotion(String promotionName, String promotionCode, Integer eventId, int discountPercent, Boolean status) {
+        this.promotionName = promotionName;
         this.promotionCode = promotionCode;
         this.eventId = eventId;
         this.discountPercent = discountPercent;
@@ -39,6 +42,14 @@ public class Promotion {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getPromotionName() {
+        return promotionName;
+    }
+
+    public void setPromotionName(String promotionName) {
+        this.promotionName = promotionName;
     }
 
     public String getPromotionCode() {

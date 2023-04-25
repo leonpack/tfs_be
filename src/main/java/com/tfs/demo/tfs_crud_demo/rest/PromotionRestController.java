@@ -33,12 +33,19 @@ public class PromotionRestController {
 
     @PostMapping("/promotions")
     public String addNewPromotion(@RequestBody Promotion thePromotion){
+        if(thePromotion.getPromotionName()==null){
+            thePromotion.setPromotionName("");
+        }
         promotionService.savePromotion(thePromotion);
         return "Saved new promotion successful";
     }
 
     @PutMapping("/promotions")
     public Promotion updatePromotion(@RequestBody Promotion thePromotion){
+        Promotion existPromotion = promotionService.getPromotionById(thePromotion.getId());
+        if(thePromotion.getPromotionName()==null){
+            thePromotion.setPromotionName(existPromotion.getPromotionName());
+        }
         promotionService.savePromotion(thePromotion);
         return thePromotion;
     }
