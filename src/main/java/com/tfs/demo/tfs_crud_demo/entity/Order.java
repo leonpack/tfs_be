@@ -88,13 +88,44 @@ public class Order {
     @Column(name = "is_feedback")
     private Boolean feedbackStatus = false;
 
+    @Column(name = "shipping_fee")
+    private Double shippingFee;
+
+    @Column(name = "discount_price")
+    private Double discountPrice;
+
     public Order(){
 
     }
-    public Order(Integer promotionId, Double totalPrice, Integer totalQuantity, String paymentMethod
-            , String deliveryAddress, LocalDateTime orderDate, LocalDateTime deliveryDate, LocalDateTime receiveTime
-            , String status, String note, String reason, String deliveryMethod, Integer customerId, String customerName
-            , String customerPhoneNumber, Integer restaurantId, Integer staffId, Boolean feedbackStatus) {
+//    public Order(Integer promotionId, Double totalPrice, Integer totalQuantity, String paymentMethod
+//            , String deliveryAddress, LocalDateTime orderDate, LocalDateTime deliveryDate, LocalDateTime receiveTime
+//            , String status, String note, String reason, String deliveryMethod, Integer customerId, String customerName
+//            , String customerPhoneNumber, Integer restaurantId, Integer staffId, Boolean feedbackStatus) {
+//        this.promotionId = promotionId;
+//        this.totalPrice = totalPrice;
+//        this.totalQuantity = totalQuantity;
+//        this.paymentMethod = paymentMethod;
+//        this.deliveryAddress = deliveryAddress;
+//        this.orderDate = orderDate;
+//        this.deliveryDate = deliveryDate;
+//        this.receiveTime = receiveTime;
+//        this.status = status;
+//        this.note = note;
+//        this.reason = reason;
+//        this.deliveryMethod = deliveryMethod;
+//        this.customerId = customerId;
+//        this.customerName = customerName;
+//        this.customerPhoneNumber = customerPhoneNumber;
+//        this.restaurantId = restaurantId;
+//        this.staffId = staffId;
+//        this.feedbackStatus = feedbackStatus;
+//    }
+
+
+    public Order(Integer promotionId, Double totalPrice, Integer totalQuantity, String paymentMethod, String deliveryAddress,
+                 LocalDateTime orderDate, LocalDateTime deliveryDate, LocalDateTime receiveTime, String status, String note,
+                 String reason, String deliveryMethod, Integer customerId, String customerName, String customerPhoneNumber,
+                 Integer restaurantId, Integer staffId, Boolean feedbackStatus, Double shippingFee, Double discountPrice) {
         this.promotionId = promotionId;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
@@ -113,6 +144,8 @@ public class Order {
         this.restaurantId = restaurantId;
         this.staffId = staffId;
         this.feedbackStatus = feedbackStatus;
+        this.shippingFee = shippingFee;
+        this.discountPrice = discountPrice;
     }
 
     public int getId() {
@@ -299,5 +332,19 @@ public class Order {
         this.customerPhoneNumber = customerPhoneNumber;
     }
 
+    public Double getShippingFee() {
+        return shippingFee;
+    }
 
+    public void setShippingFee(Double shippingFee) {
+        this.shippingFee = shippingFee;
+    }
+
+    public Double getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(Double discountPrice) {
+        this.discountPrice = discountPrice;
+    }
 }

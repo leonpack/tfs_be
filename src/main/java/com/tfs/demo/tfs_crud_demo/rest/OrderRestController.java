@@ -137,6 +137,15 @@ public class OrderRestController {
             cartService.saveCart(cart);
         }
 
+        //audo fill-in shipping_fee and discount_price
+        if(order.getShippingFee()==null){
+            order.setShippingFee((double) 0);
+        }
+
+        if(order.getDiscountPrice()==null){
+            order.setDiscountPrice((double) 0);
+        }
+
         //auto add customer information if json is null
         if(order.getCustomerName()==null){
             order.setCustomerName(customer.getCustomerName());
@@ -254,6 +263,12 @@ public class OrderRestController {
         }
         if(order.getCustomerPhoneNumber()==null){
             order.setCustomerPhoneNumber("");
+        }
+        if(order.getShippingFee()==null){
+            order.setShippingFee((double) 0);
+        }
+        if(order.getDiscountPrice()==null){
+            order.setDiscountPrice((double) 0);
         }
         if(order.getItemList()!=null || !order.getItemList().isEmpty()){
             Integer quantity = 0;
@@ -535,30 +550,30 @@ public class OrderRestController {
         }
     }
 
-    @PostMapping("/orders/changerestaurant")
-    public ResponseEntity<String> changeRestaurantForOrder(@RequestBody ChangeRestaurantDTO restaurantDTO){
-        Order order = orderService.getOrderById(restaurantDTO.getOrderId());
-        Restaurant restaurant = restaurantService.getRestaurantById(restaurantDTO.getRestaurantId());
-        if(!order.getStatus().equals("pending") || !order.getStatus().equals("accept")){
-            throw new RuntimeException("This order is already in process and can't be move to another restaurant");
-        }
-        List<Staff> staffList = restaurant.getStaffList();
-        for(Staff item: staffList){
-            if(item.getTheAccountForStaff().getRoleId().toString().equals("3")){
-                order.setRestaurantId(restaurantDTO.getRestaurantId());
-                order.setStaffId(null);
-                order.setStatus("pending");
-                orderService.saveOrder(order);
-                Notification noti = new Notification("Đơn hàng " +restaurantDTO.getOrderId() + " vừa được chuyển sang nhà hàng của bạn", item.getTheAccountForStaff().getAccountId());
-                Notification noti2 = new Notification("Đơn hàng " +restaurantDTO.getOrderId() + " của bạn vùa được chuyển sang cho nhà hàng "
-                        +restaurant.getRestaurantName() + " xử lý", customerService.getCustomerById(order.getCustomerId()).getTheAccount().getAccountId());
-                notificationService.save(noti);
-                notificationService.save(noti2);
-                break;
-            }
-        }
-        return ResponseEntity.ok("Đơn hàng được chuyển nhà hàng thành công");
-    }
+//    @PostMapping("/orders/changerestaurant")
+//    public ResponseEntity<String> changeRestaurantForOrder(@RequestBody ChangeRestaurantDTO restaurantDTO){
+//        Order order = orderService.getOrderById(restaurantDTO.getOrderId());
+//        Restaurant restaurant = restaurantService.getRestaurantById(restaurantDTO.getRestaurantId());
+//        if(!order.getStatus().equals("pending") || !order.getStatus().equals("accept")){
+//            throw new RuntimeException("This order is already in process and can't be move to another restaurant");
+//        }
+//        List<Staff> staffList = restaurant.getStaffList();
+//        for(Staff item: staffList){
+//            if(item.getTheAccountForStaff().getRoleId().toString().equals("3")){
+//                order.setRestaurantId(restaurantDTO.getRestaurantId());
+//                order.setStaffId(null);
+//                order.setStatus("pending");
+//                orderService.saveOrder(order);
+//                Notification noti = new Notification("Đơn hàng " +restaurantDTO.getOrderId() + " vừa được chuyển sang nhà hàng của bạn", item.getTheAccountForStaff().getAccountId());
+//                Notification noti2 = new Notification("Đơn hàng " +restaurantDTO.getOrderId() + " của bạn vùa được chuyển sang cho nhà hàng "
+//                        +restaurant.getRestaurantName() + " xử lý", customerService.getCustomerById(order.getCustomerId()).getTheAccount().getAccountId());
+//                notificationService.save(noti);
+//                notificationService.save(noti2);
+//                break;
+//            }
+//        }
+//        return ResponseEntity.ok("Đơn hàng được chuyển nhà hàng thành công");
+//    }
 
     @DeleteMapping("/orders/{orderId}")
     public String deleteOrder(@PathVariable int orderId){

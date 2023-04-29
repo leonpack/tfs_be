@@ -2,7 +2,7 @@ package com.tfs.demo.tfs_crud_demo.entity;
 
 import javax.persistence.*;
 @Entity
-@Table(name = "Promotion")
+@Table(name = "promotion")
 public class Promotion {
 
     @Id
