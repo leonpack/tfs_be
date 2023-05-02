@@ -10,6 +10,8 @@ public interface PromotionService {
 
     public Promotion getPromotionById(int id);
 
+    public Promotion getPromotionByEvent(int eventId);
+
     public Promotion getPromotionByCode(String promotionCode);
 
     public void savePromotion(Promotion thePromotion);

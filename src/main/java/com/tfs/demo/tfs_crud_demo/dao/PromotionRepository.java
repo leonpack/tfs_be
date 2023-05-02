@@ -10,4 +10,5 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
     Promotion findPromotionByPromotionCode(String code);
 
+    Promotion findPromotionByEventId(int eventId);
 }

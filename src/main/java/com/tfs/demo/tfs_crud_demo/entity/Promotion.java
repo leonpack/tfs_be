@@ -18,6 +18,7 @@ public class Promotion {
 
     @Column(name = "event_id")
     private Integer eventId;
+
     @Column(name = "discount_percent")
     private int discountPercent;
 

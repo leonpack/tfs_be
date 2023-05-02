@@ -36,6 +36,11 @@ public class PromotionServiceImplementation implements PromotionService{
         return promotion;
     }
 
+    @Override
+    public Promotion getPromotionByEvent(int eventId) {
+        return promotionRepository.findPromotionByEventId(eventId);
+    }
+
     public Promotion getPromotionByCode(String code){
         return promotionRepository.findPromotionByPromotionCode(code);
     }
