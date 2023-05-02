@@ -7,10 +7,9 @@ import com.tfs.demo.tfs_crud_demo.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -31,10 +30,12 @@ public class PromotionRestController {
     }
 
     @GetMapping("/promotions/bytoday")
-    public List<Promotion> getPromotionsByRecentEvent(){
+    public Map<String, Object> getPromotionsByRecentEvent(){
         Date today = new Date(System.currentTimeMillis());
         List<Event> eventList = eventService.getAllEvents();
         List<Promotion> availablePromotion = new ArrayList<>();
+        Map<String, Object> returnResult = new HashMap<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         for(Event item: eventList){
             if(item.getFromDate().before(today) && item.getToDate().after(today)){
                 Promotion promotion = promotionService.getPromotionByEvent(item.getEventId());
@@ -46,7 +47,19 @@ public class PromotionRestController {
             availablePromotion.add(promotionService.getPromotionById(2));
             availablePromotion.add(promotionService.getPromotionById(3));
         }
-        return availablePromotion;
+
+        for(Promotion item: availablePromotion){
+            returnResult.put("id", item.getId());
+            returnResult.put("promotionName", item.getPromotionName());
+            returnResult.put("promotionCode", item.getPromotionCode());
+            returnResult.put("eventId",item.getEventId());
+            returnResult.put("discountPercent", item.getDiscountPercent());
+            returnResult.put("fromDate", sdf.format(eventService.getEventById(item.getEventId()).getFromDate()));
+            returnResult.put("endDate", sdf.format(eventService.getEventById(item.getEventId()).getToDate()));
+            returnResult.put("status", item.getStatus());
+        }
+
+        return returnResult;
     }
 
 
