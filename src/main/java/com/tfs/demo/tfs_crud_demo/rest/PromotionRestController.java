@@ -75,7 +75,7 @@ public class PromotionRestController {
     @PostMapping("/promotions")
     public String addNewPromotion(@RequestBody Promotion thePromotion){
         if(thePromotion.getPromotionName()==null){
-            thePromotion.setPromotionName("");
+            thePromotion.setPromotionName("Khuyến mãi: " + eventService.getEventById(thePromotion.getEventId()).getEventName());
         }
         promotionService.savePromotion(thePromotion);
         return "Saved new promotion successful";
