@@ -74,6 +74,9 @@ public class AccountRestController {
         if(!theAccount.getPassword().equals(password)){
             throw new RuntimeException("Wrong password");
         }
+        if(!theAccount.getRoleId().toString().equals("5")){
+            throw new RuntimeException("This account can't be used here!");
+        }
         return theAccount.getTheCustomer();
     }
 
