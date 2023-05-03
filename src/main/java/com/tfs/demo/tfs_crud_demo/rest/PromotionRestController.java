@@ -29,37 +29,64 @@ public class PromotionRestController {
         return promotionService.getAllPromotions();
     }
 
-    @GetMapping("/promotions/bytoday")
-    public Map<String, Object> getPromotionsByRecentEvent(){
-        Date today = new Date(System.currentTimeMillis());
-        List<Event> eventList = eventService.getAllEvents();
-        List<Promotion> availablePromotion = new ArrayList<>();
-        Map<String, Object> returnResult = new HashMap<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        for(Event item: eventList){
-            if(item.getFromDate().before(today) && item.getToDate().after(today)){
-                Promotion promotion = promotionService.getPromotionByEvent(item.getEventId());
-                availablePromotion.add(promotion);
-            }
-        }
-        if(availablePromotion.isEmpty()){
-            availablePromotion.add(promotionService.getPromotionById(1));
-            availablePromotion.add(promotionService.getPromotionById(2));
-            availablePromotion.add(promotionService.getPromotionById(3));
-        }
-
-        for(Promotion item: availablePromotion){
+    @GetMapping("/promotions/detail")
+    public List<Map<String, Object>> getAllPromotionsWithDate(){
+        List<Map<String, Object>> listResult = new ArrayList<>();
+        List<Promotion> promotionList = promotionService.getAllPromotions();
+        for(Promotion item: promotionList){
+            Map<String, Object> returnResult = new HashMap<>();
             returnResult.put("id", item.getId());
             returnResult.put("promotionName", item.getPromotionName());
             returnResult.put("promotionCode", item.getPromotionCode());
             returnResult.put("eventId",item.getEventId());
             returnResult.put("discountPercent", item.getDiscountPercent());
-            returnResult.put("fromDate", sdf.format(eventService.getEventById(item.getEventId()).getFromDate()));
-            returnResult.put("endDate", sdf.format(eventService.getEventById(item.getEventId()).getToDate()));
+            returnResult.put("fromDate", eventService.getEventById(item.getEventId()).getFromDate());
+            returnResult.put("endDate", eventService.getEventById(item.getEventId()).getToDate());
             returnResult.put("status", item.getStatus());
+            listResult.add(returnResult);
+        }
+        return listResult;
+    }
+
+    @GetMapping("/promotions/bytoday")
+    public List<Map<String, Object>> getPromotionsByRecentEvent(){
+        Date today = new Date();
+        List<Event> eventList = eventService.getAllEvents();
+        List<Promotion> availablePromotion = new ArrayList<>();
+        List<Map<String, Object>> listResult = new ArrayList<>();
+        for(Event item: eventList){
+            if(today.after(item.getFromDate()) && today.before(item.getToDate())){
+                Promotion promotion = promotionService.getPromotionByEvent(item.getEventId());
+                availablePromotion.add(promotion);
+            }
+        }
+//        if(availablePromotion.isEmpty()){
+//            availablePromotion.add(promotionService.getPromotionById(1));
+//            availablePromotion.add(promotionService.getPromotionById(2));
+//            availablePromotion.add(promotionService.getPromotionById(3));
+//        }
+
+        if(availablePromotion.size()<=1){
+            availablePromotion.add(promotionService.getPromotionById(1));
+            availablePromotion.add(promotionService.getPromotionById(2));
         }
 
-        return returnResult;
+        System.out.println(availablePromotion.size());
+
+        for(Promotion item: availablePromotion){
+            Map<String, Object> returnResult = new HashMap<>();
+            returnResult.put("id", item.getId());
+            returnResult.put("promotionName", item.getPromotionName());
+            returnResult.put("promotionCode", item.getPromotionCode());
+            returnResult.put("eventId",item.getEventId());
+            returnResult.put("discountPercent", item.getDiscountPercent());
+            returnResult.put("fromDate", eventService.getEventById(item.getEventId()).getFromDate());
+            returnResult.put("endDate", eventService.getEventById(item.getEventId()).getToDate());
+            returnResult.put("status", item.getStatus());
+            listResult.add(returnResult);
+        }
+
+        return listResult;
     }
 
 
