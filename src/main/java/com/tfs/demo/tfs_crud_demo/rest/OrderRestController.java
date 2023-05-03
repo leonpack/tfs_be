@@ -1,6 +1,5 @@
 package com.tfs.demo.tfs_crud_demo.rest;
 
-import com.tfs.demo.tfs_crud_demo.dao.OrderComboDetailRepository;
 import com.tfs.demo.tfs_crud_demo.dto.*;
 import com.tfs.demo.tfs_crud_demo.entity.*;
 import com.tfs.demo.tfs_crud_demo.library.vn.zalopay.crypto.HMACUtil;
@@ -66,8 +65,6 @@ public class OrderRestController {
     private final NotificationService notificationService;
     private final CartService cartService;
     private final ZalopayDetailService zalopayDetailService;
-    private final ComboService comboService;
-    private final OrderComboDetailRepository orderComboDetailRepository;
 
     @Autowired
     public OrderRestController(OrderService theOrderService,
@@ -79,9 +76,8 @@ public class OrderRestController {
                                CustomerService theCustomerService,
                                NotificationService theNotificationService,
                                CartService theCartService,
-                               ZalopayDetailService theZalopayDetailService,
-                               ComboService theComboService,
-                               OrderComboDetailRepository orderComboDetailRepository){
+                               ZalopayDetailService theZalopayDetailService
+                               ){
         orderService = theOrderService;
         promotionService = thePromotionService;
         foodService = theFoodService;
@@ -92,8 +88,6 @@ public class OrderRestController {
         notificationService = theNotificationService;
         cartService = theCartService;
         zalopayDetailService = theZalopayDetailService;
-        comboService = theComboService;
-        this.orderComboDetailRepository = orderComboDetailRepository;
     }
 
     @GetMapping("/orders")
@@ -208,10 +202,32 @@ public class OrderRestController {
                 if(availableStaff.isEmpty()){
                     throw new RuntimeException("This restaurant don't have any staff to proceed this order");
                 }
+
+                //Xử lý auto assign staff
+                //1 tạo random staff
                 Random rd = new Random();
                 int randomDude = rd.nextInt(availableStaff.size());
-                Staff thatUnluckyStaff = staffService.getStaffById(availableStaff.get(randomDude).getStaffId());
-                order.setStaffId(availableStaff.get(randomDude).getStaffId());
+
+                //new algorithm
+                int size = 0;
+                int nextRandom = 0;
+                int count = 0;
+                int staffListSize = availableStaff.size();
+                do{
+                    Random rd2 = new Random();
+                    int randomDude2 = rd2.nextInt(availableStaff.size());
+                    List<Order> staffOrders = orderService.getAllOrdersForAutoAssign(availableStaff.get(randomDude2).getStaffId());
+                    nextRandom = randomDude2;
+                    size = staffOrders.size();
+                    count++;
+                    if(count>staffListSize){
+                        count = 0;
+                        size = 0;
+                    }
+                }while(size>=1);
+
+                Staff thatUnluckyStaff = staffService.getStaffById(availableStaff.get(nextRandom).getStaffId());
+                order.setStaffId(availableStaff.get(nextRandom).getStaffId());
                 Notification nextNoti = new Notification("Bạn có một đơn hàng mới cần xử lý, mã đơn hàng là " +order.getId(), thatUnluckyStaff.getTheAccountForStaff().getAccountId());
                 notificationService.save(nextNoti);
 //                staffService.getStaffById(restaurant.getStaffList().get(randomDude).getStaffId()).setStaffActivityStatus("busy");
@@ -550,30 +566,6 @@ public class OrderRestController {
         }
     }
 
-//    @PostMapping("/orders/changerestaurant")
-//    public ResponseEntity<String> changeRestaurantForOrder(@RequestBody ChangeRestaurantDTO restaurantDTO){
-//        Order order = orderService.getOrderById(restaurantDTO.getOrderId());
-//        Restaurant restaurant = restaurantService.getRestaurantById(restaurantDTO.getRestaurantId());
-//        if(!order.getStatus().equals("pending") || !order.getStatus().equals("accept")){
-//            throw new RuntimeException("This order is already in process and can't be move to another restaurant");
-//        }
-//        List<Staff> staffList = restaurant.getStaffList();
-//        for(Staff item: staffList){
-//            if(item.getTheAccountForStaff().getRoleId().toString().equals("3")){
-//                order.setRestaurantId(restaurantDTO.getRestaurantId());
-//                order.setStaffId(null);
-//                order.setStatus("pending");
-//                orderService.saveOrder(order);
-//                Notification noti = new Notification("Đơn hàng " +restaurantDTO.getOrderId() + " vừa được chuyển sang nhà hàng của bạn", item.getTheAccountForStaff().getAccountId());
-//                Notification noti2 = new Notification("Đơn hàng " +restaurantDTO.getOrderId() + " của bạn vùa được chuyển sang cho nhà hàng "
-//                        +restaurant.getRestaurantName() + " xử lý", customerService.getCustomerById(order.getCustomerId()).getTheAccount().getAccountId());
-//                notificationService.save(noti);
-//                notificationService.save(noti2);
-//                break;
-//            }
-//        }
-//        return ResponseEntity.ok("Đơn hàng được chuyển nhà hàng thành công");
-//    }
 
     @DeleteMapping("/orders/{orderId}")
     public String deleteOrder(@PathVariable int orderId){

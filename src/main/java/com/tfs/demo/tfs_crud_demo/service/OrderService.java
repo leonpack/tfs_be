@@ -15,6 +15,8 @@ public interface OrderService {
 
     public List<Order> getAllOrderByRestaurantId(int restaurantId);
 
+    public List<Order> getAllOrdersForAutoAssign(int staffId);
+
     public Order getByParty(Party party);
 
     public Order getOrderById(int orderId);

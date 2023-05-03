@@ -40,6 +40,11 @@ public class OrderServiceImplementation implements OrderService{
     }
 
     @Override
+    public List<Order> getAllOrdersForAutoAssign(int staffId) {
+        return orderRepository.getAllOrdersForAutoAssign(staffId);
+    }
+
+    @Override
     public Order getByParty(Party party) {
         return orderRepository.getOrderByParty(party);
     }
