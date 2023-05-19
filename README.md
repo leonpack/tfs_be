@@ -12,7 +12,7 @@ Verify the deployment by navigating to the following URL in
 your preferred browser.
 
 ```sh
-https://tfsapiv1-env.eba-aagv3rp5.ap-southeast-1.elasticbeanstalk.com/
+https://tfsapiv1-env.eba-aagv3rp5.ap-southeast-1.elasticbeanstalk.com/ $$ No longer available $$
 ```
 
 ## License
